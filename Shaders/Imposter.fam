@@ -1,0 +1,51 @@
+{
+	"shaderfamily":
+	{
+		"textures":
+		[
+			"Base"
+		],
+		"static":
+		{
+			"float":
+			{
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/Imposter/Imposter.vert",
+							"meshlayer": "Shaders/Imposter/MeshLayer.vert",
+							"fragment": "Shaders/Imposter/Imposter.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/Imposter/DepthPass.vert",
+							"meshlayer": "Shaders/Imposter/MeshLayer_DepthPass.vert",
+							"fragment": "Shaders/Imposter/DepthPass.frag"
+						}
+					}
+				},
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/Imposter/Imposter.vert",
+							"meshlayer": "Shaders/Imposter/MeshLayer.vert",
+							"fragment": "Shaders/Imposter/Imposter.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/Imposter/DepthPass.vert",
+							"meshlayer": "Shaders/Imposter/MeshLayer_DepthPass.vert",
+							"fragment": "Shaders/Imposter/DepthPass.frag"
+						}
+					}
+				}
+			}
+		}
+	}
+}

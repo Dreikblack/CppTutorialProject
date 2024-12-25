@@ -1,0 +1,71 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "health",
+                "label": "Health",
+                "value": 100
+            },
+            {
+                "name": "team",
+                "label": "Team",
+                "value": 1,
+                "options":
+                [
+                    "Good",
+                    "Bad",
+                    "Neutral"
+                ]
+            },
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "runspeed",
+                "label": "Run speed",
+                "value": 4.0
+            },
+            {
+                "name": "walkspeed",
+                "label": "Walk speed",
+                "value": 2.0
+            },
+            {
+                "name": "alertsound",
+                "label": "Alert",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "attacksound1",
+                "label": "Attack 1",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "attacksound2",
+                "label": "Attack 2",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "target",
+                "label": "Target",
+                "value": null
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }
+        ]
+    }
+}

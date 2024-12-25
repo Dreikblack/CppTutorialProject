@@ -1,0 +1,16 @@
+#ifndef _PRIMITIVES
+    #define _PRIMITIVES
+    
+    #define PRIMITIVE_TESSELLATE_OUTER0 1
+    #define PRIMITIVE_TESSELLATE_OUTER1 2
+    #define PRIMITIVE_TESSELLATE_OUTER2 4
+    #define PRIMITIVE_TESSELLATE_OUTER3 8
+    #define PRIMITIVE_TESSELLATE_ALL (PRIMITIVE_TESSELLATE_OUTER0 | PRIMITIVE_TESSELLATE_OUTER1 | PRIMITIVE_TESSELLATE_OUTER2 | PRIMITIVE_TESSELLATE_OUTER3)
+    #define PRIMITIVE_COPLANAR 16
+    #define PRIMITIVE_SELECTED 32
+
+    #include "../Base/StorageBufferBindings.glsl"
+
+    layout(binding = STORAGE_BUFFER_PRIMITIVES) readonly buffer PrimitivesBlock { uint Primitives[]; };
+
+#endif

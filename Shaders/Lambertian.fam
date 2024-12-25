@@ -1,0 +1,93 @@
+{
+	"shaderfamily":
+	{
+		"root": "./PBR.fam",
+		"normalMapIndex": 1,
+		"surfacetype": null,
+		"textures":
+		[
+			"Base",
+			"Normal",
+			"Displacement",
+			"Emission"
+		],
+		"static":
+		{
+			"float":
+			{
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian_Masked.frag"
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian_Masked.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian_Masked.frag"
+						}
+					}					
+				},
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian.frag"
+						}
+					},		
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/Lambertian.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/Lambertian.frag"
+						}
+					}
+				}
+			}
+		}			
+	}
+}

@@ -1,0 +1,53 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "label": "Automatic",
+                "name": "automatic",
+                "value": false
+            },
+            {
+                "label": "Refire rate",
+                "name": "refirerate",
+                "value": 100
+            },
+            {
+                "label": "Shoot sound",
+                "name": "firesound",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "label": "Reload sound",
+                "name": "reloadsound",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "label": "Empty sound",
+                "name": "emptysound",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "label": "Muzzleflash size",
+                "name": "muzzleflashsize",
+                "value": 0.05
+            },
+            {
+                "label": "Inaccuracy",
+                "name": "inaccuracy",
+                "value": 2,
+                "range": [0, 30]
+            },
+            {
+                "label": "Projectile",
+                "name": "projectile",
+                "value": "",
+                "filecategory": "PREFAB" 
+            }
+        ]
+    }
+}

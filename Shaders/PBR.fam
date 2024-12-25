@@ -1,0 +1,110 @@
+{
+	"shaderfamily":
+	{
+		"normalMapIndex": 1,
+		"normalmapindex": 1,
+		"surfacetype": "PBR",
+		"textures":
+		[
+			"Diffuse",
+			"Normal",
+			"Metal/Rough",
+			"Displacement",
+			"Emission",
+			"Occlusion"
+		],
+		"static":
+		{
+			"float":
+			{
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/PBR/PBR.vert",
+							"meshlayer": "Shaders/MeshLayer/meshlayer.vert",
+							"fragment": "Shaders/PBR/PBR.frag",
+							"fragment2": "Shaders/PBR/PBR_Multi2.frag",
+							"fragment3": "Shaders/PBR/PBR_Multi3.frag",
+							"fragment4": "Shaders/PBR/PBR_Multi4.frag",
+							"animation": "Shaders/PBR/PBR_Animated.vert",
+							"particles": "Shaders/Particles/Particles.vert"				
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/DepthPass/DepthPass.vert",
+							"meshlayer": "Shaders/MeshLayer/DepthPass.vert",
+							"animation": "Shaders/DepthPass/DepthPass_Animated.vert",
+							"particles": "Shaders/Particles/DepthPass.vert"	
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"vertex": "Shaders/PBR/PBR_Tess.vert",
+							"animation": "Shaders/PBR/PBR_Tess_Animated.vert",
+							"tessellationControl": "Shaders/Tessellation/Tris.tesc",
+							"tessellationEvaluation": "Shaders/Tessellation/Tris.tese",
+							"fragment": "Shaders/PBR/PBR.frag",
+							"fragment2": "Shaders/PBR/PBR_Multi2.frag",
+							"fragment3": "Shaders/PBR/PBR_Multi3.frag",
+							"fragment4": "Shaders/PBR/PBR_Multi3.frag",
+							"transparency": "Shaders/PBR/PBR.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/DepthPass//DepthPass_Tess.vert",
+							"tessellationControl": "Shaders/DepthPass/DepthPass_Tris.tesc",
+							"tessellationEvaluation": "Shaders/DepthPass/DepthPass_Tris.tese"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"vertex": "Shaders/PBR/PBR_Tess.vert",
+							"tessellationControl": "Shaders/Tessellation/Quads.tesc",
+							"tessellationEvaluation": "Shaders/Tessellation/Quads.tese",
+							"fragment": "Shaders/PBR/PBR.frag",
+							"fragment2": "Shaders/PBR/PBR_Multi2.frag",
+							"fragment3": "Shaders/PBR/PBR_Multi3.frag",
+							"fragment4": "Shaders/PBR/PBR_Multi4.frag",
+							"transparency": "Shaders/PBR/PBR.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/DepthPass/DepthPass_Tess.vert",
+							"tessellationControl": "Shaders/DepthPass/DepthPass_Quads.tesc",
+							"tessellationEvaluation": "Shaders/DepthPass/DepthPass_Quads.tese"
+						}
+					}
+				},
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/PBR/PBR.vert",
+							"meshlayer": "Shaders/MeshLayer/MeshLayer.vert",
+							"fragment": "Shaders/PBR/PBR_Masked.frag",
+							"animation": "Shaders/PBR/PBR_Animated.vert",
+							"particles": "Shaders/Particles/Particles.vert"					
+						},
+						"depthPass":
+						{
+							"fragment": "Shaders/DepthPass/DepthPass_Masked.frag",
+							"vertex": "Shaders/DepthPass/DepthPass_Masked.vert",
+							"meshlayer": "Shaders/MeshLayer/DepthPass_Masked.vert",
+							"animation": "Shaders/DepthPass/DepthPass_Masked_Animated.vert",
+							"particles": "Shaders/Particles/DepthPass.vert"
+						}
+					}
+				}
+			}
+		}			
+	}
+}

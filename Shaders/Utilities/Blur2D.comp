@@ -1,0 +1,114 @@
+#version 450
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_ARB_separate_shader_objects : enable
+
+#include "../Base/PushConstants.glsl"
+#include "../Base/TextureArrays.glsl"
+
+// Each worker processes BATCHSIZE * BATCHSIZE pixels
+#define BATCHSIZE 16
+
+// Extent of blur effect in pixels
+#define EXTENTS 8
+
+// Maximum range of pixel sample area
+#define RANGE (BATCHSIZE + EXTENTS * 2)
+
+// Block of memory for storing image samples
+vec4 samples[RANGE][RANGE];
+
+vec3 TexCoordToCubeCoord(in samplerCube tex, in vec2 txc, in int face)
+{
+    vec3 v;
+    float sz = float(textureSize(tex, 0).x);
+    switch(face)
+    {
+        case 0: v = vec3( 1.0f, txc.y * 2.0f - 1.0f, txc.x * 2.0f - 1.0f); break;
+        case 1: v = vec3(-1.0f,  txc.y * 2.0f - 1.0f, -(txc.x * 2.0f - 1.0f)); break;
+        case 2: v = vec3(txc.x * 2.0f - 1.0f, 1.0f, txc.y * 2.0f - 1.0f); break;
+        case 3: v = vec3(-(txc.x * 2.0f - 1.0f), -1.0f, txc.y * 2.0f - 1.0f); break;
+        case 4: v = vec3(txc.x * 2.0f - 1.0f, txc.y * 2.0f - 1.0f, 1.0f); break;
+        case 5: v = vec3(-(txc.x * 2.0f - 1.0f),  txc.y * 2.0f - 1.0f, -1.0f); break;
+    }
+    return v;
+}
+
+void main()
+{
+    int inputimage = int(computeoffset.x);
+    int outputimage = int(computeoffset.y);
+    int x, y, px, py;
+    ivec2 worker;
+    ivec3 coord;
+    vec4 color;
+    vec2 texcoord;
+    float sum, influence;
+    ivec2 offset;
+    offset.x = int(gl_WorkGroupID.x) * BATCHSIZE;
+    offset.y = int(gl_WorkGroupID.y) * BATCHSIZE;
+    ivec2 insize = textureSize(texture2DSampler[inputimage], 0).xy;
+    ivec2 outsize = imageSize(imagearray2D[outputimage]);
+    vec2 texcoord_mult = vec2(float(outsize.x) / float(insize.x), float(outsize.y) / float(insize.y));
+
+    // Read all reuired pixel samples
+    for (x = 0; x < RANGE; ++x)
+    {
+        for (y = 0; y < RANGE; ++y)
+        {
+            // Discard out-of-range pixels
+            /*if (coord.x < EXTENTS)
+            {
+                if (coord.y < EXTENTS)
+                {
+
+                }
+                else
+                {
+                    if (coord.y >= EXTENTS + BATCHSIZE)
+                    {
+                        //if (length()) continue;
+                    }
+                }
+            }
+            else if (coord.x >= EXTENTS + BATCHSIZE)
+            {
+            }*/
+            coord.x = worker.x + int(gl_WorkGroupID.x) * BATCHSIZE;
+            coord.y = worker.y + int(gl_WorkGroupID.y) * BATCHSIZE;            
+            texcoord = vec2(coord.x, coord.y) * texcoord_mult;
+            samples[coord.x][coord.y] = textureLod(texture2DSampler[inputimage], texcoord, 0.0f);//imageLoad(texture2DStorageImage[input], offset + coord - EXTENTS);
+        }
+    }
+
+    // Process all pixels within this worker
+    for (worker.x = 0; worker.x < BATCHSIZE; ++worker.x)
+    {
+        for (worker.y = 0; worker.y < BATCHSIZE; ++worker.y)
+        {
+            color = vec4(0.0f);
+            sum = 0.0f;
+            /*for (coord.x = 0; coord.x < EXTENTS; ++coord.x)
+            {
+                if (coord.x >= outsize.x) continue;
+                for (coord.y = 0; coord.y < EXTENTS; ++coord.y)
+                {
+                    if (coord.y >= outsize.y) continue;
+                    influence = 1.0f; // length(vec3(coord.x, coord.y, coord.z) - center) / float(EXTENTS))...
+                    if (influence <= 0.0f) continue;
+                    color += samples[coord.x][coord.y] * influence;
+                    sum += influence;
+                }
+            }*/
+            coord.x = worker.x + int(gl_WorkGroupID.x) * BATCHSIZE;
+            coord.y = worker.y + int(gl_WorkGroupID.y) * BATCHSIZE;
+            texcoord.x = float(coord.x) / float(outsize.x);
+            texcoord.y = float(coord.y) / float(outsize.y);
+
+            for (coord.z = 0; coord.z < 6; ++coord.z)
+            {
+                color = imageLoad(imagearrayCube[inputimage], coord);
+                imageStore(imagearrayCube[outputimage], coord, color);
+            }
+        }
+    }
+}

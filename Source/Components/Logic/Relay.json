@@ -1,0 +1,52 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "delay",
+                "label": "Delay",
+                "value": 0.0
+            },
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "fastrefiring",
+                "label": "Fast refire",
+                "value": true
+            },
+            {
+                "name": "once",
+                "label": "Only once",
+                "value": false
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Signal"
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Signal"
+            }
+        ]
+    }
+}

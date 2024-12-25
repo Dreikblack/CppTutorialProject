@@ -1,0 +1,78 @@
+{
+	"shaderFamily":
+	{
+		"textures":
+		[
+			"Albedo"
+		],
+		"root": "../PBR.json",
+		"static":
+		{
+			"float":
+			{
+				"OPAQUE":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit_NoFog.frag.spv"
+						}
+					},
+					"isolines":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit.frag.spv"
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit.frag.spv"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit.frag.spv"
+						}
+					}
+				},
+				"MASK":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit_Masked.frag.spv"
+						}
+					},
+					"isolines":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit_Masked.frag.spv"
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit_Masked.frag.spv"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Unlit_Masked.frag.spv"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"material": {
+		"alphacutoff": 0.5,
+		"alphamask": false,
+		"backfacelighting": false,
+		"blendsmoothing": 0.5,
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"displacementblend": 1.0,
+		"glossiness": 0.0,
+		"metallic": 0.0,
+		"pickmode": true,
+		"roughness": 1.0,
+		"saturation": 1.0,
+		"shaderfamily": "Shaders/PBR.fam",
+		"shadow": true,
+		"specular": [
+			0.0,
+			0.0,
+			0.0
+		],
+		"texture0": "./bullethole_concrete.dds",
+		"texture1": "./bullethole_concrete_norm.dds",
+		"thickness": 0.25,
+		"transparent": true
+	}
+}

@@ -1,0 +1,48 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "color1",
+                "label": "Color 1",
+                "value": [1,1,1],
+                "type": "COLOR"
+            },
+            {
+                "name": "color2",
+                "label": "Color 2",
+                "value": [1,1,1],
+                "type": "COLOR"
+            },
+            {
+                "name": "color3",
+                "label": "Color 3",
+                "value": [1,1,1],
+                "type": "COLOR"
+            },
+            {
+                "name": "recursive",
+                "label": "Recursive",
+                "value": false
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "SetColor1"
+            },
+            {
+                "name": "SetColor2"
+            },
+            {
+                "name": "SetColor3"
+            }
+        ]
+    }
+}

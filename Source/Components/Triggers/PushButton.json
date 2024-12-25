@@ -1,0 +1,34 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }                                       
+        ],
+        "outputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Use"
+            }                                        
+        ]
+    }
+}

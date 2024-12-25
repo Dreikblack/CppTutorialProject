@@ -1,0 +1,77 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "play",
+                "label": "Start playing",
+                "value": true
+            },
+            {
+                "name": "loop",
+                "label": "Loop",
+                "value": true
+            },
+            {
+                "name": "sound",
+                "label": "Sound",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "volume",
+                "label": "Volume",
+                "value": 100
+            },
+            {
+                "name": "range",
+                "label": "Range",
+                "value": 1000
+            },
+            {
+                "name": "pitch",
+                "label": "Pitch",
+                "value": 100
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Play"
+            },
+            {
+                "name": "Stop"
+            },
+            {
+                "name": "FadeOut"
+            },
+            {
+                "name": "EndLoop"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Play"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }
+        ]
+    }
+}

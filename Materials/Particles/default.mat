@@ -1,0 +1,34 @@
+{
+	"material": {
+		"alphacutoff": 0.5,
+		"alphamask": false,
+		"backfacelighting": false,
+		"blendsmoothing": 0.5,
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"displacementblend": 1.0,
+		"emission": [
+			1.0,
+			1.0,
+			1.0
+		],
+		"glossiness": 1.0,
+		"metallic": 0.0,
+		"nondirectional": true,
+		"pickmode": true,
+		"roughness": 1.0,
+		"saturation": 1.0,
+		"shaderfamily": "Shaders/Unlit.fam",
+		"shadow": false,
+		"specular": [
+			1.0,
+			1.0,
+			1.0
+		],
+		"texture0": "./default.dds",
+		"texture4": "./default.dds",
+		"transparent": true
+	}
+}

@@ -1,0 +1,85 @@
+#version 450
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_ARB_separate_shader_objects : enable
+
+#include "../Base/PushConstants.glsl"
+#include "../Base/TextureArrays.glsl"
+
+//#define USE_PIXELCACHE
+
+// Each worker processes BATCHSIZE * BATCHSIZE pixels
+#define BATCHSIZE ivec3(16, 16, 1)
+
+// Extent of blur effect in pixels
+#define EXTENTS 2
+
+// Maximum range of pixel sample area
+#define RANGE (BATCHSIZE.x + EXTENTS * 2)
+
+#ifdef USE_PIXELCACHE
+// Block of memory for storing image samples
+vec4 samples[RANGE];
+#endif
+
+void main()
+{
+    const vec4 black = vec4(0.0f);
+    int inputimage = int(computeoffset.x);
+    int outputimage = int(computeoffset.y);
+    int i, x, y, z;
+    ivec3 coord;
+    vec4 color;
+    float sum, sampleweight;
+    ivec2 texsize = imageSize(imagearrayCube[outputimage]);
+    vec2 texelsize = 1.0f / vec2(texsize.x, texsize.y);
+    int axis = computeoffset.z;
+    coord.x = int(gl_WorkGroupID.x);
+    coord.y = int(gl_WorkGroupID.y);
+    coord.z = int(gl_WorkGroupID.z);
+    ivec3 samplecoord;
+
+    for (z = 0; z < BATCHSIZE.z; ++z)
+    {
+        coord.z = int(gl_WorkGroupID.z) + z;
+        for (y = 0; y < BATCHSIZE.y; ++y)
+        {
+            coord[1 - axis] = int(gl_WorkGroupID[1 - axis]) + y;
+
+#ifdef USE_PIXELCACHE
+            // Read all required pixel samples
+            i = int(gl_WorkGroupID[axis]) * BATCHSIZE.x;
+            for (coord[axis] = max(i - EXTENTS, 0); coord[axis] < min(i + BATCHSIZE.x + EXTENTS, texsize[axis]); ++coord[axis])
+            {
+                color = imageLoad(imagearrayCube[inputimage], coord);
+                samples[coord[axis] - int(gl_WorkGroupID[axis]) * BATCHSIZE.x + EXTENTS] = color;
+            }
+#endif
+
+            // Process all pixels within this worker
+            for (i = 0; i < BATCHSIZE.x; ++i)
+            {
+                coord[axis] = i + int(gl_WorkGroupID[axis]) * BATCHSIZE.x;
+                color = black;
+                sum = 0.0f;
+                samplecoord = coord;
+                for (x = max(0, coord[axis] - EXTENTS); x < min(coord[axis] + EXTENTS, texsize[axis]); ++x)
+                {
+                    samplecoord[axis] = x;
+                    sampleweight = 1.0f;// - float(abs(x - coord[axis])) / float(EXTENTS - 1);
+                    //sampleweight = 1.0f - sampleweight * sampleweight;
+                    //sampleweight *= sampleweight;
+#ifdef USE_PIXELCACHE                   
+                    color += samples[x - int(gl_WorkGroupID[axis]) * BATCHSIZE.x + EXTENTS] * sampleweight;
+#else
+                    color += imageLoad(imagearrayCube[inputimage], samplecoord) * sampleweight;
+#endif
+                    sum += sampleweight;
+                }
+                color /= sum;
+                //color = imageLoad(imagearrayCube[inputimage], coord);
+                //color = textureLod(textureCubeSampler[inputimage], vec3(samplecoord.x, samplecoord.y, samplecoord.z), 0.0f);
+                imageStore(imagearrayCube[outputimage], coord, color);
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+	"project":
+	{
+		"configurations":
+		[
+			{
+				"launch":
+				[
+					{
+						"commandline": "+map \"$MAPFILE\"",
+						"path": "CppTutorialProject.exe"
+					}
+				],
+				"name": "Run"
+			},
+			{
+				"launch":
+				[
+					{
+						"commandline": "+map \"$MAPFILE\"",
+						"path": "CppTutorialProject_d.exe"
+					}
+				],
+				"name": "Debug"
+			}
+		],
+		"engineversion": "0.9.8",
+		"language": "C++",
+		"name": "CppTutorialProject",
+		"password": "6>JO<)8j_9ETcOdQCqM)amTVe1vReo4RSfqMc{os:.TAot>Hnc@!7E|vK?;tW3_0",
+		"template": "Common",
+		"uuid": "98818402-e2f2-4232-a951-6000de2b1821"
+	}
+}

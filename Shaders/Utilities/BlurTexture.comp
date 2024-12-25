@@ -1,0 +1,82 @@
+#version 450
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_ARB_separate_shader_objects : enable
+
+#include "../Base/PushConstants.glsl"
+#include "../Base/TextureArrays.glsl"
+
+vec4 Median(const in vec4 pA, const in vec4 pB, const in vec4 pC) {       //
+  return ((pA + pB + pC) - min(min(pA, pB), pC)) - max(max(pA, pB), pC);  //
+}
+
+vec4 Blur(in sampler2D tex, in int miplevel, in vec2 texcoords)
+{
+    vec2 texelsize = 1.0f / vec2(textureSize(tex, miplevel));
+    /*if (miplevel == 0)
+    {
+        return vec4(Median(Median(textureLod(tex, texcoords, miplevel),      //
+                               textureLod(tex, texcoords + texelsize * vec2(-1, 0), miplevel),  //
+                               textureLod(tex, texcoords + texelsize * vec2(1, 0), miplevel)),  //
+                        textureLod(tex, texcoords + texelsize * vec2(0, -1), miplevel),         //
+                        textureLod(tex, texcoords + texelsize * vec2(0, 1), miplevel))
+                     .xyz,  //
+                 1.0);
+    }
+    else*/
+    {
+        vec4 lTap0 = textureLod(tex, texcoords + vec2(-2, -2) * texelsize, miplevel);
+        vec4 lTap1 = textureLod(tex, texcoords + vec2(0, -2) * texelsize, miplevel);
+        vec4 lTap2 = textureLod(tex, texcoords + vec2(2, -2) * texelsize, miplevel);
+        vec4 lTap3 = textureLod(tex, texcoords + vec2(-1, -1) * texelsize, miplevel);
+        vec4 lTap4 = textureLod(tex, texcoords + vec2(1, -1) * texelsize, miplevel);
+        vec4 lTap5 = textureLod(tex, texcoords + vec2(-2, 0) * texelsize, miplevel);
+        vec4 lTap6 = textureLod(tex, texcoords + vec2(0, 0) * texelsize, miplevel);
+        vec4 lTap7 = textureLod(tex, texcoords + vec2(2, 0) * texelsize, miplevel);
+        vec4 lTap8 = textureLod(tex, texcoords + vec2(-1, 1) * texelsize, miplevel);
+        vec4 lTap9 = textureLod(tex, texcoords + vec2(1, 1) * texelsize, miplevel);
+        vec4 lTap10 = textureLod(tex, texcoords + vec2(-2, 2) * texelsize, miplevel);
+        vec4 lTap11 = textureLod(tex, texcoords + vec2(0, 2) * texelsize, miplevel);
+        vec4 lTap12 = textureLod(tex, texcoords + vec2(2, 2) * texelsize, miplevel);
+        return ((lTap3 + lTap4 + lTap8 + lTap9) * 0.25f * 0.5f) +
+        ((lTap0 + lTap1 + lTap5 + lTap6) * 0.25f * 0.125f) + 
+        ((lTap1 + lTap2 + lTap6 + lTap7) * 0.25f * 0.125f) +
+        ((lTap5 + lTap6 + lTap10 + lTap11) * 0.25f * 0.125f) + 
+        ((lTap6 + lTap7 + lTap11 + lTap12) * 0.25f * 0.125f);
+    }
+}
+
+void Compute(in sampler2D tex, in int outimage, in int miplevel)
+{
+    vec2 texCoords;
+    vec4 color;
+    int x,y;
+    vec2 texsize = imageSize(imagearray2D[outimage]);
+    vec2 texelsize = 1.0f / vec2(textureSize(tex,miplevel));
+    ivec2 imagesize = ivec2(texsize);
+    for (x = 0; x < ComputeBatchSize.x; ++x)
+    {
+        if (gl_WorkGroupID.x * ComputeBatchSize.x + x >= imagesize.x) break;
+        for (y = 0; y < ComputeBatchSize.y; ++y)
+        {
+            if (gl_WorkGroupID.y * ComputeBatchSize.y + y >= imagesize.y) break;
+            texCoords.x = (float(gl_WorkGroupID.x * ComputeBatchSize.x + x) + 0.5f) / texsize.x;
+            texCoords.y = (float(gl_WorkGroupID.y * ComputeBatchSize.y + y) + 0.5f) / texsize.y;
+            //color = Blur(tex, miplevel - 1, texCoords);
+
+            color = textureLod(tex, texCoords + vec2(0.5f, 0.5f) * texelsize, miplevel - 1);
+            color += textureLod(tex, texCoords + vec2(-0.5f, 0.5f) * texelsize, miplevel - 1);
+            color += textureLod(tex, texCoords + vec2(-0.5f, -0.5f) * texelsize, miplevel - 1);
+            color += textureLod(tex, texCoords + vec2(0.5f, -0.5f) * texelsize, miplevel - 1);
+            color *= 0.25f;
+
+            //color = vec4(0,0,1,1);
+            imageStore(imagearray2D[outimage], ivec2(gl_WorkGroupID.x * ComputeBatchSize.x + x, gl_WorkGroupID.y * ComputeBatchSize.y + y), color);
+        }
+    }
+}
+
+void main()
+{
+    int miplevel = ComputeBatchSize.z;
+    Compute(texture2DSampler[DiffuseTextureID], DiffuseTextureID + miplevel, miplevel);
+}

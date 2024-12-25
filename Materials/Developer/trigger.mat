@@ -1,0 +1,20 @@
+{
+	"material": {
+		"color": [
+			1.0,
+			1.0,
+			1.0,
+			0.49803924560546875
+		],
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"metallic": 0.0,
+		"roughness": 1.0,
+		"shaderfamily": "Shaders/Unlit.fam",
+		"shadow": false,
+		"texture0": "./trigger.dds",
+		"transparent": true
+	}
+}

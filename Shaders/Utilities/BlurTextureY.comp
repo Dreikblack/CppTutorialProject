@@ -1,0 +1,54 @@
+#version 450
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_ARB_separate_shader_objects : enable
+
+#include "../Base/PushConstants.glsl"
+#include "../Base/TextureArrays.glsl"
+
+void Compute(in sampler2D tex, in int outimage, in int miplevel)
+{
+    vec2 texCoords;
+    vec4 color;
+    int x,y;
+    vec2 texsize = textureSize(tex, miplevel);
+    vec2 texelsize = 1.0f / texsize;
+    ivec2 imagesize = imageSize(imagearray2D[outimage]);
+
+    vec2 offset[8];
+    offset[0] = vec2(0.0f, -0.5f) * texelsize;
+    offset[1] = vec2(0.0f, -1.5f) * texelsize;
+    offset[2] = vec2(0.0f, 0.5f) * texelsize;
+    offset[3] = vec2(0.0f, 1.5f) * texelsize;
+    offset[4] = vec2(0.0f, -2.5f) * texelsize;
+    offset[5] = vec2(0.0f, 2.5f) * texelsize;
+    offset[6] = vec2(0.0f, -3.5f) * texelsize;
+    offset[7] = vec2(0.0f, 3.5f) * texelsize;
+
+    for (x = 0; x < ComputeBatchSize.x; ++x)
+    {
+        if (gl_WorkGroupID.x * ComputeBatchSize.x + x >= imagesize.x) break;
+        for (y = 0; y < ComputeBatchSize.y; ++y)
+        {
+            if (gl_WorkGroupID.y * ComputeBatchSize.y + y >= imagesize.y) break;
+            texCoords.x = (float(gl_WorkGroupID.x * ComputeBatchSize.x + x) + 0.5f) / float(imagesize.x);
+            texCoords.y = (float(gl_WorkGroupID.y * ComputeBatchSize.y + y) + 0.5f) / float(imagesize.y);
+            
+            color = vec4(0);
+            for (int n = 0; n < 8; ++n)
+            {
+                color += textureLod(tex, texCoords + offset[n], miplevel);
+            }
+            color /= 8.0f;
+            //color = textureLod(tex, texCoords, miplevel);
+
+            imageStore(imagearray2D[outimage], ivec2(gl_WorkGroupID.x * ComputeBatchSize.x + x, gl_WorkGroupID.y * ComputeBatchSize.y + y), color);
+        }
+    }
+}
+
+void main()
+{
+    int miplevel = ComputeBatchSize.z;
+    int outimage = DepthTextureID;
+    Compute(texture2DSampler[DiffuseTextureID], outimage, miplevel);
+}

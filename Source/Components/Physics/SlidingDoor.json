@@ -1,0 +1,81 @@
+{
+    "component":
+    {
+        "icon": "./icon.svg",
+        "properties":
+        [
+            {
+                "name": "movement",
+                "label": "Movement",
+                "value": [0,200,0]
+            },
+            {
+                "name": "speed",
+                "label": "Speed",
+                "value": 1.0
+            },
+            {
+                "name": "distancetolerance",
+                "label": "Tolerance",
+                "value": 0.1
+            },
+            {
+                "name": "maxforce",
+                "label": "Max force",
+                "value": 1000.0
+            },
+            {
+                "name": "relativemovement",
+                "label": "Local Movement",
+                "value": false
+            },
+            {
+                "name": "openstate",
+                "label": "Start Opened",
+                "value": false
+            },
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Open"
+            },
+            {
+                "name": "Close"
+            },
+            {
+                "name": "FullyOpened"
+            },
+            {
+                "name": "FullyClosed"
+            }
+
+        ],
+        "inputs":
+        [
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Open"
+            },
+            {
+                "name": "Close"
+            }
+        ]        
+    }
+}

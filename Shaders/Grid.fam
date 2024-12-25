@@ -1,0 +1,23 @@
+{
+	"shaderfamily":
+	{
+		"root": "Shaders/Unlit.fam",
+		"static":
+		{
+			"float":
+			{
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Editor/Grid.frag",
+							"transparency":"Shaders/Editor/Grid.frag"
+						}
+					}
+				}
+			}
+		}
+	}
+}

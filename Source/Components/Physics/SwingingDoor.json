@@ -1,0 +1,92 @@
+{
+    "component":
+    {
+        "icon": "./icon.svg",
+        "properties":
+        [
+            {
+                "name": "offset",
+                "label": "Offset",
+                "value": [0,0,0]
+            },
+            {
+                "name": "pin",
+                "label": "Pin",
+                "value": [0,1,0]
+            },
+            {
+                "name": "movespeed",
+                "label": "Speed",
+                "value": 60.0
+            },
+            {
+                "name": "distance",
+                "label": "Distance",
+                "value": 90.0
+            },
+            {
+                "name": "maxforce",
+                "label": "Max Force",
+                "value": 1000.0
+            },
+            {
+                "name": "openstate",
+                "label": "Start Opened",
+                "value": false
+            },
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Toggle"
+            },
+            {
+                "name": "Open"
+            },
+            {
+                "name": "Close"
+            },
+            {
+                "name": "ToggleDoor"
+            },
+            {
+                "name": "FullyOpened"
+            },
+            {
+                "name": "FullyClosed"
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Toggle"
+            },
+            {
+                "name": "Open"
+            },
+            {
+                "name": "Close"
+            },
+            {
+                "name": "ToggleDoor"
+            }
+        ]        
+    }
+}

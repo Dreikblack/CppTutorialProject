@@ -1,0 +1,54 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "label": "Speed",
+                "name": "speed",
+                "value": 10
+            },
+            {
+                "label": "Damage",
+                "name": "damage",
+                "value": 25
+            },
+            {
+                "label": "Impact prefab 1",
+                "name": "impactprefab0",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "label": "Impact prefab 2",
+                "name": "impactprefab1",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "label": "Impact prefab 3",
+                "name": "impactprefab2",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "label": "Impact sound 1",
+                "name": "impactsound0",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "label": "Impact sound 2 ",
+                "name": "impactsound1",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "label": "Impact sound 3",
+                "name": "impactsound2",
+                "value": "",
+                "filecategory": "SOUND"
+            }
+        ]
+    }
+}

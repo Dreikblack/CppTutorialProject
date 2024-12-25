@@ -1,0 +1,41 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "collisionspeed",
+                "label": "Collision speed",
+                "value": 2.0
+            },
+            {
+                "name": "sound1",
+                "label": "Sound 1",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "sound2",
+                "label": "Sound 2",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "sound3",
+                "label": "Sound 3",
+                "value": "",
+                "filecategory": "SOUND"
+            },
+            {
+                "name": "volume",
+                "label": "Volume",
+                "value": 100
+            },
+            {
+                "name": "range",
+                "label": "Range",
+                "value": 1000
+            }
+        ]
+    }
+}

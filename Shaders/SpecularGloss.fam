@@ -1,0 +1,94 @@
+{
+	"shaderfamily":
+	{
+		"root": "./PBR.fam",
+		"normalMapIndex": 1,
+		"surfacetype": "SPECULARGLOSS",
+		"textures":
+		[
+			"Diffuse",
+			"Normal",
+			"Specular / gloss",
+			"Displacement",
+			"Emission"
+		],
+		"static":
+		{
+			"float":
+			{
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss_Masked.frag"
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss_Masked.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss_Masked.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss_Masked.frag"
+						}
+					}					
+				},
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss.frag"
+						}
+					},		
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/PBR/SpecularGloss.frag",
+							"fragment2": null,
+							"fragment3": null,
+							"fragment4": null,
+							"transparency": "Shaders/PBR/SpecularGloss.frag"
+						}
+					}
+				}
+			}
+		}			
+	}
+}

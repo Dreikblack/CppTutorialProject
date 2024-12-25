@@ -1,0 +1,77 @@
+{
+	"shaderfamily":
+	{
+		"root": "./PBR.fam",
+		"normalMapIndex": 1,
+		"textures":
+		[
+			"Diffuse",
+			"Normal",
+			"Metal / roughness",
+			"Displacement",
+			"Emission",
+			"Occlusion",
+			"Color mask"
+		],
+		"static":
+		{
+			"float":
+			{
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom_Masked.frag",
+							"transparency": "Shaders/Custom/Custom_Masked.frag"
+						}
+					},
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom_Masked.frag",
+							"transparency": "Shaders/Custom/Custom_Masked.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom_Masked.frag",
+							"transparency": "Shaders/Custom/Custom_Masked.frag"
+						}
+					}					
+				},
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom.frag",
+							"transparency": "Shaders/Custom/Custom.frag"
+						}
+					},		
+					"triangles":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom.frag",
+							"transparency": "Shaders/Custom/Custom.frag"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"fragment": "Shaders/Custom/Custom.frag",
+							"transparency": "Shaders/Custom/Custom.frag"
+						}
+					}
+				}
+			}
+		}			
+	}
+}

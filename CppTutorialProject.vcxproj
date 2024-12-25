@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CppTutorialProject</RootNamespace>
+    <UseNativeEnvironment>true</UseNativeEnvironment>
+    <ProjectName>CppTutorialProject</ProjectName>
+    <ProjectGuid>{D9B8506C-503D-47C2-8807-679EB8527036}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\</OutDir>
+    <IntDir>.vs\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>.vs\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;NOMINMAX;_HAS_STD_BYTE=0;_NEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ULTRAENGINE)\Include;$(ULTRAENGINE)\Include\Libraries\zlib;$(ULTRAENGINE)\Include\Libraries\Box2D;$(UniversalCRT_LibraryPath);$(ULTRAENGINE)\Include\Libraries\freetype\include;$(ULTRAENGINE)\Include\Libraries\OpenAL\include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\RecastDemo\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DetourCrowd\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DetourTileCache\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DebugUtils\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\Recast\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\Detour\Include;$(ULTRAENGINE)\Include\Libraries\sol3\include;$(ULTRAENGINE)\Include\Libraries\Lua\src;$(ULTRAENGINE)\Include\Libraries\enet\include;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dTinyxml;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dExtensions;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dIkSolver;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dJoints;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels\dVehicle;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels\dCharacter;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dParticles;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dCore;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dCollision;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dVehicle\dMultiBodyVehicle;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dVehicle;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dMath;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgCore;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgNewton;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dAnimation;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgTimeTracker;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dContainers;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dCustomJoints</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>UltraEngine.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <SectionAlignment>
+      </SectionAlignment>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <AdditionalLibraryDirectories>$(ULTRAENGINE)\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>UltraEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/delayload:openvr_api.dll %(AdditionalOptions)</AdditionalOptions>
+      <ProgramDatabaseFile>.vs\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ImportLibrary>.vs\$(Configuration)\$(TargetName).lib</ImportLibrary>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NOMINMAX</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NOMINMAX;_HAS_STD_BYTE=0;_NEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ULTRAENGINE)\Include;$(ULTRAENGINE)\Include\Libraries\zlib;$(ULTRAENGINE)\Include\Libraries\Box2D;$(UniversalCRT_LibraryPath);$(ULTRAENGINE)\Include\Libraries\freetype\include;$(ULTRAENGINE)\Include\Libraries\OpenAL\include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\RecastDemo\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DetourCrowd\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DetourTileCache\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\DebugUtils\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\Recast\Include;$(ULTRAENGINE)\Include\Libraries\RecastNavigation\Detour\Include;$(ULTRAENGINE)\Include\Libraries\sol3\include;$(ULTRAENGINE)\Include\Libraries\Lua\src;$(ULTRAENGINE)\Include\Libraries\enet\include;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dTinyxml;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dExtensions;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dIkSolver;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dJoints;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels\dVehicle;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels\dCharacter;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dModels;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton\dParticles;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dNewton;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dCore;$(ULTRAENGINE)\Include\Libraries\newton\sdk\dCollision;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dVehicle\dMultiBodyVehicle;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dVehicle;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dMath;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgCore;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgNewton;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dAnimation;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dgTimeTracker;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dContainers;$(ULTRAENGINE)\Include\Libraries\NewtonDynamics\sdk\dCustomJoints</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>UltraEngine.h</PrecompiledHeaderFile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalOptions>/OPT:NOICF,NOLBR %(AdditionalOptions)</AdditionalOptions>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <AdditionalOptions>/OPT:NOICF,NOLBR /delayload:openvr_api.dll %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(ULTRAENGINE)\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>UltraEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>.vs\$(Configuration)\$(TargetName).lib</ImportLibrary>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Components\AI\Enemy.cpp" />
+    <ClCompile Include="Source\Components\AI\Monster.cpp" />
+    <ClCompile Include="Source\Components\Appearance\ChangeEmission.cpp" />
+    <ClCompile Include="Source\Components\Appearance\ChangeVisibility.cpp" />
+    <ClCompile Include="Source\Components\BaseComponent.cpp" />
+    <ClCompile Include="Source\Components\Logic\Relay.cpp" />
+    <ClCompile Include="Source\Components\Motion\Mover.cpp" />
+    <ClCompile Include="Source\Components\Physics\Impulse.cpp" />
+    <ClCompile Include="Source\Components\Physics\SlidingDoor.cpp" />
+    <ClCompile Include="Source\Components\Physics\SwingingDoor.cpp" />
+    <ClCompile Include="Source\Components\Player\CameraControls.cpp" />
+    <ClCompile Include="Source\Components\Player\FPSPlayer.cpp" />
+    <ClCompile Include="Source\Components\Player\Player.cpp" />
+    <ClCompile Include="Source\Components\Player\VRPlayer.cpp" />
+    <ClCompile Include="Source\Components\Sound\AmbientNoise.cpp" />
+    <ClCompile Include="Source\Components\Sound\ImpactNoise.cpp" />
+    <ClCompile Include="Source\Components\Triggers\CollisionTrigger.cpp" />
+    <ClCompile Include="Source\Components\Triggers\PushButton.cpp" />
+    <ClCompile Include="Source\Components\Weapons\Bullet.cpp" />
+    <ClCompile Include="Source\Components\Weapons\FPSGun.cpp" />
+    <ClCompile Include="Source\Components\Weapons\FPSWeapon.cpp" />
+    <ClCompile Include="Source\Components\Weapons\Projectile.cpp" />
+    <ClCompile Include="Source\Encryption.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\MainMenu.cpp" />
+    <ClCompile Include="Source\SelectDevice.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Steamworks\Steamworks.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Source\UltraEngine.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\ComponentSystem.h" />
+    <ClInclude Include="Source\Components\AI\Enemy.h" />
+    <ClInclude Include="Source\Components\AI\Monster.h" />
+    <ClInclude Include="Source\Components\Appearance\ChangeEmission.h" />
+    <ClInclude Include="Source\Components\Appearance\ChangeVisibility.h" />
+    <ClInclude Include="Source\Components\BaseComponent.h" />
+    <ClInclude Include="Source\Components\Logic\Relay.h" />
+    <ClInclude Include="Source\Components\Motion\Mover.h" />
+    <ClInclude Include="Source\Components\Motion\SlidingDoor.h" />
+    <ClInclude Include="Source\Components\Physics\Impulse.h" />
+    <ClInclude Include="Source\Components\Physics\SlidingDoor.h" />
+    <ClInclude Include="Source\Components\Physics\SwingingDoor.h" />
+    <ClInclude Include="Source\Components\Player\CameraControls.h" />
+    <ClInclude Include="Source\Components\Player\FPSPlayer.h" />
+    <ClInclude Include="Source\Components\Player\Player.h" />
+    <ClInclude Include="Source\Components\Player\VRPlayer.h" />
+    <ClInclude Include="Source\Components\Sound\AmbientNoise.h" />
+    <ClInclude Include="Source\Components\Sound\ImpactNoise.h" />
+    <ClInclude Include="Source\Components\Triggers\CollisionTrigger.h" />
+    <ClInclude Include="Source\Components\Triggers\PushButton.h" />
+    <ClInclude Include="Source\Components\Weapons\Bullet.h" />
+    <ClInclude Include="Source\Components\Weapons\FPSWeapon.h" />
+    <ClInclude Include="Source\Components\Weapons\Projectile.h" />
+    <ClInclude Include="Source\CustomEvents.h" />
+    <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\MainMenu.h" />
+    <ClInclude Include="Source\resource.h" />
+    <ClInclude Include="Source\targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Source\project.rc" />
+    <ResourceCompile Include="Source\projecticon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Components\Weapons\FPSGun.json" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

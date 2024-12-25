@@ -1,0 +1,26 @@
+{
+    "component":
+    {
+        "properties":
+        [
+        ],
+        "inputs":
+        [
+            {
+                "name": "Hide"
+            },
+            {
+                "name": "Show"
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Hide"
+            },
+            {
+                "name": "Show"
+            }
+        ]
+    }
+}

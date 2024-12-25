@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{1329df82-61c9-4ed0-92cd-314866d32727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Motion">
+    </Filter>
+    <Filter Include="Source Files\Components\Player">
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{54f0adeb-8b31-4c2f-979f-e4ee6840b918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Triggers">
+      <UniqueIdentifier>{522076d2-931e-4f1d-a6c9-3e2e4f9ebab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steamworks">
+      <UniqueIdentifier>{6db9dbd5-6d5c-4f70-94e5-523fbcf69c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{315863a5-a94a-4237-91aa-7ebc5f7b7c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Motion">
+      <UniqueIdentifier>{254ecf9f-5fd9-4364-8592-31d7d8739a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Player">
+      <UniqueIdentifier>{6b295b0a-4f82-405b-acee-8278376f9f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Triggers">
+      <UniqueIdentifier>{86040a15-855b-45c4-a324-4591d3bb611d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\AI">
+      <UniqueIdentifier>{efd2c078-9b3d-4c11-816b-7543928ea891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Aooearance">
+      <UniqueIdentifier>{49243c89-eb1b-43d4-858b-717cb8038ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Logic">
+      <UniqueIdentifier>{7bc65c76-2fd3-4e87-95fc-ec7deb268fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics">
+      <UniqueIdentifier>{dfedc6ea-200e-4280-b73a-37bd681eb69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Sound">
+      <UniqueIdentifier>{0cfb46f4-16e5-44eb-a643-bf9cc88a4e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Weapons">
+      <UniqueIdentifier>{755bb51c-4330-43ee-9094-b5959672f801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\AI">
+      <UniqueIdentifier>{0d21e569-7905-4814-9588-2ae6380174e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{3a1f3327-a400-40ef-be53-57411fb99b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Sound">
+      <UniqueIdentifier>{e1947862-4a9d-428a-bd49-3287ee2d535d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Weapons">
+      <UniqueIdentifier>{1f910ef4-a636-418c-88fb-acc729acc01a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Aooearance">
+      <UniqueIdentifier>{d3f15fd0-5823-4b99-b222-75700da5f5d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Logic">
+      <UniqueIdentifier>{2b37ccdf-c882-4fbf-8b18-117568d219b9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\UltraEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Steamworks\Steamworks.cpp">
+      <Filter>Source Files\Steamworks</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Motion\Mover.cpp">
+      <Filter>Source Files\Components\Motion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Player\VRPlayer.cpp">
+      <Filter>Source Files\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Player\CameraControls.cpp">
+      <Filter>Source Files\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Triggers\CollisionTrigger.cpp">
+      <Filter>Source Files\Components\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SelectDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Encryption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\BaseComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\AI\Monster.cpp">
+      <Filter>Source Files\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\AI\Enemy.cpp">
+      <Filter>Source Files\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Appearance\ChangeVisibility.cpp">
+      <Filter>Source Files\Components\Aooearance</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Appearance\ChangeEmission.cpp">
+      <Filter>Source Files\Components\Aooearance</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Logic\Relay.cpp">
+      <Filter>Source Files\Components\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Physics\SwingingDoor.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Physics\Impulse.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Physics\SlidingDoor.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Player\FPSPlayer.cpp">
+      <Filter>Source Files\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Sound\ImpactNoise.cpp">
+      <Filter>Source Files\Components\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Sound\AmbientNoise.cpp">
+      <Filter>Source Files\Components\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Triggers\PushButton.cpp">
+      <Filter>Source Files\Components\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Weapons\FPSGun.cpp">
+      <Filter>Source Files\Components\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Weapons\FPSWeapon.cpp">
+      <Filter>Source Files\Components\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Weapons\Bullet.cpp">
+      <Filter>Source Files\Components\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Weapons\Projectile.cpp">
+      <Filter>Source Files\Components\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\Player\Player.cpp">
+      <Filter>Source Files\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Triggers\CollisionTrigger.h">
+      <Filter>Header Files\Components\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Motion\SlidingDoor.h">
+      <Filter>Header Files\Components\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Motion\Mover.h">
+      <Filter>Header Files\Components\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Player\VRPlayer.h">
+      <Filter>Header Files\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Player\CameraControls.h">
+      <Filter>Header Files\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\BaseComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Weapons\Bullet.h">
+      <Filter>Header Files\Components\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Weapons\FPSWeapon.h">
+      <Filter>Header Files\Components\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\AI\Enemy.h">
+      <Filter>Header Files\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\AI\Monster.h">
+      <Filter>Header Files\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Physics\SwingingDoor.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Physics\Impulse.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Physics\SlidingDoor.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Player\FPSPlayer.h">
+      <Filter>Header Files\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Sound\AmbientNoise.h">
+      <Filter>Header Files\Components\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Sound\ImpactNoise.h">
+      <Filter>Header Files\Components\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Triggers\PushButton.h">
+      <Filter>Header Files\Components\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Appearance\ChangeVisibility.h">
+      <Filter>Header Files\Components\Aooearance</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Appearance\ChangeEmission.h">
+      <Filter>Header Files\Components\Aooearance</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Logic\Relay.h">
+      <Filter>Header Files\Components\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Weapons\Projectile.h">
+      <Filter>Header Files\Components\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\Player\Player.h">
+      <Filter>Header Files\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Source\project.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="Source\projecticon.ico">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Components\Weapons\FPSGun.json">
+      <Filter>Header Files\Components\Weapons</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,129 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "health",
+                "label": "Health",
+                "value": 100
+            },
+            {
+                "name": "team",
+                "label": "Team",
+                "value": 0,
+                "options":
+                [
+                    "Good",
+                    "Bad",
+                    "Neutral"
+                ]
+            },
+            {
+                "name": "fov",
+                "label": "Fov",
+                "value": 70.0
+            },
+            {
+                "name": "eyeheight",
+                "label": "Eye Height",
+                "value": 1.65
+            },
+            {
+                "name": "croucheyeheight",
+                "label": "Crouch Eye Height",
+                "value": 0.7
+            },
+            {
+                "name": "mousesmoothing",
+                "label": "Mouse smoothing",
+                "value": 2.0
+            },
+            {
+                "name": "mouselookspeed",
+                "label": "Look speed",
+                "value": 1.0
+            },
+            {
+                "name": "movespeed",
+                "label": "Move speed",
+                "value": 4.0
+            },
+            {
+                "name": "jumpforce",
+                "label": "Jump Force",
+                "value": 5
+            },
+            {
+                "name": "jumplunge",
+                "label": "Jump Lunge",
+                "value": 1.2
+            },
+            {
+                "name": "intialslot",
+                "label": "Starting Weapon",
+                "value": 0,
+                "options": ["Slot 1", "Slot 2", "Slot 3", "Slot 4"]
+            },
+            {
+                "name": "slot0",
+                "label": "Slot 1",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "name": "slot1",
+                "label": "Slot 2",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "name": "slot2",
+                "label": "Slot 3",
+                "value": "",
+                "filecategory": "PREFAB"
+            },
+            {
+                "name": "slot3",
+                "label": "Slot 4",
+                "value": "",
+                "filecategory": "PREFAB"
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "ShowFlashlight"
+            },
+            {
+                "name": "HideFlashlight"
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            },
+            {
+                "name": "ShowFlashlight"
+            },
+            {
+                "name": "HideFlashlight"
+            }
+        ]
+    }
+}

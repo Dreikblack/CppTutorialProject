@@ -1,0 +1,97 @@
+{
+	"shaderfamily":
+	{
+		"root": "./PBR.fam",
+		"static":
+		{
+			"float":
+			{
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/Terrain/Terrain.vert",
+							"fragment": "Shaders/Terrain/Terrain.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/Terrain/Terrain_Depth.vert"
+						},
+						"shadow":
+						{
+							"vertex": "Shaders/Terrain/Terrain_Depth.vert"
+						}
+					},
+					"quads":
+					{
+						"base":
+						{
+							"vertex": "Shaders/Terrain/Terrain_Tess.vert",
+							"tessellationEvaluation": "Shaders/Terrain/Terrain.tese",
+							"tessellationControl": "Shaders/Terrain/Terrain.tesc",
+							"fragment": "Shaders/Terrain/Terrain.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/Terrain/Terrain_Tess_Depth.vert",
+							"tessellationEvaluation": "Shaders/Terrain/Terrain_Depth.tese",
+							"tessellationControl": "Shaders/Terrain/Terrain_Depth.tesc"
+						},
+						"shadow":
+						{
+							"vertex": "Shaders/Terrain/Terrain_Tess_Depth.vert",
+							"tessellationEvaluation": "Shaders/Terrain/Terrain_Depth.tese",
+							"tessellationControl": "Shaders/Terrain/Terrain_Depth.tesc"
+						}
+					}
+				}
+			},
+			"mask":
+			{
+				"default":
+				{
+					"base":
+					{
+						"vertex": "Shaders/Terrain/Terrain.vert",
+						"fragment": "Shaders/Terrain/Terrain_Masked.frag"
+					},
+					"depthPass":
+					{
+						"vertex": "Shaders/Terrain/Terrain_Depth.vert",
+						"fragment": "Shaders/Terrain/Terrain_DepthPass.frag"
+					},
+					"shadow":
+					{
+						"vertex": "Shaders/Terrain/Terrain_Depth.vert"
+					}
+				},
+				"quads":
+				{
+					"base":
+					{
+						"vertex": "Shaders/Terrain/Terrain_Tess.vert",
+						"tessellationEvaluation": "Shaders/Terrain/Terrain.tese",
+						"tessellationControl": "Shaders/Terrain/Terrain.tesc",
+						"fragment": "Shaders/Terrain/Terrain_Masked.frag"
+					},
+					"depthPass":
+					{
+						"vertex": "Shaders/Terrain/Terrain_Tess_Depth.vert",
+						"tessellationEvaluation": "Shaders/Terrain/Terrain_Depth.tese",
+						"tessellationControl": "Shaders/Terrain/Terrain_Depth.tesc",
+						"fragment": "Shaders/Terrain/Terrain_DepthPass.frag"
+					},
+					"shadow":
+					{
+						"vertex": "Shaders/Terrain/Terrain_Tess_Depth.vert",
+						"tessellationEvaluation": "Shaders/Terrain/Terrain_Depth.tese",
+						"tessellationControl": "Shaders/Terrain/Terrain_Depth.tesc",
+						"fragment": "Shaders/Terrain/Terrain_DepthPass.frag"
+					}
+				}
+			}		
+		}
+	}
+}

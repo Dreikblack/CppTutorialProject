@@ -1,0 +1,46 @@
+{
+    "component":
+    {
+        "properties":
+        [
+            {
+                "name": "enabled",
+                "label": "Enabled",
+                "value": true
+            },
+            {
+                "name": "force",
+                "label": "Force",
+                "value": [0,0,0]
+            },
+            {
+                "name": "torque",
+                "label": "Torque",
+                "value": [0,0,0]
+            },
+            {
+                "name": "frames",
+                "label": "Frames",
+                "value": 1
+            }
+        ],
+        "inputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }
+        ],
+        "outputs":
+        [
+            {
+                "name": "Enable"
+            },
+            {
+                "name": "Disable"
+            }
+        ]
+    }
+}
