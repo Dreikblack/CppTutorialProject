@@ -26,6 +26,8 @@
 
 #include "Components/Weapons/FPSGun.h"
 #include "Components/Weapons/Bullet.h"
+#include "Components/Logic/WayPoint.h"
+#include "Components/Motion/WayMover.h"
 
 void RegisterComponents()
 {
@@ -54,5 +56,8 @@ void RegisterComponents()
 
     RegisterComponent<Bullet>();
     RegisterComponent<FPSGun>();
+
+    RegisterComponent<WayPoint>();
+    RegisterComponent<WayMover>();
 }
 

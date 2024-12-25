@@ -1,0 +1,31 @@
+{
+  "component": {
+    "properties": [
+      {
+        "name": "moveSpeed",
+        "label": "Move Speed",
+        "value": 4.0
+      },
+      {
+        "name": "nextPoint",
+        "label": "Next point",
+        "value": null
+      },
+      {
+        "name": "doDeleteAfterMovement",
+        "label": "Del after move",
+        "value": false
+      }
+    ],
+    "inputs": [
+      {
+        "name": "DoMove"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "EndMove"
+      }
+    ]
+  }
+}

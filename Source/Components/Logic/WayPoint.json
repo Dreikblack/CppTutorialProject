@@ -1,0 +1,16 @@
+{
+  "component": {
+    "properties": [
+      {
+        "name": "nextPoint",
+        "label": "Next point",
+        "value": null
+      },
+      {
+        "name": "doStayOnPoint",
+        "label": "Do stay on point",
+        "value": false
+      }
+    ]
+  }
+}

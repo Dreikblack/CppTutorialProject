@@ -122,7 +122,9 @@
     <ClCompile Include="Source\Components\Appearance\ChangeVisibility.cpp" />
     <ClCompile Include="Source\Components\BaseComponent.cpp" />
     <ClCompile Include="Source\Components\Logic\Relay.cpp" />
+    <ClCompile Include="Source\Components\Logic\WayPoint.cpp" />
     <ClCompile Include="Source\Components\Motion\Mover.cpp" />
+    <ClCompile Include="Source\Components\Motion\WayMover.cpp" />
     <ClCompile Include="Source\Components\Physics\Impulse.cpp" />
     <ClCompile Include="Source\Components\Physics\SlidingDoor.cpp" />
     <ClCompile Include="Source\Components\Physics\SwingingDoor.cpp" />
@@ -163,8 +165,10 @@
     <ClInclude Include="Source\Components\Appearance\ChangeVisibility.h" />
     <ClInclude Include="Source\Components\BaseComponent.h" />
     <ClInclude Include="Source\Components\Logic\Relay.h" />
+    <ClInclude Include="Source\Components\Logic\WayPoint.h" />
     <ClInclude Include="Source\Components\Motion\Mover.h" />
     <ClInclude Include="Source\Components\Motion\SlidingDoor.h" />
+    <ClInclude Include="Source\Components\Motion\WayMover.h" />
     <ClInclude Include="Source\Components\Physics\Impulse.h" />
     <ClInclude Include="Source\Components\Physics\SlidingDoor.h" />
     <ClInclude Include="Source\Components\Physics\SwingingDoor.h" />
