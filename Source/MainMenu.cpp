@@ -15,7 +15,7 @@ std::shared_ptr<MainMenu> MainMenu::create(shared_ptr<Framebuffer> framebuffer) 
 }
 
 static bool NewGameButtonCallback(const Event& ev, shared_ptr<Object> extra) {
-	EmitEvent(EVENT_GAME_START, nullptr, 0, 0, 0, 0, 0, nullptr, "start.ultra");
+	EmitEvent(EVENT_GAME_START, nullptr, 0, 0, 0, 0, 0, nullptr, "Maps/start.ultra");
 	return true;
 }
 

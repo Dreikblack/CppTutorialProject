@@ -27,7 +27,7 @@ static bool StartGameEventCallback(const Event& e, shared_ptr<Object> extra) {
 	menu.reset();
 	//to show loading screen
 	loadingWorld->Render(framebuffer);
-	game = Game::create(framebuffer, "Maps/" + e.text);
+	game = Game::create(framebuffer, e.text);
 	//switching current render and update targets for loop
 	currentWorld = game->world;
 	currentUi = game->ui;
@@ -53,7 +53,7 @@ int main(int argc, const char* argv[]) {
 	RegisterComponents();
 	//Computer screens
 	auto displays = GetDisplays();
-	window = CreateWindow("Ultra Engine Game", 0, 0, 1280, 720, displays[0], WINDOW_CENTER | WINDOW_TITLEBAR);
+	window = CreateWindow("Ultra Engine Game", 0, 0, 1080, 720, displays[0], WINDOW_CENTER | WINDOW_TITLEBAR);
 	framebuffer = CreateFramebuffer(window);
 	//need a dedicated world to be able render and to stop renedering loading screen wheen needed
 	loadingWorld = CreateWorld();
@@ -82,8 +82,17 @@ int main(int argc, const char* argv[]) {
 	ListenEvent(EVENT_GAME_START, nullptr, StartGameEventCallback);
 	ListenEvent(EVENT_MAIN_MENU, nullptr, MainMenuEventCallback);
 	
+	auto cl = ParseCommandLine(argc, argv);
+	WString mapName = "";
+	if (cl["map"].is_string()) {
+		mapName = std::string(cl["map"]);
+	}
 	try {
-		EmitEvent(EVENT_MAIN_MENU);
+		if (mapName.empty()) {
+			EmitEvent(EVENT_MAIN_MENU);
+		} else {
+			EmitEvent(EVENT_GAME_START, nullptr, 0, 0, 0, 0, 0, nullptr, mapName);
+		}
 	} catch (const std::invalid_argument& e) {
 		//do nothing
 	}

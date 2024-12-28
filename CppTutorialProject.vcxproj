@@ -131,6 +131,7 @@
     <ClCompile Include="Source\Components\Player\CameraControls.cpp" />
     <ClCompile Include="Source\Components\Player\FPSPlayer.cpp" />
     <ClCompile Include="Source\Components\Player\Player.cpp" />
+    <ClCompile Include="Source\Components\Player\TopDownCamera.cpp" />
     <ClCompile Include="Source\Components\Player\VRPlayer.cpp" />
     <ClCompile Include="Source\Components\Sound\AmbientNoise.cpp" />
     <ClCompile Include="Source\Components\Sound\ImpactNoise.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Source\Components\Player\CameraControls.h" />
     <ClInclude Include="Source\Components\Player\FPSPlayer.h" />
     <ClInclude Include="Source\Components\Player\Player.h" />
+    <ClInclude Include="Source\Components\Player\TopDownCamera.h" />
     <ClInclude Include="Source\Components\Player\VRPlayer.h" />
     <ClInclude Include="Source\Components\Sound\AmbientNoise.h" />
     <ClInclude Include="Source\Components\Sound\ImpactNoise.h" />

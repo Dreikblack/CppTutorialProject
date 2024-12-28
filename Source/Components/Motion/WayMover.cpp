@@ -20,7 +20,7 @@ bool WayMover::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<
 	if (properties["moveSpeed"].is_number()) {
 		moveSpeed = properties["moveSpeed"];
 	}
-	if (properties["moveSpeed"].is_boolean()) {
+	if (properties["isMoving"].is_boolean()) {
 		isMoving = properties["isMoving"];
 	}
 	if (properties["doDeleteAfterMovement"].is_boolean()) {

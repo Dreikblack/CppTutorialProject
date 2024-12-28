@@ -28,6 +28,7 @@
 #include "Components/Weapons/Bullet.h"
 #include "Components/Logic/WayPoint.h"
 #include "Components/Motion/WayMover.h"
+#include "Components/Player/TopDownCamera.h"
 
 void RegisterComponents()
 {
@@ -59,5 +60,7 @@ void RegisterComponents()
 
     RegisterComponent<WayPoint>();
     RegisterComponent<WayMover>();
+    RegisterComponent<TopDownCamera>();
+   
 }
 

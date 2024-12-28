@@ -1,0 +1,23 @@
+{
+    "component":
+    {
+      "properties": 
+      [
+        {
+          "name": "moveSpeed",
+          "label": "Move speed",
+          "value": 4.0
+        },
+        {
+          "name": "minHeight",
+          "label": "Min camera height",
+          "value": 3
+        },
+        {
+          "name": "maxHeight",
+          "label": "Max camera height",
+          "value": 20
+        }
+      ]
+    }
+}
