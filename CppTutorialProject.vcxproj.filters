@@ -266,6 +266,9 @@
     <ClInclude Include="Source\Components\Player\TopDownCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Components\Units\Unit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\project.rc">

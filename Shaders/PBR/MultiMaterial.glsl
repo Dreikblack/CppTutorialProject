@@ -72,7 +72,7 @@ vec4 PBRBaseColor(in Material material, in vec2 texcoords)
 	return subs;
 }
 
-vec3 PBRNormals(in Material material, in vec2 texcoords)
+vec3 PBRNormals(in Material material, in vec2 texcoords, in float normalscale)
 {
 	vec3 normal = vec3(0.0f);
 	vec3 subsample;
@@ -82,11 +82,12 @@ vec3 PBRNormals(in Material material, in vec2 texcoords)
 		normal = texture(sampler2D(handle), texcoords).rgb * 2.0f - 1.0f;
 		//normal = sharpmix(normal, subsample, weight, material.blendsmoothing);
 		//if ((material.flags & MATERIAL_EXTRACTNORMALMAPZ) != 0) normal.z = sqrt(max(0.0f, 1.0f - (normal.x * normal.x + normal.y * normal.y)));
+		normal.xy *= normalscale;
 	}
 	return normal;
 }
 
-void PBRNormals(out vec3 normal, in Material material, in vec2 texcoords)
+void PBRNormals(out vec3 normal, in Material material, in vec2 texcoords, in float normalscale)
 {
 	uvec2 handle = material.textureHandle[TEXTURE_NORMAL];
 	if (handle == NullHandle)
@@ -95,12 +96,13 @@ void PBRNormals(out vec3 normal, in Material material, in vec2 texcoords)
 		return;
 	}
 	{
-		normal = texture(sampler2D(handle), texcoords).rgb * 2.0f - 1.0f;
+		normal = texture(sampler2D(handle), texcoords).rgb * 2.0f - 1.0f;		
+		normal.xy *= normalscale;
 		if ((material.flags & MATERIAL_EXTRACTNORMALMAPZ) != 0) normal.z = sqrt(max(0.0f, 1.0f - (normal.x * normal.x + normal.y * normal.y)));
 	}
 }
 
-vec3 PBROcclusionMetalRoughness(in Material material, in vec2 texcoords)
+vec3 PBROcclusionMetalRoughness(in Material material, in vec2 texcoords, in float occlusionscale)
 {
 	vec3 s = vec3(0.0f, 1.0f, 0.0f);
 	vec3 subsample;
@@ -112,7 +114,7 @@ vec3 PBROcclusionMetalRoughness(in Material material, in vec2 texcoords)
 	if (handle != NullHandle)
 	{
 		ts = texture(sampler2D(handle), texcoords);
-		subsample.r = 1.0f;//mix(1.0, ts.r, material.occlusion);
+		subsample.r = mix(1.0, ts.r, occlusionscale);
 		subsample.gb *= ts.gb;
 	}
 	return subsample;
@@ -158,9 +160,11 @@ float PBRDisplacement(in Material material, in vec2 texcoords, inout float weigh
 
 void PBRMaterial(in Material material, in vec2 texcoords, out vec4 color, out vec3 normal, out vec3 omr, out vec3 emissive)
 {
+	vec2 occlusion_normalscale = unpackHalf2x16(material.occlusion);
+
     color = PBRBaseColor(material, texcoords.xy);
-	normal = PBRNormals(material, texcoords.xy);
-    omr = PBROcclusionMetalRoughness(material, texcoords.xy);
+	normal = PBRNormals(material, texcoords.xy, occlusion_normalscale.y);
+    omr = PBROcclusionMetalRoughness(material, texcoords.xy, occlusion_normalscale.x);
     emissive = PBREmissionColor(material, texcoords.xy);
 #if MAX_MATERIALS == 1
 	if ((material.flags & MATERIAL_EXTRACTNORMALMAPZ) != 0) normal.z = sqrt(max(0.0f, 1.0f - (normal.x * normal.x + normal.y * normal.y)));
@@ -169,6 +173,8 @@ void PBRMaterial(in Material material, in vec2 texcoords, out vec4 color, out ve
 
 void PBRMaterial(in Material material, in vec2 texcoords, inout float weight, inout vec4 color, inout vec3 normal, inout vec3 omr, inout vec3 emissive)
 {
+	vec2 occlusion_normalscale = unpackHalf2x16(material.occlusion);
+
 	texcoords += GetMaterialTextureOffset(material, CurrentTime).xy;
 	vec4 cc = PBRBaseColor(material, texcoords);
 	if ((material.flags & MATERIAL_BLEND_ALPHA) != 0)
@@ -193,7 +199,7 @@ void PBRMaterial(in Material material, in vec2 texcoords, inout float weight, in
 	//if (weight != 1.0f && material.blendsmoothing != 1.0f) weight = CalculateBlendAlpha(weight, material.blendsmoothing);
 	//if (weight == 0.0f) return;
 	color = mix(color, cc, weight);
-	normal = mix(normal, PBRNormals(material, texcoords), weight);
-    omr = mix(omr, PBROcclusionMetalRoughness(material, texcoords), weight);
+	normal = mix(normal, PBRNormals(material, texcoords, occlusion_normalscale.y), weight);
+    omr = mix(omr, PBROcclusionMetalRoughness(material, texcoords, occlusion_normalscale.x), weight);
     emissive = mix(emissive, PBREmissionColor(material, texcoords), weight);    
 }

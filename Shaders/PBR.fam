@@ -8,10 +8,9 @@
 		[
 			"Diffuse",
 			"Normal",
-			"Metal/Rough",
+			"AO/Metal/Rough",
 			"Displacement",
-			"Emission",
-			"Occlusion"
+			"Emission"
 		],
 		"static":
 		{
