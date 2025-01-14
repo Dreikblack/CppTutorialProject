@@ -43,6 +43,7 @@ float albedoSheenScaling = 1.0f;
 
 void main()
 {
+    float ao = 1.0f;
     Material material = materials[ materialIDs[0] ];
     texcoords.xyz += GetMaterialTextureOffset(material, CurrentTime);
     
@@ -83,7 +84,8 @@ void main()
 #else
     
     baseColor = PBRBaseColor(material, texcoords.xy);
-    norm = PBRNormals(material, texcoords.xy);
+    vec2 occlusion_normalscale = unpackHalf2x16(material.occlusion);
+    norm = PBRNormals(material, texcoords.xy, occlusion_normalscale.y);
     if ((material.flags & MATERIAL_EXTRACTNORMALMAPZ) != 0) norm.z = sqrt(max(0.0f, 1.0f - (norm.x * norm.x + norm.y * norm.y)));
     f_emissive = PBREmissionColor(material, texcoords.xy);
 
@@ -200,7 +202,7 @@ void main()
     materialInfo.perceptualRoughness = 1.0f - material.speculargloss.a;
     if (material.textureHandle[TEXTURE_METALLICROUGHNESS] != uvec2(0))
     {
-        vec4 sgSample = (texture(sampler2D(material.textureHandle[TEXTURE_METALLICROUGHNESS]), texcoords.xy));
+        vec4 sgSample = (texture(sampler2D(material.textureHandle[TEXTURE_METALLICROUGHNESS]), texcoords.xy));        
         materialInfo.perceptualRoughness *= 1.0f - sgSample.a; // glossiness to roughness
         materialInfo.f0 *= sgSample.rgb; // specular
     }
@@ -232,6 +234,7 @@ void main()
     //--------------------------------------------------------------------------
 
     //vec3 omr = multiOcclusionMetalRoughness(texcoords.xy, materialweights_);
+    ao = pbr_omr.r;
     materialInfo.metallic = pbr_omr.b;
     materialInfo.perceptualRoughness = pbr_omr.g;
     materialInfo.perceptualRoughness = clamp(materialInfo.perceptualRoughness, 0.04f, 1.0f);
@@ -270,6 +273,19 @@ void main()
     renderprobes = false;
 #endif
 
+    //--------------------------------------------------------------------------
+    // Ambient occlusion
+    //--------------------------------------------------------------------------
+
+    // Apply optional PBR terms for additional (optional) shading    
+	if (ao > 0.0f)// && material.textureHandle[TEXTURE_AMBIENTOCCLUSION] != uvec2(0))
+    {
+        //ao = material.occlusion;
+        //ao = texture(sampler2D(material.textureHandle[TEXTURE_AMBIENTOCCLUSION]), texcoords.xy).r;
+        //ao = mix(1.0f, ao, material.occlusion);
+        AmbientLight *= ao;
+    }
+
 #ifdef LIGHTING
     if ((RenderFlags & RENDERFLAGS_NO_LIGHTING) == 0)
     {
@@ -295,29 +311,9 @@ void main()
     f_diffuse.rgb = baseColor.rgb;
 #endif
 
-    float ao = 1.0f;
-
-    //--------------------------------------------------------------------------
-    // Ambient occlusion
-    //--------------------------------------------------------------------------
-
-    /*
-    // Apply optional PBR terms for additional (optional) shading
-	if (material.textureHandle[TEXTURE_AMBIENTOCCLUSION] != uvec2(0))
-    {
-        ao = texture(sampler2D(material.textureHandle[TEXTURE_AMBIENTOCCLUSION]), texcoords.xy).r;
-        //ao = 0.5 + ao * 0.5;
-        f_diffuse *= ao;
-        f_specular *=ao;
-    }
-    */
-    
     //--------------------------------------------------------------------------
     // Calculate lighting contribution from image based lighting source (IBL)
     //--------------------------------------------------------------------------
-
-    //outColor[0].rgb = linearTosRGB(f_specular, InverseGammaLevel);
-    //return;
 
 #ifdef USE_IBL
 
@@ -374,7 +370,7 @@ void main()
                     vec3 sky = sRGBToLinear(textureLod(SpecularEnvironmentMap, reflect(-v,n), lod).rgb) * (1.0f - iblspecular.a) * IBLIntensity;
                     iblspecular.rgb += sky;
                 }
-                //iblspecular *= ao;
+                iblspecular *= ao;
                 if (iblspecular.r + iblspecular.g + iblspecular.b > 0.0f)
                 {
                     f_specular += (getIBLRadianceGGX(Lut_GGX, iblspecular.rgb, n, v, materialInfo.perceptualRoughness, materialInfo.f0, materialInfo.specularWeight));
@@ -389,7 +385,7 @@ void main()
                 {
                     ibldiffuse.rgb += sRGBToLinear(textureLod(DiffuseEnvironmentMap, n, 0.0f).rgb) * (1.0f - ibldiffuse.a) * IBLIntensity;
                 }
-                //ibldiffuse *= ao;
+                ibldiffuse *= ao;
                 if (ibldiffuse.r + ibldiffuse.g + ibldiffuse.b > 0.0f)
                 {
                     f_diffuse += (getIBLRadianceLambertian(Lut_GGX, ibldiffuse.rgb, n, v, materialInfo.perceptualRoughness, materialInfo.c_diff, materialInfo.f0, materialInfo.specularWeight));

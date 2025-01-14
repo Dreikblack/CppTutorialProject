@@ -57,10 +57,10 @@ struct Material
 	float saturation;
 	float blendsmoothing;
 	float thickness;
-	float normalscale;
+	uint occlusion;
 	uvec2 textureHandle[16];
 };
-
+ 
 layout(std430, binding = STORAGE_BUFFER_MATERIALS) readonly buffer MaterialBlock { Material materials[]; };
 
 // This function stays because it requires a bit of calculations
