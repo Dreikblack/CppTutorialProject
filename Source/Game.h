@@ -8,7 +8,7 @@ class Game : public Object {
 protected:
 	shared_ptr<Camera> uiCamera;
 	shared_ptr<Scene> scene;
-	shared_ptr<FPSPlayer> player;
+	shared_ptr<FPSPlayer> fpsPlayer;
 	shared_ptr<Widget> menuPanel;
 	Game();
 	void init(shared_ptr<Framebuffer> framebuffer, WString mapPath);

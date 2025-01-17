@@ -16,19 +16,22 @@ bool Game::GameMenuButtonCallback(const Event& ev, shared_ptr<Object> extra) {
 		auto game = extra->As<Game>();
 		bool isHidden = game->menuPanel->GetHidden();
 		game->menuPanel->SetHidden(!isHidden);
-		//we can get a game window anywhere, but take in mind that it will return nullptr, if window is not active ;)
-		auto window = ActiveWindow();
-		//checking just in case if we actually got a window
-		if (window) {
-			//hiding cursor when hiding a menu and vice versa
-			window->SetCursor(isHidden ? CURSOR_DEFAULT : CURSOR_NONE);
+		if (game->fpsPlayer) {
+			//we can get a game window anywhere, but take in mind that it will return nullptr, if window is not active ;)
+			auto window = ActiveWindow();
+			//checking just in case if we actually got a window
+			if (window) {
+				//hiding cursor when hiding a menu and vice versa
+				window->SetCursor(isHidden ? CURSOR_DEFAULT : CURSOR_NONE);
+			}
+			game->fpsPlayer->doResetMousePosition = !isHidden;
 		}
-		if (game->player) {//to stop cursor reset to center when menu on
-			game->player->doResetMousePosition = !isHidden;
-		}
+		
+		//If the callback function returns false no more callbacks will be executed and no event will be added to the event queue.
+		//to avoid double call
+		return false;
 	}
-	//If the callback function returns false no more callbacks will be executed and no event will be added to the event queue.
-	return false;
+	return true;
 }
 
 static bool MainMenuButtonCallback(const Event& ev, shared_ptr<Object> extra) {
@@ -47,7 +50,7 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	for (auto const& entity : scene->entities) {
 		auto foundPlayer = entity->GetComponent<FPSPlayer>();
 		if (foundPlayer) {
-			player = foundPlayer;
+			fpsPlayer = foundPlayer;
 			break;
 		}
 	}
@@ -63,7 +66,7 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	uiCamera->SetClearMode(CLEAR_DEPTH);
 	//widgets are stays without extra shared pointers because parent widet, ui->root in this case, keep them
 	//to remove widget you should do widget->SetParent(nullptr)
-	menuPanel = CreatePanel(frameSize.width / 2 - 150, frameSize.height / 2 - 125 / 2, 300, 250, ui->root);
+	menuPanel = CreatePanel(frameSize.width / 2 - 150, frameSize.height / 2 - 300 / 2, 300, 250, ui->root);
 	auto menuButton = CreateButton("Main menu", 50, 50, 200, 50, menuPanel);
 	ListenEvent(EVENT_WIDGETACTION, menuButton, MainMenuButtonCallback);
 	auto exitButton = CreateButton("Exit", 50, 150, 200, 50, menuPanel);

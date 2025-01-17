@@ -1,0 +1,104 @@
+{
+  "component": {
+    "properties": [
+      {
+        "name": "isPlayer",
+        "label": "Is Player",
+        "value": false
+      },
+      {
+        "name": "team",
+        "label": "Team",
+        "value": 1,
+        "options": [
+          "Neutral",
+          "Good",
+          "Bad"
+        ]
+      },
+      {
+        "name": "health",
+        "label": "Health",
+        "value": 100
+      },
+      {
+        "name": "maxHealth",
+        "label": "Max Health",
+        "value": 100
+      },
+      {
+        "name": "speed",
+        "label": "Speed",
+        "value": 3.0
+      },
+      {
+        "name": "attackRange",
+        "label": "Attack Range",
+        "value": 3.0
+      },
+      {
+        "name": "attackDamage",
+        "label": "Attack Damage",
+        "value": 30
+      },
+      {
+        "name": "attackFrame",
+        "label": "Attack Frame",
+        "value": 5
+      },
+      {
+        "name": "painCooldown",
+        "label": "Pain Cooldown",
+        "value": 300
+      },
+      {
+        "name": "enabled",
+        "label": "Enabled",
+        "value": true
+      },
+      {
+        "name": "target",
+        "label": "Target",
+        "value": null
+      },
+      {
+        "name": "targetPoint",
+        "label": "Target Point",
+        "value": null
+      },
+      {
+        "name": "attackName",
+        "label": "Attack Name",
+        "value": "Attack"
+      },
+      {
+        "name": "idleName",
+        "label": "Idle Name",
+        "value": "Idle"
+      },
+      {
+        "name": "painName",
+        "label": "Pain",
+        "value": "Pain"
+      },
+      {
+        "name": "deathName",
+        "label": "Death",
+        "value": "Death"
+      },
+      {
+        "name": "runName",
+        "label": "Run",
+        "value": "Run"
+      }
+    ],
+    "inputs": [
+      {
+        "name": "Enable"
+      },
+      {
+        "name": "Disable"
+      }
+    ]
+  }
+}

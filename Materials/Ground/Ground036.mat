@@ -1,31 +1,12 @@
 {
-	"material": {
-		"alphacutoff": 0.5,
-		"alphamask": false,
-		"backfacelighting": false,
-		"blendsmoothing": 0.5,
-		"displacement": [
-			0.09999999403953552,
-			-0.04999999701976776
-		],
-		"displacementblend": 1.0,
-		"glossiness": 0.0,
-		"metallic": 1.0,
-		"pickmode": true,
-		"roughness": 1.0,
-		"saturation": 1.0,
-		"shaderfamily": "Shaders/PBR.fam",
-		"shadow": true,
-		"specular": [
-			0.0,
-			0.0,
-			0.0
-		],
-		"tessellation": false,
+	"material":
+	{
+		"attribution": "https://ambientcg.com/view?id=Ground036",
+		"author": "AmbientCG",
+		"license": "cc0",
 		"texture0": "./Ground036.dds",
 		"texture1": "./Ground036_norm.dds",
 		"texture2": "./Ground036_orm.dds",
-		"texture3": "./Ground036_disp.dds",
-		"thickness": 0.25
+		"texture3": "./Ground036_disp.dds"
 	}
 }

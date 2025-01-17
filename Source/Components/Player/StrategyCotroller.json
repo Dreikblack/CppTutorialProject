@@ -1,0 +1,13 @@
+{
+    "component":
+    {
+      "properties": 
+      [
+        {
+          "name": "playerTeam",
+          "label": "Player Team",
+          "value": 1
+        }
+      ]
+    }
+}

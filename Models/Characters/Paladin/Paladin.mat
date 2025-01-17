@@ -1,0 +1,46 @@
+{
+	"material": {
+		"alphacutoff": 0.5,
+		"alphamask": false,
+		"backfacelighting": false,
+		"blendsmoothing": 0.5,
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"displacementblend": 1.0,
+		"extras": {
+			"alwaysuseshader": "0",
+			"blendmode": "0",
+			"castshadows": "1",
+			"cullbackfaces": "1",
+			"depthmask": "1",
+			"depthtest": "1",
+			"diffuse": "1.000000,1.000000,1.000000,1.000000",
+			"drawmode": "-1",
+			"shader": "\"Shaders/Model/Animated/diffuse+normal.shader\"",
+			"shader1": "\"Shaders/Model/Shadow/shadow+animation.shader\"",
+			"texture0": "\"./Paladin WProp J Nordstrom.fbm/Paladin_diffuse.tex\"",
+			"texture1": "\"./Paladin WProp J Nordstrom.fbm/Paladin_normal.tex\"",
+			"texture2": "\"./Paladin WProp J Nordstrom.fbm/Paladin_specular.tex\"",
+			"zsort": "0"
+		},
+		"glossiness": 0.0,
+		"metallic": 0.0,
+		"normalscale": 1.0,
+		"occlusion": 0.0,
+		"pickmode": true,
+		"roughness": 1.0,
+		"saturation": 1.0,
+		"shaderfamily": "Shaders/PBR.fam",
+		"shadow": true,
+		"specular": [
+			0.0,
+			0.0,
+			0.0
+		],
+		"texture0": "./Paladin_diffuse.dds",
+		"texture1": "./Paladin_normal.dds",
+		"thickness": 0.25
+	}
+}
