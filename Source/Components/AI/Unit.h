@@ -35,7 +35,7 @@ protected:
 	uint64_t meleeAttackTime = 0;
 	//do damage in meleeAttackTiming after attack start
 	int attackFrame = 5;
-	float attackRange = 3.0f;
+	float attackRange = 2.0f;
 	int attackDamage = 30;
 	//pain/git hit state
 	bool isInPain = false;
@@ -59,6 +59,14 @@ protected:
 	bool isSelected = false;
 	virtual void scanForTarget();
 	bool goTo();
+	//pick filter
+	static bool RayFilter(shared_ptr<Entity> entity, shared_ptr<Object> extra);
+	//attack target if in range
+	static void AttackHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
+	//disable attacking state
+	static void EndAttackHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
+	//disable pain state
+	static void EndPainHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
 public:
 	int team = 0;//0 neutral, 1 player team, 2 enemy
 	bool isPlayer = false;
@@ -73,13 +81,6 @@ public:
 	void Kill(shared_ptr<Entity> attacker) override;
 	bool isAlive();
 	void Update() override;
-	static bool RayFilter(shared_ptr<Entity> entity, shared_ptr<Object> extra);
-	//attack target if in range
-	static void AttackHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
-	//disable attacking state
-	static void EndAttackHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
-	//disable pain state
-	static void EndPainHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
 	bool isEnemy(int otherUnitTeam) const;
 	void goTo(Vec3 positionToGo, bool isForced = false);
 	void attack(shared_ptr<Entity> entityToAttack, bool isForced = false);

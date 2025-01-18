@@ -418,6 +418,94 @@
 				"uuid": "b6c3c91e-60ed-4d82-86b0-dc708798ce3a"
 			},
 			{
+				"castshadows": true,
+				"collisiontype": 3,
+				"components": {
+					"Unit": {
+						"attackDamage": 25,
+						"attackFrame": 22,
+						"attackName": "Attack",
+						"attackRange": 1.5,
+						"deathName": "Death",
+						"enabled": true,
+						"health": 120,
+						"idleName": "Idle",
+						"maxHealth": 120,
+						"meleeAttackTiming": 410,
+						"painCooldown": 1000,
+						"painName": "Pain",
+						"runName": "Run",
+						"speed": 2,
+						"team": 2
+					}
+				},
+				"damping": [
+					0.10000000149011612,
+					0.10000000149011612
+				],
+				"decallayers": 1,
+				"elasticity": 0.4000000059604645,
+				"extras": {},
+				"friction": [
+					0.5,
+					0.8999999761581421
+				],
+				"gravity": true,
+				"group": [
+					"Models"
+				],
+				"matrix": [
+					"0x3f59999a",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f59999a",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f59999a",
+					"0x0",
+					"0xc16b3333",
+					"0x3dccccd0",
+					"0x40e33334",
+					"0x3f800000"
+				],
+				"model": {
+					"islimb": false,
+					"path": "Models/Characters/Warrok/Warrok.mdl"
+				},
+				"name": "Warrok",
+				"navobstacle": true,
+				"physicsmode": 1,
+				"pickmode": 2,
+				"position": [
+					"0xc16b3333",
+					"0x3dccccd0",
+					"0x40e33334"
+				],
+				"quaternion": [
+					"0x80000000",
+					"0x80000000",
+					"0x80000000",
+					"0x3f800000"
+				],
+				"reflection": true,
+				"renderlayers": 1,
+				"rotation": [
+					"0x80000000",
+					"0x0",
+					"0x0"
+				],
+				"scale": [
+					"0x3f59999a",
+					"0x3f59999a",
+					"0x3f59999a"
+				],
+				"uuid": "b85334da-b4f0-4ac5-8d8a-93bcbf362fe0"
+			},
+			{
 				"camera": {
 					"clearcolor": [
 						0.125,
@@ -434,7 +522,7 @@
 				"castshadows": false,
 				"collisiontype": 0,
 				"components": {
-					"StrategyCotroller": {
+					"StrategyController": {
 						"playerTeam": 1
 					},
 					"TopDownCamera": {
@@ -610,7 +698,7 @@
 					"0x3f800000",
 					"0x0",
 					"0xc1580001",
-					"0x3dcccccc",
+					"0x3f99999a",
 					"0xc0f00000",
 					"0x3f800000"
 				],
@@ -620,7 +708,7 @@
 				"pickmode": 0,
 				"position": [
 					"0xc1580001",
-					"0x3dcccccc",
+					"0x3f99999a",
 					"0xc0f00000"
 				],
 				"quaternion": [
@@ -651,7 +739,7 @@
 						"attackDamage": 25,
 						"attackFrame": 22,
 						"attackName": "Attack",
-						"attackRange": 2,
+						"attackRange": 1.5,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 120,
@@ -740,7 +828,7 @@
 						"attackDamage": 30,
 						"attackFrame": 40,
 						"attackName": "Attack",
-						"attackRange": 3,
+						"attackRange": 2,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 100,
@@ -829,7 +917,7 @@
 						"attackDamage": 30,
 						"attackFrame": 40,
 						"attackName": "Attack",
-						"attackRange": 3,
+						"attackRange": 2,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 100,
@@ -915,98 +1003,10 @@
 				"collisiontype": 3,
 				"components": {
 					"Unit": {
-						"attackDamage": 25,
-						"attackFrame": 22,
-						"attackName": "Attack",
-						"attackRange": 2,
-						"deathName": "Death",
-						"enabled": true,
-						"health": 120,
-						"idleName": "Idle",
-						"maxHealth": 120,
-						"meleeAttackTiming": 410,
-						"painCooldown": 1000,
-						"painName": "Pain",
-						"runName": "Run",
-						"speed": 2,
-						"team": 2
-					}
-				},
-				"damping": [
-					0.10000000149011612,
-					0.10000000149011612
-				],
-				"decallayers": 1,
-				"elasticity": 0.4000000059604645,
-				"extras": {},
-				"friction": [
-					0.5,
-					0.8999999761581421
-				],
-				"gravity": true,
-				"group": [
-					"Models"
-				],
-				"matrix": [
-					"0x3f59999a",
-					"0x0",
-					"0x0",
-					"0x0",
-					"0x0",
-					"0x3f59999a",
-					"0x0",
-					"0x0",
-					"0x0",
-					"0x0",
-					"0x3f59999a",
-					"0x0",
-					"0xc16b3333",
-					"0x3dccccd0",
-					"0x40e33334",
-					"0x3f800000"
-				],
-				"model": {
-					"islimb": false,
-					"path": "Models/Characters/Warrok/Warrok.mdl"
-				},
-				"name": "Warrok",
-				"navobstacle": true,
-				"physicsmode": 1,
-				"pickmode": 2,
-				"position": [
-					"0xc16b3333",
-					"0x3dccccd0",
-					"0x40e33334"
-				],
-				"quaternion": [
-					"0x0",
-					"0x0",
-					"0x0",
-					"0x3f800000"
-				],
-				"reflection": true,
-				"renderlayers": 1,
-				"rotation": [
-					"0x0",
-					"0x0",
-					"0x0"
-				],
-				"scale": [
-					"0x3f59999a",
-					"0x3f59999a",
-					"0x3f59999a"
-				],
-				"uuid": "b85334da-b4f0-4ac5-8d8a-93bcbf362fe0"
-			},
-			{
-				"castshadows": true,
-				"collisiontype": 3,
-				"components": {
-					"Unit": {
 						"attackDamage": 30,
 						"attackFrame": 40,
 						"attackName": "Attack",
-						"attackRange": 3,
+						"attackRange": 2,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 100,
@@ -1095,7 +1095,7 @@
 						"attackDamage": 30,
 						"attackFrame": 40,
 						"attackName": "Attack",
-						"attackRange": 3,
+						"attackRange": 2,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 100,
@@ -1184,7 +1184,7 @@
 						"attackDamage": 25,
 						"attackFrame": 22,
 						"attackName": "Attack",
-						"attackRange": 2,
+						"attackRange": 1.5,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 120,
@@ -1272,7 +1272,7 @@
 						"attackDamage": 25,
 						"attackFrame": 22,
 						"attackName": "Attack",
-						"attackRange": 2,
+						"attackRange": 1.5,
 						"deathName": "Death",
 						"enabled": true,
 						"health": 120,
@@ -1543,13 +1543,13 @@
 			"viewports": [
 				{
 					"cameraposition": [
-						15.7913,
-						19.9661,
-						6.68069
+						-8.42486,
+						1.73434,
+						-2.72153
 					],
 					"camerarotation": [
-						59.8134,
-						262.727,
+						358.313,
+						254.079,
 						0
 					],
 					"gridsize": 0,
@@ -1605,15 +1605,15 @@
 		},
 		"groups": [
 			{
-				"id": "1783948374960",
+				"id": "2376137161120",
 				"name": "Brushes"
 			},
 			{
-				"id": "1783948376768",
+				"id": "2376137143040",
 				"name": "Entities"
 			},
 			{
-				"id": "1783948384000",
+				"id": "2376137130384",
 				"name": "Models"
 			}
 		],

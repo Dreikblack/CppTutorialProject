@@ -34,7 +34,7 @@
       {
         "name": "attackRange",
         "label": "Attack Range",
-        "value": 3.0
+        "value": 2.0
       },
       {
         "name": "attackDamage",

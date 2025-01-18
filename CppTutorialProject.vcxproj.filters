@@ -171,7 +171,10 @@
     <ClCompile Include="Source\Components\Player\TopDownCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Components\Units\Unit.cpp">
+    <ClCompile Include="Source\Components\Player\StrategyController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Components\AI\Unit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,7 +272,10 @@
     <ClInclude Include="Source\Components\Player\TopDownCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Components\Units\Unit.h">
+    <ClInclude Include="Source\Components\Player\StrategyController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Components\AI\Unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

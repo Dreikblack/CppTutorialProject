@@ -429,23 +429,25 @@ bool Unit::goTo() {
 	auto entity = GetEntity();
 	auto model = entity->As<Model>();
 	if (targetPoint && agent) {
-		float distanceToTarget = entity->GetDistance(targetPoint);
-		if (distanceToTarget < targetPointDistance) {
-			auto wayPoint = targetPoint->GetComponent<WayPoint>();
-			if (wayPoint && wayPoint->getNextPoint()) {
-				targetPoint = wayPoint->getNextPoint();
-				doMove = true;			
-			} else {
-				targetPoint.reset();
-			}
-		} else {
-			doMove = true;
-		}
+		doMove = agent->Navigate(targetPoint->GetPosition(true), 100, 2.0f);
 		if (doMove) {
-			doMove = agent->Navigate(targetPoint->GetPosition(true));
-			if (model && doMove) {
-				model->Animate(runName, 1.0f, 250, ANIMATION_LOOP);
+			//checking distance to target point on nav mesh
+			float distanceToTarget = entity->GetDistance(agent->GetDestination());
+			if (distanceToTarget < targetPointDistance) {
+				auto wayPoint = targetPoint->GetComponent<WayPoint>();
+				if (wayPoint && wayPoint->getNextPoint()) {
+					targetPoint = wayPoint->getNextPoint();
+					doMove = true;
+				} else {
+					targetPoint.reset();
+					doMove = false;
+				}
+			} else {
+				doMove = true;
 			}
+		}	
+		if (doMove && model) {
+			model->Animate(runName, 1.0f, 250, ANIMATION_LOOP);
 		}
 	}
 	return doMove;

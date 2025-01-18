@@ -30,7 +30,7 @@
 #include "Components/Motion/WayMover.h"
 #include "Components/Player/TopDownCamera.h"
 #include "Components/AI/Unit.h"
-#include "Components/Player/StrategyCotroller.h"
+#include "Components/Player/StrategyController.h"
 
 void RegisterComponents()
 {
@@ -64,7 +64,7 @@ void RegisterComponents()
     RegisterComponent<WayMover>();
     RegisterComponent<TopDownCamera>();
     RegisterComponent<Unit>();
-    RegisterComponent<StrategyCotroller>();
+    RegisterComponent<StrategyController>();
    
 }
 
