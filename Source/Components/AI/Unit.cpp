@@ -23,21 +23,24 @@ void Unit::Start() {
 	auto model = entity->As<Model>();
 	//for custom save/load system
 	entity->AddTag("Unit");
-	//checking efficiently if Unit have a nav mesh
-	if (!navMesh.expired()) {
-		//1 m radius because of Beast long model, 0.5 would better otherwise, 2 m height
-		agent = CreateNavAgent(navMesh.lock(), 0.5, 2);
-		agent->SetMaxSpeed(speed);
-		agent->SetPosition(entity->GetPosition(true));
-		agent->SetRotation(entity->GetRotation(true).y);
-		entity->SetPosition(0, 0, 0);
-		//becase models rotated by back
-		entity->SetRotation(0, 180, 0);
-		entity->Attach(agent);
+	if (!isFullPlayerControl) {
+		//checking efficiently if Unit have a nav mesh
+		if (!navMesh.expired()) {
+			//1 m radius because of Beast long model, 0.5 would better otherwise, 2 m height
+			agent = CreateNavAgent(navMesh.lock(), 0.5, 2);
+			agent->SetMaxSpeed(speed);
+			agent->SetPosition(entity->GetPosition(true));
+			agent->SetRotation(entity->GetRotation(true).y);
+			entity->SetPosition(0, 0, 0);
+			//becase models rotated by back
+			entity->SetRotation(0, 180, 0);
+			entity->Attach(agent);
+		}
+		entity->SetCollisionType(COLLISION_PLAYER);
+		entity->SetMass(0);
+		entity->SetPhysicsMode(PHYSICS_RIGIDBODY);
 	}
-	entity->SetCollisionType(COLLISION_PLAYER);
-	entity->SetMass(0);
-	entity->SetPhysicsMode(PHYSICS_RIGIDBODY);
+	
 
 	if (model) {
 		auto seq = model->FindAnimation(attackName);
@@ -55,24 +58,43 @@ void Unit::Start() {
 			model->skeleton->AddHook(seq, count - 1, EndPainHook, Self());
 		}
 	}
-	int healthBarHeight = 5;
-	healthBar = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
-	if (team == 1) {
-		healthBar->SetColor(0, 1, 0);
-	} else {
-		healthBar->SetColor(1, 0, 0);
+	if (!isFullPlayerControl) {
+		int healthBarHeight = 5;
+		healthBar = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
+		if (team == 1) {
+			healthBar->SetColor(0, 1, 0);
+		} else {
+			healthBar->SetColor(1, 0, 0);
+		}
+		healthBar->SetPosition(0, 0, 0.00001f);
+		healthBar->SetRenderLayers(2);
+		healthBarBackground = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
+		healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
+		//to put it behind health bar
+		healthBarBackground->SetPosition(0, 0, 0.00002f);
+		healthBarBackground->SetRenderLayers(2);
 	}
-	healthBar->SetPosition(0, 0, 0.00001f);
-	healthBar->SetRenderLayers(2);
-	healthBarBackground = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
-	healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
-	//to put it behind health bar
-	healthBarBackground->SetPosition(0, 0, 0.00002f);
-	healthBarBackground->SetRenderLayers(2);
+	auto world = entity->GetWorld();
+	shared_ptr<Camera> camera;
+	for (auto const& cameraEntity : world->GetTaggedEntities("Camera")) {
+		camera = cameraEntity->As<Camera>();
+		break;
+	}
+	if (!camera) {
+		for (auto const& cameraEntity : world->GetEntities()) {
+			camera = cameraEntity->As<Camera>();
+			if (camera) {
+				break;
+			}
+		}
+	}
+	cameraWeak = camera;
 	BaseComponent::Start();
 }
 
-bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const LoadFlags flags, shared_ptr<Object> extra) {
+bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scene> scene, const LoadFlags flags, shared_ptr<Object> extra) {
+	sceneWeak = scene;
+	if (properties["isFullPlayerControl"].is_boolean()) isFullPlayerControl = properties["isFullPlayerControl"];
 	if (properties["isPlayer"].is_boolean()) isPlayer = properties["isPlayer"];
 	if (properties["team"].is_number()) team = properties["team"];
 	if (properties["health"].is_number()) health = properties["health"];
@@ -82,6 +104,7 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map>
 	if (properties["attackFrame"].is_number()) attackFrame = properties["attackFrame"];
 	if (properties["painCooldown"].is_number()) painCooldown = properties["painCooldown"];
 	if (properties["enabled"].is_boolean()) enabled = properties["enabled"];
+	if (properties["decayTime"].is_number()) decayTime = properties["decayTime"];
 	if (properties["attackName"].is_string()) attackName = properties["attackName"];
 	if (properties["idleName"].is_string()) idleName = properties["idleName"];
 	if (properties["deathName"].is_string()) deathName = properties["deathName"];
@@ -113,7 +136,8 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map>
 	return BaseComponent::Load(properties, binstream, scene, flags, extra);
 }
 
-bool Unit::Save(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const SaveFlags flags, shared_ptr<Object> extra) {
+bool Unit::Save(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scene> scene, const SaveFlags flags, shared_ptr<Object> extra) {
+	properties["isFullPlayerControl"] = isFullPlayerControl;
 	properties["isPlayer"] = isPlayer;
 	properties["team"] = team;
 	properties["health"] = health;
@@ -148,7 +172,6 @@ void Unit::Damage(const int amount, shared_ptr<Entity> attacker) {
 		return;
 	}
 	auto now = world->GetTime();
-	//Print(GetEntity()->name + " got " + WString(amount));
 	if (health <= 0) {
 		Kill(attacker);
 	} else if (!isInPain && now - painCooldownTime > painCooldown) {
@@ -197,12 +220,24 @@ void Unit::Kill(shared_ptr<Entity> attacker) {
 	isAttacking = false;
 	healthBar = nullptr;
 	healthBarBackground = nullptr;
+	if (decayTime > 0) {
+		removeEntityTimer = UltraEngine::CreateTimer(decayTime);
+		ListenEvent(EVENT_TIMERTICK, removeEntityTimer, RemoveEntityCallback, Self());
+	}
 }
 
 bool Unit::isAlive() {
 	return health > 0 && GetEntity();
 }
 
+
+bool Unit::RemoveEntityCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra) {
+	auto unit = extra->As<Unit>();
+	unit->removeEntityTimer->Stop();
+	unit->removeEntityTimer = nullptr;
+	unit->sceneWeak.lock()->RemoveEntity(unit->GetEntity());
+	return false;
+}
 
 void Unit::scanForTarget() {
 	auto entity = GetEntity();
@@ -260,17 +295,16 @@ void Unit::Update() {
 	if (!world || !model) {
 		return;
 	}
+	if (isFullPlayerControl) {
+		return;
+	}
 	//making health bar fllow the unit
 	auto window = ActiveWindow();
 	if (window && healthBar && healthBarBackground) {
 		auto framebuffer = window->GetFramebuffer();
 		auto position = entity->GetBounds().center;
 		position.y += entity->GetBounds().size.height / 2;//take top position of unit
-		shared_ptr<Camera> camera;
-		for (auto const& cameraEntity : world->GetTaggedEntities("Camera")) {
-			camera = cameraEntity->As<Camera>();
-			break;
-		}
+		shared_ptr<Camera> camera = cameraWeak.lock();	
 		if (camera) {
 			//transorming 3D position into 2D
 			auto unitUiPosition = camera->Project(position, framebuffer);

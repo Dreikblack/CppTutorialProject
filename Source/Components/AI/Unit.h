@@ -8,6 +8,8 @@ using namespace UltraEngine;
 //partly based of Enemy/Monster/Player default classes
 class Unit : public BaseComponent {
 protected:
+	//so it could be added for entity with FPS Player component
+	bool isFullPlayerControl = false;
 	int health = 100;
 	int maxHealth = 100;
 	//used for AI navigation, weak_ptr just to make sure that component will not keep it if stays after map unload somehow
@@ -57,6 +59,14 @@ protected:
 	shared_ptr<Sprite> healthBar;
 	shared_ptr<Sprite> healthBarBackground;
 	bool isSelected = false;
+	//to keep camera pointer for unit health bars
+	std::weak_ptr<Camera> cameraWeak;
+	//to be able to remove entity inside of component later
+	std::weak_ptr<Scene> sceneWeak;
+	//time in ms before delete model after a death, 0 of disabled
+	int decayTime = 10000;
+	shared_ptr<Timer> removeEntityTimer;
+	static bool RemoveEntityCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra);
 	virtual void scanForTarget();
 	bool goTo();
 	//pick filter
@@ -73,8 +83,8 @@ public:
 	Unit();
 	shared_ptr<Component> Copy() override;
 	void Start() override;
-	bool Load(table& t, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const LoadFlags flags, shared_ptr<Object> extra) override;
-	bool Save(table& t, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const SaveFlags flags, shared_ptr<Object> extra) override;
+	bool Load(table& t, shared_ptr<Stream> binstream, shared_ptr<Scene> scene, const LoadFlags flags, shared_ptr<Object> extra) override;
+	bool Save(table& t, shared_ptr<Stream> binstream, shared_ptr<Scene> scene, const SaveFlags flags, shared_ptr<Object> extra) override;
 	//deal a damage to this unit by attacker
 	void Damage(const int amount, shared_ptr<Entity> attacker) override;
 	//kill this unit by attacker

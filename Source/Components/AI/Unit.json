@@ -2,8 +2,13 @@
   "component": {
     "properties": [
       {
+        "name": "isFullPlayerControl",
+        "label": "Full Player Control",
+        "value": false
+      },
+      {
         "name": "isPlayer",
-        "label": "Is Player",
+        "label": "Is Player Unit",
         "value": false
       },
       {
@@ -65,6 +70,11 @@
         "name": "targetPoint",
         "label": "Target Point",
         "value": null
+      },
+      {
+        "name": "decayTime",
+        "label": "Decay Time",
+        "value": 10000
       },
       {
         "name": "attackName",
