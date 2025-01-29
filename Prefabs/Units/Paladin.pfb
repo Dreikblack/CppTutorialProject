@@ -1,0 +1,95 @@
+{
+	"scene": {
+		"entities": [
+			{
+				"castshadows": true,
+				"collisiontype": 1,
+				"components": {
+					"Unit": {
+						"attackDamage": 30,
+						"attackFrame": 40,
+						"attackName": "Attack",
+						"attackRange": 2,
+						"deathName": "Death",
+						"decayTime": 10000,
+						"enabled": true,
+						"health": 100,
+						"idleName": "Idle",
+						"isFullPlayerControl": false,
+						"isPlayer": true,
+						"maxHealth": 100,
+						"painCooldown": 1000,
+						"painName": "Pain",
+						"runName": "Run",
+						"speed": 3,
+						"team": 1
+					}
+				},
+				"damping": [
+					0.10000000149011612,
+					0.10000000149011612
+				],
+				"decallayers": 1,
+				"elasticity": 0.4000000059604645,
+				"friction": [
+					0.5,
+					0.8999999761581421
+				],
+				"gravity": true,
+				"group": [
+					"Models"
+				],
+				"matrix": [
+					"0x3f800000",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000",
+					"0x0",
+					"0xbdcccccd",
+					"0x0",
+					"0x3e99999a",
+					"0x3f800000"
+				],
+				"model": {
+					"islimb": false,
+					"path": "Models/Characters/Paladin/Paladin.mdl"
+				},
+				"name": "Paladin",
+				"navobstacle": true,
+				"physicsmode": 1,
+				"pickmode": 1,
+				"position": [
+					"0xbdcccccd",
+					"0x0",
+					"0x3e99999a"
+				],
+				"quaternion": [
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000"
+				],
+				"reflection": true,
+				"renderlayers": 1,
+				"rotation": [
+					"0x0",
+					"0x0",
+					"0x0"
+				],
+				"scale": [
+					"0x3f800000",
+					"0x3f800000",
+					"0x3f800000"
+				],
+				"uuid": "9851b723-484e-4572-b5e7-55f0fa38656f"
+			}
+		]
+	}
+}

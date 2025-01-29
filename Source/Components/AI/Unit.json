@@ -2,6 +2,11 @@
   "component": {
     "properties": [
       {
+        "name": "enabled",
+        "label": "Enabled",
+        "value": true
+      },
+      {
         "name": "isFullPlayerControl",
         "label": "Full Player Control",
         "value": false
@@ -54,12 +59,12 @@
       {
         "name": "painCooldown",
         "label": "Pain Cooldown",
-        "value": 300
+        "value": 1000
       },
       {
-        "name": "enabled",
-        "label": "Enabled",
-        "value": true
+        "name": "decayTime",
+        "label": "Decay Time",
+        "value": 10000
       },
       {
         "name": "target",
@@ -70,11 +75,6 @@
         "name": "targetPoint",
         "label": "Target Point",
         "value": null
-      },
-      {
-        "name": "decayTime",
-        "label": "Decay Time",
-        "value": 10000
       },
       {
         "name": "attackName",

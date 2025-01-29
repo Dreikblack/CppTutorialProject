@@ -1,0 +1,191 @@
+{
+	"scene": {
+		"base": "Prefabs/Units/Warrok.pfb",
+		"entities": [
+			{
+				"castshadows": true,
+				"collisiontype": 1,
+				"components": {
+					"Unit": {
+						"attackDamage": 30,
+						"attackFrame": 5,
+						"attackName": "Attack",
+						"attackRange": 2,
+						"deathName": "Death",
+						"decayTime": 10000,
+						"enabled": true,
+						"health": 100,
+						"idleName": "Idle",
+						"isFullPlayerControl": false,
+						"isPlayer": false,
+						"maxHealth": 100,
+						"painCooldown": 300,
+						"painName": "Pain",
+						"runName": "Run",
+						"speed": 3,
+						"team": 2
+					}
+				},
+				"damping": [
+					0.10000000149011612,
+					0.10000000149011612
+				],
+				"decallayers": 1,
+				"elasticity": 0.4000000059604645,
+				"extras": {},
+				"friction": [
+					0.5,
+					0.8999999761581421
+				],
+				"gravity": true,
+				"matrix": [
+					"0x3f59999a",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f59999a",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f59999a",
+					"0x0",
+					"0x3dcccccd",
+					"0x0",
+					"0x40333333",
+					"0x3f800000"
+				],
+				"model": {
+					"islimb": false,
+					"path": "Models/Characters/Warrok/Warrok.mdl"
+				},
+				"name": "Warrok",
+				"navobstacle": true,
+				"physicsmode": 1,
+				"pickmode": 1,
+				"position": [
+					"0x3dcccccd",
+					"0x0",
+					"0x40333333"
+				],
+				"quaternion": [
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000"
+				],
+				"reflection": true,
+				"renderlayers": 1,
+				"rotation": [
+					"0x0",
+					"0x0",
+					"0x0"
+				],
+				"scale": [
+					"0x3f59999a",
+					"0x3f59999a",
+					"0x3f59999a"
+				],
+				"uuid": "9fa68ff3-92d4-488f-9109-85dd00c20ca1"
+			}
+		],
+		"environment": {
+			"ambientlight": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"fog": false,
+			"fogangle": [
+				0.0,
+				15.0
+			],
+			"fogcolor": [
+				1.0,
+				1.0,
+				1.0,
+				1.0
+			],
+			"fogrange": [
+				0.0,
+				1000.0
+			],
+			"gitransmission": 2.0,
+			"iblintensity": 1.0,
+			"sunangle": [
+				0.0,
+				0.0
+			],
+			"suncolor": [
+				0.0,
+				0.0,
+				0.0
+			]
+		},
+		"extras": {
+			"viewports": [
+				{
+					"cameraposition": [
+						0,
+						2.86788,
+						-4.09576
+					],
+					"camerarotation": [
+						35,
+						0,
+						0
+					],
+					"gridsize": 0,
+					"view": 0,
+					"zoom": 1.42815
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						90,
+						0,
+						0
+					],
+					"gridsize": 0,
+					"view": 3,
+					"zoom": 125
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						0,
+						0,
+						0
+					],
+					"gridsize": 0,
+					"view": 5,
+					"zoom": 125
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						0,
+						90,
+						0
+					],
+					"gridsize": 0,
+					"view": 1,
+					"zoom": 125
+				}
+			]
+		}
+	}
+}
