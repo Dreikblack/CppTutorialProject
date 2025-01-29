@@ -92,7 +92,7 @@ void main()
 
     float minorlines = gridAASimple(vertexWorldPosition.xz / gridsize, gridThickness) * 0.1251875f;
 
-    float majorlines = gridAASimple(vertexWorldPosition.xz / color.g / gridsize, gridThickness / color.g) * 0.25f;
+    float majorlines = gridAASimple(vertexWorldPosition.xz / float(MajorGridLines) / gridsize, gridThickness / color.g) * 0.25f;
 
     //float origin = min(1.0f, gridAAOrigin(vertexWorldPosition.xz, gridThickness) * 2.0f);
 
