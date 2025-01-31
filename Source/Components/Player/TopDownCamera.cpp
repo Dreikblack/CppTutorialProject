@@ -59,23 +59,26 @@ bool TopDownCamera::init() {
 		gameCamera->Listen();//for positional sound 
 		gameCamera->As<Camera>()->SetSweptCollision(true);//for removing pop up effect after quick move/turn
 		gameCamera->SetRotation(CAMERA_PITCH, gameCamera->GetRotation(true).y, gameCamera->GetRotation(true).z);
-		auto targetPosition = getCirleCenter(gameCamera->GetPosition(true), gameCamera->GetRotation(true));
-		targetPosition.y = 0;
 		auto targetPivotShared = CreatePivot(gameCamera->GetWorld());
-		targetPivotShared->SetPickMode(PICK_NONE);
-		targetPivotShared->SetPosition(targetPosition);
-		targetPivotShared->SetRotation(0, gameCamera->GetRotation(true).y, gameCamera->GetRotation(true).z);
-		gameCamera->SetParent(targetPivotShared); 
+		targetPivotShared->SetPickMode(PICK_NONE);	
 		sceneWeak.lock()->AddEntity(targetPivotShared);
 		targetPivot = targetPivotShared;
 	}
+	//setting position and rotation here in case of game load
+	gameCamera->SetParent(nullptr);
+	auto targetPivotShared = targetPivot.lock();
+	auto targetPosition = getCirleCenter(gameCamera->GetPosition(true), gameCamera->GetRotation(true));
+	targetPosition.y = 0;
+	targetPivotShared->SetPosition(targetPosition);
+	targetPivotShared->SetRotation(0, gameCamera->GetRotation(true).y, gameCamera->GetRotation(true).z);
+	gameCamera->SetParent(targetPivotShared);
 	return true;
 }
 
 void TopDownCamera::Update() {
 	auto entity = GetEntity();
 	auto window = ActiveWindow();
-	if (window == nullptr || entity == nullptr) {
+	if (window == nullptr || entity == nullptr || !entity->GetWorld()) {
 		return;
 	}
 	float speed = moveSpeed / 60.0f;
@@ -137,7 +140,8 @@ void TopDownCamera::zoom(int scrollData) {
 	float zoomDelta = float(scrollData) * scrollSpeed;
 	auto window = ActiveWindow();
 	auto entity = GetEntity();
-	if (!window || !entity) return;
+	auto world = entity->GetWorld();
+	if (!window || !entity || !world) return;
 	auto cameraPosition = entity->GetPosition(true);
 	float newCameraHeight = cameraPosition.y + zoomDelta;
 	if (cameraPosition.y > maxHeight) {
@@ -148,7 +152,7 @@ void TopDownCamera::zoom(int scrollData) {
 	auto cameraTargetBottomPick = cameraPosition;
 	cameraTargetBottomPick.y = minHeight;
 	cameraPosition.y = maxHeight;
-	auto cameraPick = entity->GetWorld()->Pick(cameraPosition, cameraTargetBottomPick, 0, true);
+	auto cameraPick = world->Pick(cameraPosition, cameraTargetBottomPick, 0, true);
 	if (cameraPick.success && newCameraHeight < cameraPick.position.y + 2) {
 		newCameraHeight = cameraPick.position.y + 2;
 	}

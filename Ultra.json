@@ -1,6 +1,7 @@
 {
 	"project":
 	{
+		"brushtexelspermeter": 400,
 		"configurations":
 		[
 			{
@@ -24,10 +25,17 @@
 				"name": "Debug"
 			}
 		],
+		"debugcommandline": "-devmode +map \"$MAPFILE\"",
+		"debugexecutable": "CppTutorialProject_d.exe",
 		"engineversion": "0.9.9",
+		"filetypeblacklist": "bin, meta, collider",
+		"gridbasesize": 0.16,
 		"language": "C++",
+		"majorgridlines": 8,
 		"name": "CppTutorialProject",
 		"password": "6>JO<)8j_9ETcOdQCqM)amTVe1vReo4RSfqMc{os:.TAot>Hnc@!7E|vK?;tW3_0",
+		"runcommandline": "-devmode +map \"$MAPFILE\"",
+		"runexecutable": "CppTutorialProject.exe",
 		"template": "Common",
 		"uuid": "98818402-e2f2-4232-a951-6000de2b1821"
 	}

@@ -48,6 +48,28 @@ bool MainMenuEventCallback(const Event& e, shared_ptr<Object> extra) {
 	return true;
 }
 
+void LoadGame(WString savePath) {
+	table saveTable = LoadTable(savePath);
+	if (saveTable == nullptr) {
+		return;
+	}
+	menu.reset();
+	loadingWorld->Render(framebuffer);
+	if (currentWorld) currentWorld.reset();
+	if (currentUi) currentUi.reset();
+	//old game will be overrided once new one loaded to avoid loading same assets which would be unloaded once scene destroyed along with old game
+	game = Game::create(framebuffer, saveTable);
+	currentWorld = game->world;
+	currentUi = game->ui;
+}
+
+bool QuickLoadGameCallback(const Event& event, shared_ptr<Object> extra) {
+	if (KEY_F9 == event.data) {
+		LoadGame("QuickSave.save");
+	}
+	return true;
+}
+
 int main(int argc, const char* argv[]) {
 	//Need it to make component from map's entites start working
 	RegisterComponents();
@@ -81,7 +103,7 @@ int main(int argc, const char* argv[]) {
 	//ListenEvent are needed to do something in callback function when specific even from specfic source (or not, if 2nd param is nullptr) emitted
 	ListenEvent(EVENT_GAME_START, nullptr, StartGameEventCallback);
 	ListenEvent(EVENT_MAIN_MENU, nullptr, MainMenuEventCallback);
-	
+	ListenEvent(EVENT_KEYUP, nullptr, QuickLoadGameCallback);
 	auto cl = ParseCommandLine(argc, argv);
 	WString mapName = "";
 	if (cl["map"].is_string()) {

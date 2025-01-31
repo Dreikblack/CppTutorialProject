@@ -12,10 +12,16 @@ protected:
 	shared_ptr<Widget> menuPanel;
 	Game();
 	void init(shared_ptr<Framebuffer> framebuffer, WString mapPath);
+	void loadGame(table saveTable);
+	void loadEntity(shared_ptr<Entity> entity, table entityTable);
+	void saveGame(WString saveName);
+	static bool QuickSaveGameCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra);
 public:
 	//to show/hide game menu on Esc
 	static bool GameMenuButtonCallback(const Event& ev, shared_ptr<Object> extra);
 	static std::shared_ptr<Game> create(shared_ptr<Framebuffer> framebuffer, WString mapPath);
+	//for loading
+	static std::shared_ptr<Game> create(shared_ptr<Framebuffer> framebuffer, table saveTable);
 	shared_ptr<Interface> ui;
 	shared_ptr<World> world;
 };

@@ -11,6 +11,15 @@ std::shared_ptr<Game> Game::create(shared_ptr<Framebuffer> framebuffer, WString 
 	return instance;
 }
 
+std::shared_ptr<Game> Game::create(shared_ptr<Framebuffer> framebuffer, table saveTable) {
+	struct Struct : public Game {};
+	auto instance = std::make_shared<Struct>();
+	std::string mapName = saveTable["MapPath"];
+	instance->init(framebuffer, WString(mapName));
+	instance->loadGame(saveTable);
+	return instance;
+}
+
 bool Game::GameMenuButtonCallback(const Event& ev, shared_ptr<Object> extra) {
 	if (KEY_ESCAPE == ev.data && extra) {
 		auto game = extra->As<Game>();
@@ -76,4 +85,98 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	//and we will need it once hitting Esc button
 	ListenEvent(EVENT_KEYUP, nullptr, GameMenuButtonCallback, Self());
 	//take in mind that extra param will be kept as shared_ptr in callback ^
+	ListenEvent(EVENT_KEYUP, nullptr, QuickSaveGameCallback, Self());
+}
+
+void Game::loadGame(table saveTable) {
+	std::set<String> newEntities;
+	//iterating std::map by key (uuid) and value (entityTable) instead of pair
+	for (auto& [uuid, entityTable] : saveTable["SavedEntities"]) {
+		auto entity = scene->GetEntity(uuid);
+		//load properties for saved entity that was initially on map
+		if (entity) {
+			loadEntity(entity, entityTable);
+		} else if (entityTable["prefabPath"].is_string()) {
+			//spawn saved entity that was not initially on map
+			auto spawnedEntity = LoadPrefab(world, String(entityTable["prefabPath"]));
+			if (!spawnedEntity) {
+				continue;
+			}
+			scene->AddEntity(spawnedEntity);
+			loadEntity(spawnedEntity, entityTable);
+			newEntities.insert(spawnedEntity->GetUuid());
+		}
+	}
+	//delete not saved entities
+	for (auto const& entity : world->GetTaggedEntities("Save")) {
+		//does newEntities containes curent entity
+		if (newEntities.find(entity->GetUuid()) != newEntities.end()) {
+			//skip new entity
+			continue;
+		}
+		//if supposed to be saved and was not due being removed when save was made then remove it from scene
+		table entityTable = saveTable["SavedEntities"][entity->GetUuid()];
+		if (entityTable.empty()) {
+			scene->RemoveEntity(entity);
+		}
+	}
+}
+
+void Game::loadEntity(shared_ptr<Entity> entity, table entityTable) {
+	if (entityTable["position"].is_array() && entityTable["position"].size() == 3) {
+		entity->SetPosition(entityTable["position"][0], entityTable["position"][1], entityTable["position"][2], true);
+	}
+	if (entityTable["rotation"].is_array() && entityTable["rotation"].size() == 3) {
+		entity->SetRotation(entityTable["rotation"][0], entityTable["rotation"][1], entityTable["rotation"][2], true);
+	}
+	for (auto const& component : entity->components) {
+		component->Load(entityTable, nullptr, scene, LOAD_DEFAULT, nullptr);
+	}
+	for (auto const& component : entity->components) {
+		component->Start();
+	}
+}
+
+
+void Game::saveGame(WString saveName) {
+	table saveTable;
+	saveTable["MapPath"] = RelativePath(scene->path).ToUtf8String();
+	saveTable["SavedEntities"] = {};
+	for (auto const& entity : world->GetTaggedEntities("Save")) {
+		table entityTable;
+		for (auto const& component : entity->components) {
+			component->Save(entityTable, nullptr, scene, SAVE_DEFAULT, nullptr);
+		}
+		//just to make save file more readable
+		if (!entity->name.empty()) {
+			entityTable["name"] = entity->name.ToUtf8String();
+		}
+		//saving position and rotation of entity to restore them in Load
+		auto position = entity->GetPosition(true);
+		entityTable["position"] = {};
+		entityTable["position"][0] = position.x;
+		entityTable["position"][1] = position.y;
+		entityTable["position"][2] = position.z;
+		auto rotation = entity->GetRotation(true);
+		entityTable["rotation"] = {};
+		entityTable["rotation"][0] = rotation.x;
+		entityTable["rotation"][1] = rotation.y;
+		entityTable["rotation"][2] = rotation.z;
+		//save prefab path to be able restore entity if it was added to scene later as prefab
+		auto prefab = entity->GetPrefab();
+		if (prefab) {
+			entityTable["prefabPath"] = RelativePath(prefab->GetPath()).ToUtf8String();
+		}
+		//using entity id as key for its properties
+		saveTable["SavedEntities"][entity->GetUuid()] = entityTable;
+	}
+	SaveTable(saveTable, saveName);
+}
+
+bool Game::QuickSaveGameCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra) {
+	if (KEY_F5 == ev.data && extra) {
+		auto game = extra->As<Game>();
+		game->saveGame("QuickSave.save");
+	}
+	return true;
 }

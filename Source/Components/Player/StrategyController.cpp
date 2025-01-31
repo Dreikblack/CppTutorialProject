@@ -15,6 +15,8 @@ StrategyController::~StrategyController() = default;
 void StrategyController::Start() {
 	auto entity = GetEntity();
 	entity->AddTag("StrategyController");
+	//for custom save/load system
+	entity->AddTag("Save");
 	//Listen() needed for calling ProcessEvent() in component when event happen
 	Listen(EVENT_MOUSEDOWN, nullptr);
 	Listen(EVENT_MOUSEUP, nullptr);

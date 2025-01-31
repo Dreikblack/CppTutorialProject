@@ -21,8 +21,9 @@ shared_ptr<Component> Unit::Copy() {
 void Unit::Start() {
 	auto entity = GetEntity();
 	auto model = entity->As<Model>();
-	//for custom save/load system
 	entity->AddTag("Unit");
+	//for custom save/load system
+	entity->AddTag("Save");
 	if (!isFullPlayerControl) {
 		//checking efficiently if Unit have a nav mesh
 		if (!navMesh.expired()) {
@@ -57,6 +58,11 @@ void Unit::Start() {
 			//to disable pain state at end of pain animation
 			model->skeleton->AddHook(seq, count - 1, EndPainHook, Self());
 		}
+		if (health <= 0) {
+			seq = model->FindAnimation(deathName);
+			int count = model->CountAnimationFrames(seq);
+			model->Animate(deathName, 1.0f, 250, ANIMATION_ONCE, count - 1);
+		}
 	}
 	if (!isFullPlayerControl) {
 		int healthBarHeight = 5;
@@ -68,6 +74,7 @@ void Unit::Start() {
 		}
 		healthBar->SetPosition(0, 0, 0.00001f);
 		healthBar->SetRenderLayers(2);
+		healthBar->SetScale((float)health / (float)maxHealth, 1, 1);
 		healthBarBackground = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
 		healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
 		//to put it behind health bar
@@ -223,6 +230,8 @@ void Unit::Kill(shared_ptr<Entity> attacker) {
 	if (decayTime > 0) {
 		removeEntityTimer = UltraEngine::CreateTimer(decayTime);
 		ListenEvent(EVENT_TIMERTICK, removeEntityTimer, RemoveEntityCallback, Self());
+		//not saving if supposed to be deleted anyway
+		entity->RemoveTag("Save");
 	}
 }
 
