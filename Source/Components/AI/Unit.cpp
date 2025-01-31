@@ -41,8 +41,6 @@ void Unit::Start() {
 		entity->SetMass(0);
 		entity->SetPhysicsMode(PHYSICS_RIGIDBODY);
 	}
-	
-
 	if (model) {
 		auto seq = model->FindAnimation(attackName);
 		if (seq != -1) {
@@ -130,12 +128,6 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scen
 		targetPoint = nullptr;
 	}
 	if (properties["isForcedMovement"].is_boolean()) isForcedMovement = properties["isForcedMovement"];
-	if (properties["position"].is_array() && properties["position"].size() == 3) {
-		GetEntity()->SetPosition(properties["position"][0], properties["position"][1], properties["position"][2]);
-	}
-	if (properties["rotation"].is_array() && properties["rotation"].size() == 3) {
-		GetEntity()->SetRotation(properties["rotation"][0], properties["rotation"][1], properties["rotation"][2]);
-	}
     navMesh.reset();
 	if (!scene->navmeshes.empty()) {
         navMesh = scene->navmeshes[0];
@@ -156,16 +148,6 @@ bool Unit::Save(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scen
 		properties["targetPoint"] = targetPoint->GetUuid();
 	}
 	properties["isForcedMovement"] = isForcedMovement;
-	auto position = GetEntity()->GetPosition(true);
-	properties["position"] = {};
-	properties["position"][0] = position.x;
-	properties["position"][1] = position.y;
-	properties["position"][2] = position.z;
-	auto rotation = GetEntity()->GetRotation(true);
-	properties["rotation"] = {};
-	properties["rotation"][0] = rotation.x;
-	properties["rotation"][1] = rotation.y;
-	properties["rotation"][2] = rotation.z;
 	return BaseComponent::Save(properties, binstream, scene, flags, extra);
 }
 
@@ -238,7 +220,6 @@ void Unit::Kill(shared_ptr<Entity> attacker) {
 bool Unit::isAlive() {
 	return health > 0 && GetEntity();
 }
-
 
 bool Unit::RemoveEntityCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra) {
 	auto unit = extra->As<Unit>();

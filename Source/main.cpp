@@ -54,10 +54,11 @@ void LoadGame(WString savePath) {
 		return;
 	}
 	menu.reset();
+	//to avoid random error in World::Update()
+	game.reset();
 	loadingWorld->Render(framebuffer);
 	if (currentWorld) currentWorld.reset();
 	if (currentUi) currentUi.reset();
-	//old game will be overrided once new one loaded to avoid loading same assets which would be unloaded once scene destroyed along with old game
 	game = Game::create(framebuffer, saveTable);
 	currentWorld = game->world;
 	currentUi = game->ui;
@@ -75,7 +76,7 @@ int main(int argc, const char* argv[]) {
 	RegisterComponents();
 	//Computer screens
 	auto displays = GetDisplays();
-	window = CreateWindow("Ultra Engine Game", 0, 0, 1080, 720, displays[0], WINDOW_CENTER | WINDOW_TITLEBAR);
+	window = CreateWindow("Ultra Engine Game", 0, 0, 1920, 1080, displays[0], WINDOW_CENTER);
 	framebuffer = CreateFramebuffer(window);
 	//need a dedicated world to be able render and to stop renedering loading screen wheen needed
 	loadingWorld = CreateWorld();
