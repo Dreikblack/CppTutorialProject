@@ -88,7 +88,23 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	ListenEvent(EVENT_KEYUP, nullptr, QuickSaveGameCallback, Self());
 }
 
+void Game::loadEntity(shared_ptr<Entity> entity, table entityTable) {
+	if (entityTable["position"].is_array() && entityTable["position"].size() == 3) {
+		entity->SetPosition(entityTable["position"][0], entityTable["position"][1], entityTable["position"][2], true);
+	}
+	if (entityTable["rotation"].is_array() && entityTable["rotation"].size() == 3) {
+		entity->SetRotation(entityTable["rotation"][0], entityTable["rotation"][1], entityTable["rotation"][2], true);
+	}
+	if (entityTable["tags"].is_array()) {
+		for (int i = 0; i < entityTable["tags"].size(); i++) {
+			entity->AddTag(std::string(entityTable["tags"][i]));
+		}
+	}
+}
+
 void Game::loadGame(table saveTable) {
+	//old-new entity id
+	vector<std::pair<String, String>> uuids;
 	std::set<String> newEntities;
 	//iterating std::map by key (uuid) and value (entityTable) instead of pair
 	for (auto& [uuid, entityTable] : saveTable["SavedEntities"]) {
@@ -104,6 +120,7 @@ void Game::loadGame(table saveTable) {
 			}
 			scene->AddEntity(spawnedEntity);
 			loadEntity(spawnedEntity, entityTable);
+			uuids.push_back(std::pair(uuid, spawnedEntity->GetUuid()));
 			newEntities.insert(spawnedEntity->GetUuid());
 		}
 	}
@@ -120,23 +137,23 @@ void Game::loadGame(table saveTable) {
 			scene->RemoveEntity(entity);
 		}
 	}
+	auto saveString = String(saveTable.to_json());
+	for (auto const& [oldUuid, newUuid] : uuids) {
+		saveString = saveString.Replace(oldUuid, newUuid);
+	}
+	saveTable = ParseJson(saveString);
+	for (auto const& entity : world->GetTaggedEntities("Save")) {
+		auto& entityTable = saveTable["SavedEntities"][entity->GetUuid()];
+		for (auto const& component : entity->components) {
+			component->Load(entityTable, nullptr, scene, LOAD_DEFAULT, nullptr);
+		}
+	}
+	for (auto const& entity : world->GetTaggedEntities("Save")) {
+		for (auto const& component : entity->components) {
+			component->Start();
+		}	
+	}
 }
-
-void Game::loadEntity(shared_ptr<Entity> entity, table entityTable) {
-	if (entityTable["position"].is_array() && entityTable["position"].size() == 3) {
-		entity->SetPosition(entityTable["position"][0], entityTable["position"][1], entityTable["position"][2], true);
-	}
-	if (entityTable["rotation"].is_array() && entityTable["rotation"].size() == 3) {
-		entity->SetRotation(entityTable["rotation"][0], entityTable["rotation"][1], entityTable["rotation"][2], true);
-	}
-	for (auto const& component : entity->components) {
-		component->Load(entityTable, nullptr, scene, LOAD_DEFAULT, nullptr);
-	}
-	for (auto const& component : entity->components) {
-		component->Start();
-	}
-}
-
 
 void Game::saveGame(WString saveName) {
 	table saveTable;
@@ -162,6 +179,12 @@ void Game::saveGame(WString saveName) {
 		entityTable["rotation"][0] = rotation.x;
 		entityTable["rotation"][1] = rotation.y;
 		entityTable["rotation"][2] = rotation.z;
+		entityTable["tags"] = {};
+		int tagIndex = 0;
+		for (auto& tag : entity->tags) {
+			entityTable["tags"][tagIndex] = tag.ToUtf8String();
+			tagIndex++;
+		}
 		//save prefab path to be able restore entity if it was added to scene later as prefab
 		auto prefab = entity->GetPrefab();
 		if (prefab) {

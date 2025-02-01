@@ -442,7 +442,8 @@ void Unit::goTo(Vec3 positionToGo, bool isForced) {
 	auto entity = GetEntity();
 	if (entity) {
 		isForcedMovement = isForced;
-		targetPoint = CreatePivot(entity->GetWorld());
+		auto prefabPivot = LoadPrefab(entity->GetWorld(), "Prefabs/WayPoint.pfb");
+		targetPoint = prefabPivot ? prefabPivot : CreatePivot(entity->GetWorld());
 		targetPoint->SetPosition(positionToGo);
 		goTo();
 	}

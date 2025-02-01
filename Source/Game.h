@@ -12,8 +12,8 @@ protected:
 	shared_ptr<Widget> menuPanel;
 	Game();
 	void init(shared_ptr<Framebuffer> framebuffer, WString mapPath);
-	void loadGame(table saveTable);
 	void loadEntity(shared_ptr<Entity> entity, table entityTable);
+	void loadGame(table saveTable);
 	void saveGame(WString saveName);
 	static bool QuickSaveGameCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra);
 public:

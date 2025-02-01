@@ -57,7 +57,7 @@ bool TopDownCamera::init() {
 	
 	if (gameCamera && !targetPivot.lock()) {
 		gameCamera->Listen();//for positional sound 
-		gameCamera->As<Camera>()->SetSweptCollision(true);//for removing pop up effect after quick move/turn
+		gameCamera->SetSweptCollision(true);//for removing pop up effect after quick move/turn
 		gameCamera->SetRotation(CAMERA_PITCH, gameCamera->GetRotation(true).y, gameCamera->GetRotation(true).z);
 		auto targetPivotShared = CreatePivot(gameCamera->GetWorld());
 		targetPivotShared->SetPickMode(PICK_NONE);	
