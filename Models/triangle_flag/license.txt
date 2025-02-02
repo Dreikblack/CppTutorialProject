@@ -1,0 +1,11 @@
+Model Information:
+* title:	Triangle flag
+* source:	https://sketchfab.com/3d-models/triangle-flag-adadd59fd56d44f7b0354d1caba38f95
+* author:	cham1105 (https://sketchfab.com/sholjie1105)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Triangle flag" (https://sketchfab.com/3d-models/triangle-flag-adadd59fd56d44f7b0354d1caba38f95) by cham1105 (https://sketchfab.com/sholjie1105) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

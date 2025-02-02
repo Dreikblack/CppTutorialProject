@@ -93,6 +93,7 @@ public:
 	void Update() override;
 	bool isEnemy(int otherUnitTeam) const;
 	void goTo(Vec3 positionToGo, bool isForced = false);
+	void goTo(shared_ptr<Entity> targetPointEntity, bool isForced = false);
 	void attack(shared_ptr<Entity> entityToAttack, bool isForced = false);
 	void select(bool doSelect = true);
 };

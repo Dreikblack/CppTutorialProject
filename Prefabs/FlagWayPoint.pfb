@@ -1,0 +1,179 @@
+{
+	"scene": {
+		"entities": [
+			{
+				"castshadows": true,
+				"collisiontype": 0,
+				"components": {
+					"WayPoint": {
+						"doStayOnPoint": false
+					}
+				},
+				"damping": [
+					0.10000000149011612,
+					0.10000000149011612
+				],
+				"decallayers": 1,
+				"elasticity": 0.4000000059604645,
+				"extras": {},
+				"friction": [
+					0.5,
+					0.8999999761581421
+				],
+				"gravity": true,
+				"mass": 0.0,
+				"matrix": [
+					"0x3f800000",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000"
+				],
+				"model": {
+					"islimb": false,
+					"path": "Models/triangle_flag/triangle_flag.mdl"
+				},
+				"name": "triangle_flag",
+				"navobstacle": true,
+				"physicsmode": 0,
+				"pickmode": 0,
+				"position": [
+					"0x0",
+					"0x0",
+					"0x0"
+				],
+				"quaternion": [
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f7ffffe"
+				],
+				"reflection": true,
+				"renderlayers": 1,
+				"rotation": [
+					"0x80000000",
+					"0x80000000",
+					"0x80000000"
+				],
+				"scale": [
+					"0x3f800000",
+					"0x3f800000",
+					"0x3f800000"
+				],
+				"tags": [
+					"Save"
+				],
+				"uuid": "9628d9bd-93d0-4a10-b8fc-d59673abad6c",
+				"viewrange": 0.0
+			}
+		],
+		"environment": {
+			"ambientlight": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"fog": false,
+			"fogangle": [
+				0.0,
+				15.0
+			],
+			"fogcolor": [
+				1.0,
+				1.0,
+				1.0,
+				1.0
+			],
+			"fogrange": [
+				0.0,
+				1000.0
+			],
+			"gitransmission": 2.0,
+			"iblintensity": 1.0,
+			"sunangle": [
+				55.0,
+				35.0
+			],
+			"suncolor": [
+				1.0,
+				0.8999999761581421,
+				0.699999988079071
+			]
+		},
+		"extras": {
+			"viewports": [
+				{
+					"cameraposition": [
+						0.656114,
+						3.90101,
+						-2.05723
+					],
+					"camerarotation": [
+						58.7018,
+						-17.9823,
+						0
+					],
+					"gridsize": 0,
+					"view": 0,
+					"zoom": 1.42815
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						90,
+						0,
+						0
+					],
+					"gridsize": 0,
+					"view": 3,
+					"zoom": 125
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						0,
+						0,
+						0
+					],
+					"gridsize": 0,
+					"view": 5,
+					"zoom": 125
+				},
+				{
+					"cameraposition": [
+						0,
+						0,
+						0
+					],
+					"camerarotation": [
+						0,
+						90,
+						0
+					],
+					"gridsize": 0,
+					"view": 1,
+					"zoom": 125
+				}
+			]
+		}
+	}
+}

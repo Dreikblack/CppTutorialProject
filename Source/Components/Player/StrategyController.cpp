@@ -53,12 +53,30 @@ void StrategyController::Start() {
 bool StrategyController::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const LoadFlags flags, shared_ptr<Object> extra) {
 	Component::Load(properties, binstream, scene, flags, extra);
 	if (properties["playerTeam"].is_number()) playerTeam = properties["playerTeam"];
+	selectedUnits.clear();
+	if (properties["selectedUnits"].is_array()) {
+		for (int i = 0; i < properties["selectedUnits"].size(); i++) {
+			auto unit = scene->GetEntity(properties["selectedUnits"][i]);
+			if (unit) {
+				selectedUnits.push_back(unit);
+			}
+		}
+	}
 	return true;
 }
 
 bool StrategyController::Save(table& properties, shared_ptr<Stream> binstream, shared_ptr<Map> scene, const SaveFlags flags, shared_ptr<Object> extra) {
 	Component::Save(properties, binstream, scene, flags, extra);
 	properties["playerTeam"] = playerTeam;
+	properties["selectedUnits"] = {};
+	int index = 0;
+	for (auto const& selectedUnitWeak : selectedUnits) {
+		auto selectedUnit = selectedUnitWeak.lock();
+		if (selectedUnit) {
+			properties["selectedUnits"][index] = selectedUnit->GetUuid();
+			index++;
+		}
+	}
 	return true;
 }
 
@@ -94,11 +112,19 @@ bool StrategyController::ProcessEvent(const Event& e) {
 							entityUnit->GetComponent<Unit>()->attack(pick.entity, true);
 						}
 					}
-				} else {
+				} else if (!selectedUnits.empty()) {
+					auto flag = LoadPrefab(camera->GetWorld(), "Prefabs/FlagWayPoint.pfb");
+					if (flag) {
+						flag->SetPosition(pick.position);
+					}
 					for (auto const& entityWeak : selectedUnits) {
 						auto entityUnit = entityWeak.lock();
 						if (entityUnit && entityUnit->GetComponent<Unit>()) {
-							entityUnit->GetComponent<Unit>()->goTo(pick.position, true);
+							if (flag) {
+								entityUnit->GetComponent<Unit>()->goTo(flag, true);
+							} else {
+								entityUnit->GetComponent<Unit>()->goTo(pick.position, true);
+							}
 						}
 					}
 				}

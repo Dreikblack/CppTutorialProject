@@ -76,6 +76,9 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	//widgets are stays without extra shared pointers because parent widet, ui->root in this case, keep them
 	//to remove widget you should do widget->SetParent(nullptr)
 	menuPanel = CreatePanel(frameSize.width / 2 - 150, frameSize.height / 2 - 300 / 2, 300, 250, ui->root);
+	gameSavedLabel = CreateLabel("GAME SAVED", frameSize.width / 2 - 100, 50, 200, 30, ui->root);
+	gameSavedLabel->SetFontScale(2.0f);
+	gameSavedLabel->SetHidden(true);
 	auto menuButton = CreateButton("Main menu", 50, 50, 200, 50, menuPanel);
 	ListenEvent(EVENT_WIDGETACTION, menuButton, MainMenuButtonCallback);
 	auto exitButton = CreateButton("Exit", 50, 150, 200, 50, menuPanel);
@@ -106,6 +109,8 @@ void Game::loadGame(table saveTable) {
 	//old-new entity id
 	vector<std::pair<String, String>> uuids;
 	std::set<String> newEntities;
+	//entites that was not in scene will be deleted once Components will be loaded and gets needed entities
+	std::set<shared_ptr<Entity>> entitiesToRemoveFromScene;
 	//iterating std::map by key (uuid) and value (entityTable) instead of pair
 	for (auto& [uuid, entityTable] : saveTable["SavedEntities"]) {
 		auto entity = scene->GetEntity(uuid);
@@ -119,6 +124,9 @@ void Game::loadGame(table saveTable) {
 				continue;
 			}
 			scene->AddEntity(spawnedEntity);
+			if (entityTable["isInScene"].is_boolean() && !entityTable["isInScene"]) {
+				entitiesToRemoveFromScene.insert(spawnedEntity);
+			}
 			loadEntity(spawnedEntity, entityTable);
 			uuids.push_back(std::pair(uuid, spawnedEntity->GetUuid()));
 			newEntities.insert(spawnedEntity->GetUuid());
@@ -153,6 +161,9 @@ void Game::loadGame(table saveTable) {
 			component->Start();
 		}	
 	}
+	for (auto const& entity : entitiesToRemoveFromScene) {
+		scene->RemoveEntity(entity);
+	}
 }
 
 void Game::saveGame(WString saveName) {
@@ -180,6 +191,7 @@ void Game::saveGame(WString saveName) {
 		entityTable["rotation"][1] = rotation.y;
 		entityTable["rotation"][2] = rotation.z;
 		entityTable["tags"] = {};
+		entityTable["isInScene"] = scene->GetEntity(entity->GetUuid()) ? true : false;
 		int tagIndex = 0;
 		for (auto& tag : entity->tags) {
 			entityTable["tags"][tagIndex] = tag.ToUtf8String();
@@ -194,6 +206,9 @@ void Game::saveGame(WString saveName) {
 		saveTable["SavedEntities"][entity->GetUuid()] = entityTable;
 	}
 	SaveTable(saveTable, saveName);
+	gameSavedLabel->SetHidden(false);
+	gameSavedLabelTimer = UltraEngine::CreateTimer(2000);
+	ListenEvent(EVENT_TIMERTICK, gameSavedLabelTimer, HideGameSavedLabelCallback, Self());
 }
 
 bool Game::QuickSaveGameCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra) {
@@ -202,4 +217,14 @@ bool Game::QuickSaveGameCallback(const UltraEngine::Event& ev, shared_ptr<UltraE
 		game->saveGame("QuickSave.save");
 	}
 	return true;
+}
+
+bool Game::HideGameSavedLabelCallback(const UltraEngine::Event& ev, shared_ptr<UltraEngine::Object> extra) {
+	if (extra && extra->As<Game>()) {
+		auto game = extra->As<Game>();
+		game->gameSavedLabel->SetHidden(true);
+		game->gameSavedLabelTimer->Stop();
+		game->gameSavedLabelTimer = nullptr;
+	}
+	return false;
 }

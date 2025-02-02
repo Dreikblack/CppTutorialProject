@@ -101,6 +101,7 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scen
 	sceneWeak = scene;
 	if (properties["isFullPlayerControl"].is_boolean()) isFullPlayerControl = properties["isFullPlayerControl"];
 	if (properties["isPlayer"].is_boolean()) isPlayer = properties["isPlayer"];
+	if (properties["isSelected"].is_boolean()) isSelected = properties["isSelected"];
 	if (properties["team"].is_number()) team = properties["team"];
 	if (properties["health"].is_number()) health = properties["health"];
 	if (properties["maxHealth"].is_number()) maxHealth = properties["maxHealth"];
@@ -138,6 +139,7 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scen
 bool Unit::Save(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scene> scene, const SaveFlags flags, shared_ptr<Object> extra) {
 	properties["isFullPlayerControl"] = isFullPlayerControl;
 	properties["isPlayer"] = isPlayer;
+	properties["isSelected"] = isSelected;
 	properties["team"] = team;
 	properties["health"] = health;
 	properties["enabled"] = enabled;
@@ -449,6 +451,14 @@ void Unit::goTo(Vec3 positionToGo, bool isForced) {
 	}
 }
 
+void Unit::goTo(shared_ptr<Entity> targetPointEntity, bool isForced) {
+	if (targetPointEntity) {
+		isForcedMovement = isForced;
+		targetPoint = targetPointEntity;
+		goTo();
+	}
+}
+
 bool Unit::goTo() {
 	bool doMove = false;
 	auto entity = GetEntity();
@@ -458,7 +468,8 @@ bool Unit::goTo() {
 		if (doMove) {
 			//checking distance to target point on nav mesh
 			float distanceToTarget = entity->GetDistance(agent->GetDestination());
-			if (distanceToTarget < targetPointDistance) {
+			float resultMaxDistance = isForcedMovement ? targetPointDistance * 2 : targetPointDistance;
+			if (distanceToTarget < resultMaxDistance) {
 				auto wayPoint = targetPoint->GetComponent<WayPoint>();
 				if (wayPoint && wayPoint->getNextPoint()) {
 					targetPoint = wayPoint->getNextPoint();
