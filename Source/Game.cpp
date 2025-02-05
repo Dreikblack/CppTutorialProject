@@ -92,6 +92,7 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	prefabCache.push_back(LoadPrefab(world, "Prefabs/BloodPuddle.pfb"));
 	prefabCache.push_back(LoadPrefab(world, "Prefabs/BloodHit.pfb"));
 	prefabCache.push_back(LoadPrefab(world, "Prefabs/FlagWayPoint.pfb"));
+	prefabCache.push_back(LoadPrefab(world, "Prefabs/WayPoint.pfb"));
 	for (auto const& prefab : prefabCache) {
 		if (prefab) {
 			prefab->SetHidden(true);
