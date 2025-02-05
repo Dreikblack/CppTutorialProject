@@ -154,7 +154,7 @@ void main()
 
 #ifdef USER_HOOK
 
-    SurfaceInput surfinput;
+    /*SurfaceInput surfinput;
     surfinput.texcoords = texcoords;
     surfinput.color = color;
     surfinput.normal = normal;
@@ -168,16 +168,44 @@ void main()
     surfinfo.metallic = 0.0f;
     surfinfo.roughness = 1.0f;
     surfinfo.reflectance = vec3(0.0f);
-    surfinfo.emission = vec3(0.0f);
+    surfinfo.emission = vec3(0.0f);*/
 
-    UserHook(surfinput, surfinfo);
-    
-    materialInfo.metallic = surfinfo.metallic;
-	materialInfo.f0 = surfinfo.reflectance;
-    materialInfo.perceptualRoughness = surfinfo.roughness;
-    materialInfo.c_diff = surfinfo.basecolor.rgb;
-    baseColor = surfinfo.basecolor;
+    Surface surface;
+    surface.thickness = material.thickness;
+    surface.texcoords = texcoords;
+    surface.basecolor = color;
+    surface.normal = normal;
+    surface.tangent = tangent;
+    surface.bitangent = bitangent;
+    surface.metallic = 0.0f;
+    surface.roughness = 1.0f;
+    surface.reflectance = vec3(0.0f);
+    surface.emission = vec3(0.0);
+    surface.displacement = 0.0f;
+     
+    vec2 surfaceocclusion_normalscale = unpackHalf2x16(material.occlusion);
+    surface.occlusion = surfaceocclusion_normalscale.x;
+    surface.normalscale = surfaceocclusion_normalscale.y;
 
+    UserHook(surface, material);
+
+#ifdef ALPHA_DISCARD
+    if (surface.basecolor.a < material.alphacutoff) discard;
+#endif
+
+    materialInfo.baseColor = surface.basecolor.rgb;
+    materialInfo.metallic = clamp(surface.metallic, 0.0f, 1.0f);
+	materialInfo.f0 = surface.reflectance;
+    materialInfo.perceptualRoughness = clamp(surface.roughness, 0.04f, 1.0f);
+    materialInfo.c_diff = surface.basecolor.rgb;
+    baseColor = surface.basecolor;
+
+    materialInfo.c_diff = mix(materialInfo.baseColor.rgb,  vec3(0.0f), materialInfo.metallic);
+    materialInfo.f0 = mix(materialInfo.f0, materialInfo.baseColor.rgb, materialInfo.metallic);
+
+    materialInfo.alphaRoughness = materialInfo.perceptualRoughness * materialInfo.perceptualRoughness;
+    //float reflectance = max(max(materialInfo.f0.r, materialInfo.f0.g), materialInfo.f0.b);
+    materialInfo.f90 = vec3(1.0f);
 #endif
 
 //outColor[0].rgb = n * 0.5 + 0.5;
@@ -544,6 +572,8 @@ void main()
     //Editor grid
     if ((cameraflags & ENTITYFLAGS_SHOWGRID) != 0)
     {
+        vec3 eyedir = CameraPosition - vertexWorldPosition.xyz;
+        float d = length(eyedir);
         if ((entityflags & ENTITYFLAGS_SHOWGRID) != 0) outColor[0].rgb += WorldGrid(vertexWorldPosition.xyz, normal, d);
     }
     
