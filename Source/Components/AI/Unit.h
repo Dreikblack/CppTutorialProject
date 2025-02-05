@@ -55,6 +55,7 @@ protected:
 	WString painName;
 	WString deathName;
 	WString runName;
+	shared_ptr<Sound> painSound;
 	//health bar above unit
 	shared_ptr<Sprite> healthBar;
 	shared_ptr<Sprite> healthBarBackground;

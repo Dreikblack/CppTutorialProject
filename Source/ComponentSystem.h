@@ -31,6 +31,7 @@
 #include "Components/Player/TopDownCamera.h"
 #include "Components/AI/Unit.h"
 #include "Components/Player/StrategyController.h"
+#include "Components/Appearance/ParticleEffect.h"
 
 void RegisterComponents()
 {
@@ -65,6 +66,6 @@ void RegisterComponents()
     RegisterComponent<TopDownCamera>();
     RegisterComponent<Unit>();
     RegisterComponent<StrategyController>();
-   
+    RegisterComponent<ParticleEffect>();  
 }
 

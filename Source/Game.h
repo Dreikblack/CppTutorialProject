@@ -13,8 +13,10 @@ protected:
 	shared_ptr<Widget> gameSavedLabel;
 	//hide gameSavedLabel on timer
 	shared_ptr<Timer> gameSavedLabelTimer;
+	vector<shared_ptr<Entity>> prefabCache;
 	Game();
 	void init(shared_ptr<Framebuffer> framebuffer, WString mapPath);
+	//update basic entity properties - position, rotation, tags
 	void loadEntity(shared_ptr<Entity> entity, table entityTable);
 	void loadGame(table saveTable);
 	void saveGame(WString saveName);
@@ -24,7 +26,7 @@ public:
 	//to show/hide game menu on Esc
 	static bool GameMenuButtonCallback(const Event& ev, shared_ptr<Object> extra);
 	static std::shared_ptr<Game> create(shared_ptr<Framebuffer> framebuffer, WString mapPath);
-	//for loading
+	//for game loading
 	static std::shared_ptr<Game> create(shared_ptr<Framebuffer> framebuffer, table saveTable);
 	shared_ptr<Interface> ui;
 	shared_ptr<World> world;

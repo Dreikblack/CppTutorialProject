@@ -120,6 +120,7 @@
     <ClCompile Include="Source\Components\AI\Monster.cpp" />
     <ClCompile Include="Source\Components\Appearance\ChangeEmission.cpp" />
     <ClCompile Include="Source\Components\Appearance\ChangeVisibility.cpp" />
+    <ClCompile Include="Source\Components\Appearance\ParticleEffect.cpp" />
     <ClCompile Include="Source\Components\BaseComponent.cpp" />
     <ClCompile Include="Source\Components\Logic\Relay.cpp" />
     <ClCompile Include="Source\Components\Logic\WayPoint.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Source\Components\AI\Monster.h" />
     <ClInclude Include="Source\Components\Appearance\ChangeEmission.h" />
     <ClInclude Include="Source\Components\Appearance\ChangeVisibility.h" />
+    <ClInclude Include="Source\Components\Appearance\ParticleEffect.h" />
     <ClInclude Include="Source\Components\BaseComponent.h" />
     <ClInclude Include="Source\Components\Logic\Relay.h" />
     <ClInclude Include="Source\Components\Logic\WayPoint.h" />

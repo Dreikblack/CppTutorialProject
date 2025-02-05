@@ -116,6 +116,7 @@ bool Unit::Load(table& properties, shared_ptr<Stream> binstream, shared_ptr<Scen
 	if (properties["deathName"].is_string()) deathName = properties["deathName"];
 	if (properties["painName"].is_string()) painName = properties["painName"];
 	if (properties["runName"].is_string()) runName = properties["runName"];
+	if (properties["painSound"].is_string()) painSound = LoadSound(std::string(properties["painSound"]));
 	if (properties["target"].is_string()) {
 		std::string id = properties["target"];
 		targetWeak = scene->GetEntity(id);
@@ -162,6 +163,21 @@ void Unit::Damage(const int amount, shared_ptr<Entity> attacker) {
 	if (!world) {
 		return;
 	}
+	auto bloodHit = LoadPrefab(world, "Prefabs/BloodHit.pfb");
+	auto entity = GetEntity();
+	if (bloodHit) {
+		auto bloodHitPosition = entity->GetPosition(true);
+		//to lift it up to entity center
+		bloodHitPosition.y = bloodHitPosition.y + entity->GetBounds(BOUNDS_GLOBAL).size.height / 2;
+		bloodHit->SetPosition(bloodHitPosition, true);
+		//prefabs component are not started after its load so will do it manually
+		for (auto const& component : bloodHit->components) {
+			component->Start();
+		}
+	}
+	if (painSound) {
+		entity->EmitSound(painSound);
+	}
 	auto now = world->GetTime();
 	if (health <= 0) {
 		Kill(attacker);
@@ -191,6 +207,14 @@ void Unit::Kill(shared_ptr<Entity> attacker) {
 	auto entity = GetEntity();
 	if (!entity) {
 		return;
+	}
+	auto scene = sceneWeak.lock();
+	auto bloodPuddle = LoadPrefab(entity->GetWorld(), "Prefabs/BloodPuddle.pfb");
+	if (bloodPuddle && scene) {
+		auto bloodHitPosition = entity->GetPosition(true);
+		bloodPuddle->SetPosition(bloodHitPosition, true);
+		//to keep it
+		scene->AddEntity(bloodPuddle);
 	}
 	auto model = entity->As<Model>();
 	if (model) {

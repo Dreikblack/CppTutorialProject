@@ -77,6 +77,12 @@
         "value": null
       },
       {
+        "label": "Pain sound",
+        "name": "painSound",
+        "value": "",
+        "filecategory": "SOUND"
+      },
+      {
         "name": "attackName",
         "label": "Attack Name",
         "value": "Attack"

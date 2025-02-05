@@ -1,37 +1,22 @@
 {
 	"scene": {
-		"base": "Prefabs/Units/Paladin.pfb",
+		"base": "Prefabs/BloodHit.pfb",
 		"entities": [
 			{
-				"castshadows": true,
-				"collisiontype": 1,
+				"castshadows": false,
+				"collisiontype": 0,
 				"components": {
-					"Unit": {
-						"attackDamage": 30,
-						"attackFrame": 40,
-						"attackName": "Attack",
-						"attackRange": 2,
-						"deathName": "Death",
-						"decayTime": 10000,
-						"enabled": true,
-						"health": 100,
-						"idleName": "Idle",
-						"isFullPlayerControl": false,
-						"isPlayer": true,
-						"maxHealth": 100,
-						"painCooldown": 1000,
-						"painName": "Pain",
-						"painSound": "Sound/Units/Painsounds v2 - Track 5 - Urggh.ogg",
-						"runName": "Run",
-						"speed": 3,
-						"team": 1
+					"ParticleEffect": {
+						"duration": 700.0,
+						"isTemporary": true,
+						"reduceEffectWithTime": false
 					}
 				},
 				"damping": [
 					0.10000000149011612,
 					0.10000000149011612
 				],
-				"decallayers": 1,
+				"decallayers": 0,
 				"elasticity": 0.4000000059604645,
 				"extras": {},
 				"friction": [
@@ -53,23 +38,65 @@
 					"0x0",
 					"0x3f800000",
 					"0x0",
-					"0xbdcccccd",
 					"0x0",
-					"0x3e99999a",
+					"0x0",
+					"0x0",
 					"0x3f800000"
 				],
-				"model": {
-					"islimb": false,
-					"path": "Models/Characters/Paladin/Paladin.mdl"
+				"name": "BloodHit",
+				"navobstacle": false,
+				"particleemitter": {
+					"emissionarea": [
+						0.0,
+						0.0,
+						0.0
+					],
+					"emissionfrequency": 800,
+					"emissionquantity": 50,
+					"emissionshape": 0,
+					"material": "Materials/Particles/blood_splat.mat",
+					"particleacceleration": [
+						0.0,
+						0.0,
+						0.0
+					],
+					"particlecolor": [
+						[
+							1.0,
+							1.0,
+							1.0,
+							1.0
+						],
+						[
+							1.0,
+							1.0,
+							1.0,
+							0.0
+						]
+					],
+					"particlecount": 50,
+					"particleradius": [
+						1.0,
+						1.0
+					],
+					"particlerotationspeed": 0.0,
+					"particlesize": [
+						0.20000000298023224,
+						0.20000000298023224
+					],
+					"particleturbulence": 300.0,
+					"particlevelocity": [
+						0.0,
+						0.0,
+						0.0
+					]
 				},
-				"name": "Paladin",
-				"navobstacle": true,
-				"physicsmode": 1,
-				"pickmode": 1,
+				"physicsmode": 0,
+				"pickmode": 0,
 				"position": [
-					"0xbdcccccd",
 					"0x0",
-					"0x3e99999a"
+					"0x0",
+					"0x0"
 				],
 				"quaternion": [
 					"0x0",
@@ -89,7 +116,7 @@
 					"0x3f800000",
 					"0x3f800000"
 				],
-				"uuid": "9851b723-484e-4572-b5e7-55f0fa38656f",
+				"uuid": "fe558209-781f-440b-9183-31b56702999a",
 				"viewrange": 0.0
 			}
 		],
@@ -130,13 +157,13 @@
 			"viewports": [
 				{
 					"cameraposition": [
-						0.0,
-						2.86788,
-						-4.09576
+						-0.624014,
+						0.410588,
+						-1.60414
 					],
 					"camerarotation": [
-						35.0,
-						0.0,
+						5.14905,
+						9.90512,
 						0.0
 					],
 					"gridsize": 0,

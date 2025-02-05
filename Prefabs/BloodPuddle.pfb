@@ -1,0 +1,79 @@
+{
+	"scene": {
+		"entities": [
+			{
+				"castshadows": false,
+				"collisiontype": 0,
+				"damping": [
+					0.10000000149011612,
+					0.10000000149011612
+				],
+				"decal": {
+					"area": [
+						1.0,
+						1.0
+					],
+					"material": "Materials/Decals/BloodPuddle.mat"
+				},
+				"decallayers": 1,
+				"elasticity": 0.4000000059604645,
+				"friction": [
+					0.5,
+					0.8999999761581421
+				],
+				"gravity": true,
+				"group": [
+					"Entities"
+				],
+				"mass": 0.0,
+				"matrix": [
+					"0x4023d70c",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3e23d70a",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x4023d708",
+					"0x0",
+					"0xc0f5c28f",
+					"0x3da3d70a",
+					"0x41800000",
+					"0x3f800000"
+				],
+				"name": "BloodPuddle",
+				"navobstacle": false,
+				"physicsmode": 0,
+				"pickmode": 0,
+				"position": [
+					"0xc0f5c28f",
+					"0x3da3d70a",
+					"0x41800000"
+				],
+				"quaternion": [
+					"0x0",
+					"0x0",
+					"0x0",
+					"0x3f800000"
+				],
+				"reflection": true,
+				"renderlayers": 1,
+				"rotation": [
+					"0x0",
+					"0x0",
+					"0x0"
+				],
+				"scale": [
+					"0x4023d70c",
+					"0x3e23d70a",
+					"0x4023d708"
+				],
+				"uuid": "906f9b67-fcfa-4fba-9dfb-573b4bffd080",
+				"viewrange": 0.0
+			}
+		]
+	}
+}

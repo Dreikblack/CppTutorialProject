@@ -1,6 +1,5 @@
 {
 	"scene": {
-		"base": "Prefabs/WayPoint.pfb",
 		"entities": [
 			{
 				"castshadows": false,
@@ -37,8 +36,8 @@
 					"0x3f800000",
 					"0x0",
 					"0x0",
-					"0x3f8f5c29",
-					"0xbfcccccc",
+					"0x0",
+					"0x0",
 					"0x3f800000"
 				],
 				"name": "WayPoint",
@@ -47,8 +46,8 @@
 				"pickmode": 0,
 				"position": [
 					"0x0",
-					"0x3f8f5c29",
-					"0xbfcccccc"
+					"0x0",
+					"0x0"
 				],
 				"quaternion": [
 					"0x0",
@@ -99,26 +98,26 @@
 			"gitransmission": 2.0,
 			"iblintensity": 1.0,
 			"sunangle": [
-				0.0,
-				0.0
+				55.0,
+				35.0
 			],
 			"suncolor": [
-				0.0,
-				0.0,
-				0.0
+				1.0,
+				0.8999999761581421,
+				0.699999988079071
 			]
 		},
 		"extras": {
 			"viewports": [
 				{
 					"cameraposition": [
-						0,
-						2.86788,
-						-4.09576
+						0.568103,
+						0.321166,
+						-0.351448
 					],
 					"camerarotation": [
-						35,
-						0,
+						35.25,
+						-15.75,
 						0
 					],
 					"gridsize": 0,

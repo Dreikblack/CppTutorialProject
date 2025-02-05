@@ -21,6 +21,7 @@
 						"maxHealth": 100,
 						"painCooldown": 300,
 						"painName": "Pain",
+						"painSound": "Sound/Units/bear_02.ogg",
 						"runName": "Run",
 						"speed": 3,
 						"team": 2
@@ -38,6 +39,7 @@
 					0.8999999761581421
 				],
 				"gravity": true,
+				"mass": 0.0,
 				"matrix": [
 					"0x3f59999a",
 					"0x0",
@@ -87,7 +89,8 @@
 					"0x3f59999a",
 					"0x3f59999a"
 				],
-				"uuid": "9fa68ff3-92d4-488f-9109-85dd00c20ca1"
+				"uuid": "9fa68ff3-92d4-488f-9109-85dd00c20ca1",
+				"viewrange": 0.0
 			}
 		],
 		"environment": {
@@ -127,14 +130,14 @@
 			"viewports": [
 				{
 					"cameraposition": [
-						0,
+						0.0,
 						2.86788,
 						-4.09576
 					],
 					"camerarotation": [
-						35,
-						0,
-						0
+						35.0,
+						0.0,
+						0.0
 					],
 					"gridsize": 0,
 					"view": 0,
@@ -142,48 +145,48 @@
 				},
 				{
 					"cameraposition": [
-						0,
-						0,
-						0
+						0.0,
+						0.0,
+						0.0
 					],
 					"camerarotation": [
-						90,
-						0,
-						0
+						90.0,
+						0.0,
+						0.0
 					],
 					"gridsize": 0,
 					"view": 3,
-					"zoom": 125
+					"zoom": 125.0
 				},
 				{
 					"cameraposition": [
-						0,
-						0,
-						0
+						0.0,
+						0.0,
+						0.0
 					],
 					"camerarotation": [
-						0,
-						0,
-						0
+						0.0,
+						0.0,
+						0.0
 					],
 					"gridsize": 0,
 					"view": 5,
-					"zoom": 125
+					"zoom": 125.0
 				},
 				{
 					"cameraposition": [
-						0,
-						0,
-						0
+						0.0,
+						0.0,
+						0.0
 					],
 					"camerarotation": [
-						0,
-						90,
-						0
+						0.0,
+						90.0,
+						0.0
 					],
 					"gridsize": 0,
 					"view": 1,
-					"zoom": 125
+					"zoom": 125.0
 				}
 			]
 		}

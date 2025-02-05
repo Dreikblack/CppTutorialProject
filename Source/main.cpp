@@ -49,6 +49,7 @@ bool MainMenuEventCallback(const Event& e, shared_ptr<Object> extra) {
 }
 
 void LoadGame(WString savePath) {
+	Print("Start Game Loading");
 	table saveTable = LoadTable(savePath);
 	if (saveTable == nullptr) {
 		return;
@@ -62,6 +63,7 @@ void LoadGame(WString savePath) {
 	game = Game::create(framebuffer, saveTable);
 	currentWorld = game->world;
 	currentUi = game->ui;
+	Print("Game Loaded");
 }
 
 bool QuickLoadGameCallback(const Event& event, shared_ptr<Object> extra) {
@@ -76,7 +78,7 @@ int main(int argc, const char* argv[]) {
 	RegisterComponents();
 	//Computer screens
 	auto displays = GetDisplays();
-	window = CreateWindow("Ultra Engine Game", 0, 0, 1920, 1080, displays[0], WINDOW_CENTER);
+	window = CreateWindow("Ultra Engine Game", 0, 0, 1920, 1080, displays[0], WINDOW_CENTER | WINDOW_TITLEBAR);
 	framebuffer = CreateFramebuffer(window);
 	//need a dedicated world to be able render and to stop renedering loading screen wheen needed
 	loadingWorld = CreateWorld();

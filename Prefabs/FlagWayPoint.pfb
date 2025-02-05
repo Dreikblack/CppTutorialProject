@@ -44,7 +44,7 @@
 					"islimb": false,
 					"path": "Models/triangle_flag/triangle_flag.mdl"
 				},
-				"name": "triangle_flag",
+				"name": "FlagWayPoint",
 				"navobstacle": true,
 				"physicsmode": 0,
 				"pickmode": 0,
@@ -115,13 +115,13 @@
 			"viewports": [
 				{
 					"cameraposition": [
-						0.656114,
-						3.90101,
-						-2.05723
+						0.211707,
+						0.633482,
+						-0.711498
 					],
 					"camerarotation": [
-						58.7018,
-						-17.9823,
+						12.9497,
+						351.268,
 						0
 					],
 					"gridsize": 0,

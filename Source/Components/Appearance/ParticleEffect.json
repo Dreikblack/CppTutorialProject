@@ -1,0 +1,21 @@
+{
+  "component": {
+    "properties": [
+      {
+        "name": "isTemporary",
+        "label": "Temporary",
+        "value": true
+      },
+      {
+        "name": "reduceEffectWithTime",
+        "label": "Reducing effect",
+        "value": false
+      },
+      {
+        "name": "duration",
+        "label": "Duration",
+        "value": 500
+      }
+    ]
+  }
+}

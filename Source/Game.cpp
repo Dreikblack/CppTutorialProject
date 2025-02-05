@@ -35,7 +35,6 @@ bool Game::GameMenuButtonCallback(const Event& ev, shared_ptr<Object> extra) {
 			}
 			game->fpsPlayer->doResetMousePosition = !isHidden;
 		}
-		
 		//If the callback function returns false no more callbacks will be executed and no event will be added to the event queue.
 		//to avoid double call
 		return false;
@@ -89,6 +88,15 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	ListenEvent(EVENT_KEYUP, nullptr, GameMenuButtonCallback, Self());
 	//take in mind that extra param will be kept as shared_ptr in callback ^
 	ListenEvent(EVENT_KEYUP, nullptr, QuickSaveGameCallback, Self());
+	//caching
+	prefabCache.push_back(LoadPrefab(world, "Prefabs/BloodPuddle.pfb"));
+	prefabCache.push_back(LoadPrefab(world, "Prefabs/BloodHit.pfb"));
+	prefabCache.push_back(LoadPrefab(world, "Prefabs/FlagWayPoint.pfb"));
+	for (auto const& prefab : prefabCache) {
+		if (prefab) {
+			prefab->SetHidden(true);
+		}
+	}
 }
 
 void Game::loadEntity(shared_ptr<Entity> entity, table entityTable) {
@@ -117,6 +125,7 @@ void Game::loadGame(table saveTable) {
 		//load properties for saved entity that was initially on map
 		if (entity) {
 			loadEntity(entity, entityTable);
+		//or if it was not we can recreate prefab at least
 		} else if (entityTable["prefabPath"].is_string()) {
 			//spawn saved entity that was not initially on map
 			auto spawnedEntity = LoadPrefab(world, String(entityTable["prefabPath"]));
@@ -145,22 +154,28 @@ void Game::loadGame(table saveTable) {
 			scene->RemoveEntity(entity);
 		}
 	}
+	//saving table++ as a string
 	auto saveString = String(saveTable.to_json());
+	//replace entities ids so component would use new ones
 	for (auto const& [oldUuid, newUuid] : uuids) {
 		saveString = saveString.Replace(oldUuid, newUuid);
 	}
+	//converting back to table++ from string
 	saveTable = ParseJson(saveString);
+	//Load saved data to components
 	for (auto const& entity : world->GetTaggedEntities("Save")) {
 		auto& entityTable = saveTable["SavedEntities"][entity->GetUuid()];
 		for (auto const& component : entity->components) {
 			component->Load(entityTable, nullptr, scene, LOAD_DEFAULT, nullptr);
 		}
 	}
+	//starting components now when all data is there
 	for (auto const& entity : world->GetTaggedEntities("Save")) {
 		for (auto const& component : entity->components) {
 			component->Start();
 		}	
 	}
+	//removing from scene entites that scene had not
 	for (auto const& entity : entitiesToRemoveFromScene) {
 		scene->RemoveEntity(entity);
 	}
@@ -168,6 +183,7 @@ void Game::loadGame(table saveTable) {
 
 void Game::saveGame(WString saveName) {
 	table saveTable;
+	//saving map path to use it later to load correct map
 	saveTable["MapPath"] = RelativePath(scene->path).ToUtf8String();
 	saveTable["SavedEntities"] = {};
 	for (auto const& entity : world->GetTaggedEntities("Save")) {
@@ -191,6 +207,7 @@ void Game::saveGame(WString saveName) {
 		entityTable["rotation"][1] = rotation.y;
 		entityTable["rotation"][2] = rotation.z;
 		entityTable["tags"] = {};
+		//to remove it from scene later once everything restored inc case if only components supposed to keep this entity
 		entityTable["isInScene"] = scene->GetEntity(entity->GetUuid()) ? true : false;
 		int tagIndex = 0;
 		for (auto& tag : entity->tags) {
@@ -206,6 +223,7 @@ void Game::saveGame(WString saveName) {
 		saveTable["SavedEntities"][entity->GetUuid()] = entityTable;
 	}
 	SaveTable(saveTable, saveName);
+	//showing "Game Saved" labl for 2 seconds
 	gameSavedLabel->SetHidden(false);
 	gameSavedLabelTimer = UltraEngine::CreateTimer(2000);
 	ListenEvent(EVENT_TIMERTICK, gameSavedLabelTimer, HideGameSavedLabelCallback, Self());
