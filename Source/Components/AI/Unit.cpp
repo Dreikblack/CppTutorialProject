@@ -1,5 +1,5 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Unit.h"
 #include "../Logic/WayPoint.h"
 
@@ -70,13 +70,13 @@ void Unit::Start() {
 		} else {
 			healthBar->SetColor(1, 0, 0);
 		}
-		healthBar->SetPosition(0, 0, 0.00001f);
+		healthBar->SetPosition(0, 0, 0.99901f);
 		healthBar->SetRenderLayers(2);
 		healthBar->SetScale((float)health / (float)maxHealth, 1, 1);
 		healthBarBackground = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
 		healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
 		//to put it behind health bar
-		healthBarBackground->SetPosition(0, 0, 0.00002f);
+		healthBarBackground->SetPosition(0, 0, 0.99902f);
 		healthBarBackground->SetRenderLayers(2);
 	}
 	auto world = entity->GetWorld();

@@ -1,5 +1,5 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "public/steam/steam_api.h"
 #ifdef _WIN32
 	#pragma comment(lib, "Source/Steamworks/steam_api64.lib")
@@ -89,16 +89,16 @@ namespace Steamworks
 		}
 	};
 
-	const UltraEngine::EventId EVENT_LOBBYDATACHANGED = UltraEngine::EventId(91400);
-	const UltraEngine::EventId EVENT_LOBBYUSERJOIN = UltraEngine::EventId(91401);
-	const UltraEngine::EventId EVENT_LOBBYUSERLEAVE = UltraEngine::EventId(91402);
-	const UltraEngine::EventId EVENT_LOBBYUSERDISCONNECT = UltraEngine::EventId(91403);
-	const UltraEngine::EventId EVENT_LOBBYINVITEACCEPTED = UltraEngine::EventId(91404);
-	//const UltraEngine::EventId EVENT_LOBBYUSERKICKED = UltraEngine::EventId(91403);
-	//const UltraEngine::EventId EVENT_LOBBYUSERBANNED = UltraEngine::EventId(91404);
-	const UltraEngine::EventId EVENT_STEAMOVERLAY = UltraEngine::EventId(91408);
+	const Leadwerks::EventId EVENT_LOBBYDATACHANGED = Leadwerks::EventId(91400);
+	const Leadwerks::EventId EVENT_LOBBYUSERJOIN = Leadwerks::EventId(91401);
+	const Leadwerks::EventId EVENT_LOBBYUSERLEAVE = Leadwerks::EventId(91402);
+	const Leadwerks::EventId EVENT_LOBBYUSERDISCONNECT = Leadwerks::EventId(91403);
+	const Leadwerks::EventId EVENT_LOBBYINVITEACCEPTED = Leadwerks::EventId(91404);
+	//const Leadwerks::EventId EVENT_LOBBYUSERKICKED = Leadwerks::EventId(91403);
+	//const Leadwerks::EventId EVENT_LOBBYUSERBANNED = Leadwerks::EventId(91404);
+	const Leadwerks::EventId EVENT_STEAMOVERLAY = Leadwerks::EventId(91408);
 
-	struct LobbyEventInfo : public UltraEngine::Object
+	struct LobbyEventInfo : public Leadwerks::Object
 	{
 		uint64_t lobbyid { 0ull };
 		uint64_t userid { 0ull };
@@ -109,8 +109,8 @@ namespace Steamworks
 	//-------------------------------------------------------------------------------
 
 	extern uint64_t GetUserId();
-	extern UltraEngine::WString GetUserName(const uint64_t userid);
-	extern shared_ptr<UltraEngine::Pixmap> GetUserAvatar(const uint64_t userid);
+	extern Leadwerks::WString GetUserName(const uint64_t userid);
+	extern shared_ptr<Leadwerks::Pixmap> GetUserAvatar(const uint64_t userid);
 
 	//-------------------------------------------------------------------------------
 	// Apps
@@ -126,10 +126,10 @@ namespace Steamworks
 	// Statistics and achievements
 	//-------------------------------------------------------------------------------
 
-	extern bool SetStat(const UltraEngine::WString& name, const int i);
-	extern int GetStat(const UltraEngine::WString& name);
-	extern bool AddStat(const UltraEngine::WString& name, const int amount = 1);
-	extern bool UnlockAchievement(const UltraEngine::WString& name);
+	extern bool SetStat(const Leadwerks::WString& name, const int i);
+	extern int GetStat(const Leadwerks::WString& name);
+	extern bool AddStat(const Leadwerks::WString& name, const int amount = 1);
+	extern bool UnlockAchievement(const Leadwerks::WString& name);
 	
 	//-------------------------------------------------------------------------------
 	// Leaderboards
@@ -148,7 +148,7 @@ namespace Steamworks
 		int score;
 	};
 
-	extern uint64 GetLeaderboard(const UltraEngine::WString& name);
+	extern uint64 GetLeaderboard(const Leadwerks::WString& name);
 	extern std::vector<LeaderboardEntry> GetLeaderboardEntries(const uint64_t leaderboardid, const LeaderboardDataRequest request = LEADERBOARD_GLOBAL, const int start = 0, const int count = 20);
 	extern void SetLeaderboardScore(const uint64_t leaderboardid, const int score);
 
@@ -168,16 +168,16 @@ namespace Steamworks
 	extern std::vector<uint64_t> GetLobbyMembers(uint64_t lobbyid);
 	extern uint64_t GetLobbyOwner(uint64_t lobbyid);
 	extern bool SetLobbyOwner(uint64_t lobbyid, uint64_t userid);
-	extern bool SetLobbyProperty(uint64_t lobbyid, const UltraEngine::WString& key, const UltraEngine::WString& value);
-	extern UltraEngine::WString GetLobbyProperty(uint64_t lobbyid, const UltraEngine::WString& key);
+	extern bool SetLobbyProperty(uint64_t lobbyid, const Leadwerks::WString& key, const Leadwerks::WString& value);
+	extern Leadwerks::WString GetLobbyProperty(uint64_t lobbyid, const Leadwerks::WString& key);
 	extern bool JoinLobby(const uint64_t lobbyid);
 	extern void LeaveLobby(const uint64_t lobbyid);
-	extern std::vector<uint64_t> GetLobbies(const std::map<UltraEngine::WString, UltraEngine::WString>& attributes = {});
+	extern std::vector<uint64_t> GetLobbies(const std::map<Leadwerks::WString, Leadwerks::WString>& attributes = {});
 	extern uint64_t CurrentLobby();
 	//extern bool SetLobbyMaxPlayers(uint64_t lobbyid, const int maxplayers);
 	extern int GetLobbyCapacity(uint64_t lobbyid);
 
-	//https://www.ultraengine.com/community/topic/9663-introduction-to-steam-code-in-leadwerks/#comment-73524
+	//https://www.Leadwerks.com/community/topic/9663-introduction-to-steam-code-in-leadwerks/#comment-73524
 	class CallbackManager
 	{
 	public:
@@ -211,11 +211,11 @@ namespace Steamworks
 		P2PSEND_RELIABLEBUFFERED = k_EP2PSendReliableWithBuffering
 	};
 
-	class Packet : public UltraEngine::Object
+	class Packet : public Leadwerks::Object
 	{
 		int samplerate{ 0 };
 	public:
-		shared_ptr<UltraEngine::Buffer> data;
+		shared_ptr<Leadwerks::Buffer> data;
 		uint64_t userid{ 0 };
 		int channel{ 0 };
 
@@ -223,13 +223,13 @@ namespace Steamworks
 		friend void Steamworks::Update();
 	};
 
-	extern bool SendPacket(const uint64_t steamid, const UltraEngine::WString& s, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
-	extern bool SendPacket(const uint64_t steamid, std::shared_ptr<UltraEngine::Buffer> data, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
+	extern bool SendPacket(const uint64_t steamid, const Leadwerks::WString& s, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
+	extern bool SendPacket(const uint64_t steamid, std::shared_ptr<Leadwerks::Buffer> data, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
 	extern bool SendPacket(const uint64_t steamid, const void* data, const uint32_t size, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
 	extern std::shared_ptr<Packet> GetPacket(const int channel = 0);
 	extern bool Disconnect(const uint64_t userid);
-	extern bool BroadcastPacket(const uint64_t lobbyid, const UltraEngine::WString& s, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
-	extern bool BroadcastPacket(const uint64_t lobbyid, std::shared_ptr<UltraEngine::Buffer> data, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
+	extern bool BroadcastPacket(const uint64_t lobbyid, const Leadwerks::WString& s, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
+	extern bool BroadcastPacket(const uint64_t lobbyid, std::shared_ptr<Leadwerks::Buffer> data, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
 	extern bool BroadcastPacket(const uint64_t lobbyid, const void* data, const uint32_t size, const int channel = 0, const P2PSendMode sendtype = P2PSEND_UNRELIABLE);
 
 	//-------------------------------------------------------------------------------

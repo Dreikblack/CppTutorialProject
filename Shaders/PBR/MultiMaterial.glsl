@@ -55,9 +55,13 @@ vec4 PBRBaseColor(in Material material, in vec2 texcoords)
 {
 	vec4 subs = material.diffuseColor;
 	uvec2 handle = material.textureHandle[TEXTURE_BASE];
+	float opacity = 1.0f;
+	if (material.textureHandle[TEXTURE_OPACITY] != uvec2(0)) subs.a *= texture(sampler2D(material.textureHandle[TEXTURE_OPACITY]), texcoords).r;
 	if (handle != NullHandle)
 	{
-		subs *= texture(sampler2D(handle), texcoords);
+		vec4 base = texture(sampler2D(handle), texcoords);
+		subs.rgb *= base.rgb;			
+		if (material.textureHandle[TEXTURE_OPACITY] == uvec2(0)) subs.a *= base.a;
 		//if (material.saturation != 1.0f) 
 		subs.rgb = mix(vec3(subs.r * 0.299f + subs.g * 0.587f + subs.b * 0.114f), subs.rgb, material.saturation);
 		/*if ((material.flags & MATERIAL_BLEND_ALPHA) != 0)
@@ -176,11 +180,18 @@ void PBRMaterial(in Material material, in vec2 texcoords, inout float weight, in
 	vec2 occlusion_normalscale = unpackHalf2x16(material.occlusion);
 
 	texcoords += GetMaterialTextureOffset(material, CurrentTime).xy;
-	vec4 cc = PBRBaseColor(material, texcoords);
-	if ((material.flags & MATERIAL_BLEND_ALPHA) != 0)
+	vec4 cc = vec4(1.0f);
+	
+	if (material.textureHandle[TEXTURE_BASE] != uvec2(0u)) cc = PBRBaseColor(material, texcoords);
+
+	// Optional opacity map
+	uvec2 handle = material.textureHandle[TEXTURE_OPACITY];
+	if (handle != uvec2(0u)) cc.a = texture(sampler2D(handle), texcoords).r;
+
+	//if ((material.flags & MATERIAL_BLEND_ALPHA) != 0)
 	{
 		weight *= cc.a;// alpha blended materials
-		if (weight == 0.0f) return;
+		if (weight < 0.001f) return;
 	}
 	if (material.alphacutoff > 0.0f && cc.a < material.alphacutoff)
 	{
@@ -188,7 +199,7 @@ void PBRMaterial(in Material material, in vec2 texcoords, inout float weight, in
 		return;
 	}
 
-	uvec2 handle = material.textureHandle[TEXTURE_DISPLACEMENT];
+	handle = material.textureHandle[TEXTURE_DISPLACEMENT];
 	if (handle != NullHandle)
 	{
 		weight += (texture(sampler2D(handle), texcoords).r - 0.5) * /*material.displacementblend **/ weight;
@@ -198,8 +209,9 @@ void PBRMaterial(in Material material, in vec2 texcoords, inout float weight, in
 	weight = CalculateBlendAlpha(weight, material.blendsmoothing);
 	//if (weight != 1.0f && material.blendsmoothing != 1.0f) weight = CalculateBlendAlpha(weight, material.blendsmoothing);
 	//if (weight == 0.0f) return;
-	color = mix(color, cc, weight);
-	normal = mix(normal, PBRNormals(material, texcoords, occlusion_normalscale.y), weight);
-    omr = mix(omr, PBROcclusionMetalRoughness(material, texcoords, occlusion_normalscale.x), weight);
-    emissive = mix(emissive, PBREmissionColor(material, texcoords), weight);    
+
+	if (material.textureHandle[TEXTURE_BASE] != uvec2(0u)) color = mix(color, cc, weight);
+	if (material.textureHandle[TEXTURE_NORMAL] != uvec2(0u)) normal = mix(normal, PBRNormals(material, texcoords, occlusion_normalscale.y), weight);
+    if (material.textureHandle[TEXTURE_METALLICROUGHNESS] != uvec2(0u)) omr = mix(omr, PBROcclusionMetalRoughness(material, texcoords, occlusion_normalscale.x), weight);
+    if (material.textureHandle[TEXTURE_EMISSION] != uvec2(0u)) emissive = mix(emissive, PBREmissionColor(material, texcoords), weight);   
 }

@@ -10,7 +10,8 @@
 			"Normal",
 			"AO/Metal/Rough",
 			"Displacement",
-			"Emission"
+			"Emission",
+			"Opacity"
 		],
 		"static":
 		{

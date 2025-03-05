@@ -12,16 +12,18 @@
 #include "../Math/AABB.glsl"
 #include "../Math/Plane.glsl"
 
-int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo materialInfo, in vec3 position, inout vec3 normal, in vec3 facenormal, in vec3 v, inout float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 probediffuse, inout vec4 probespecular, inout vec3 f_emissive)
+int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo materialInfo, in vec3 position, in vec3 normal, in vec3 facenormal, in vec3 v, inout float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 probediffuse, inout vec4 probespecular, inout vec3 f_emissive)
 {	
 	const uint materialflags = material.flags;//GetMaterialFlags(material);
+	bool backfacing = false;
+
 	if (gl_FrontFacing == false && (materialflags & MATERIAL_BACKFACELIGHTING) == 0)
 	{
-		normal *= -1.0f;
-		facenormal *= -1.0f;
+		//normal *= -1.0f;
+		//facenormal *= -1.0f;
+		backfacing = true;
 	}
 
-	bool backfacing = false;
 	float visibility = 0.0f;
 	int ShadowSoftness = 4;
 	const float minlight = 0.004f;
@@ -79,6 +81,7 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					Material mtl = materials[materialid];
 					uint decalmaterialflags = GetMaterialFlags(mtl);
 					color *= mtl.diffuseColor;
+					vec2 occlusion_normalscale = unpackHalf2x16(mtl.occlusion);
 					if (color.a < 0.001f) return LIGHT_DECAL;
 					mat3 decalnormalmatrix = mat3(lightmatrix);
 					vec3 decalnormal = inverse(decalnormalmatrix) * facenormal;
@@ -108,40 +111,48 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					decalnormalmatrix[0] = normalize(decalnormalmatrix[0]);
 					decalnormalmatrix[1] = normalize(decalnormalmatrix[1]);
 					decalnormalmatrix[2] = normalize(decalnormalmatrix[2]);
+					if (mtl.textureHandle[TEXTURE_OPACITY] != uvec2(0))
+					{
+						color.a = texture(sampler2D(mtl.textureHandle[TEXTURE_OPACITY]), decalcoords).r;
+					}
 					if (mtl.textureHandle[TEXTURE_DIFFUSE] != uvec2(0))
 					{
-						color *= texture(sampler2D(mtl.textureHandle[TEXTURE_DIFFUSE]), decalcoords);
+						vec4 basecolor = texture(sampler2D(mtl.textureHandle[TEXTURE_DIFFUSE]), decalcoords);
+						color.rgb *= basecolor.rgb;
+						if (mtl.textureHandle[TEXTURE_OPACITY] == uvec2(0)) color.a *= basecolor.a;
+						color.rgb = sRGBToLinear(color.rgb);				
+						materialInfo.c_diff = materialInfo.c_diff * (1.0f - color.a) + color.rgb * color.a;
 					}
 					if (mtl.textureHandle[TEXTURE_NORMAL] != uvec2(0))
 					{
 						vec3 n = texture(sampler2D(mtl.textureHandle[TEXTURE_NORMAL]), decalcoords).rgb * 2.0f - 1.0f;
+						n.xy *= occlusion_normalscale.y;						
 						if ((decalmaterialflags & MATERIAL_EXTRACTNORMALMAPZ) != 0) n.z = sqrt(max(0.0f, 1.0f - (n.x * n.x + n.y * n.y)));// extract Z axis
+						n = normalize(n);
 						if (dot(decalnormalmatrix[2], facenormal) < 0.0f) decalnormalmatrix = -decalnormalmatrix;// flip if facing wrong way
 						n = decalnormalmatrix * n;
 						normal = normal * (1.0f - color.a) + n * color.a;
 						NdotV = dot(normal, v);
 					}
-					vec2 decalmetalroughness = vec2(mtl.metalness, mtl.roughness);
 					if (mtl.textureHandle[TEXTURE_METALLICROUGHNESS] != uvec2(0))
 					{
+						vec2 decalmetalroughness = vec2(mtl.metalness, mtl.roughness);
 						vec4 mrsample = (texture(sampler2D(mtl.textureHandle[TEXTURE_METALLICROUGHNESS]), decalcoords.xy));
 						decalmetalroughness.xy *= mrsample.bg;
+						materialInfo.perceptualRoughness = materialInfo.perceptualRoughness * (1.0f - color.a) + decalmetalroughness.y * color.a;
+						materialInfo.metallic = materialInfo.metallic * (1.0f - color.a) + decalmetalroughness.x * color.a;
+						materialInfo.f0 = mix(vec3(0.04f), materialInfo.baseColor.rgb, materialInfo.metallic);
+						materialInfo.alphaRoughness = materialInfo.perceptualRoughness * materialInfo.perceptualRoughness;
 					}
-					materialInfo.perceptualRoughness = materialInfo.perceptualRoughness * (1.0f - color.a) + decalmetalroughness.y * color.a;
-					materialInfo.metallic = materialInfo.metallic * (1.0f - color.a) + decalmetalroughness.x * color.a;
-					materialInfo.f0 = mix(vec3(0.04f), materialInfo.baseColor.rgb, materialInfo.metallic);
-					materialInfo.alphaRoughness = materialInfo.perceptualRoughness * materialInfo.perceptualRoughness;
-					vec3 decalemission = mtl.emissiveColor.rgb;
 					if (mtl.textureHandle[TEXTURE_EMISSION] != uvec2(0))
 					{
+						vec3 decalemission = mtl.emissiveColor.rgb;
 						decalemission *= texture(sampler2D(mtl.textureHandle[TEXTURE_EMISSION]), decalcoords.xy).rgb;
+						f_emissive = f_emissive * (1.0f - color.a) + decalemission * color.a;
 					}
 					materialInfo.specularWeight = max(materialInfo.specularWeight, color.a);
 					materialInfo.alpha = max(materialInfo.alpha, color.a);
-					f_emissive = f_emissive * (1.0f - color.a) + decalemission * color.a;
 				}
-				color.rgb = sRGBToLinear(color.rgb);
-				materialInfo.c_diff = materialInfo.c_diff * (1.0f - color.a) + color.rgb * color.a;
 			}
 		}
 		break;
@@ -385,6 +396,7 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 			{
 				normal *= -1.0f;
 				facenormal *= -1.0f;
+				backfacing = true;
 			}
 		}
 		//-----------------------------------------------------------------
@@ -471,14 +483,14 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 			vec3 CameraViewDir = normalize(position - CameraPosition);
 			if (dot(facenormal, CameraViewDir) > 0.0f) usespecular = false;
 		}
-		if (usespecular && materialInfo.specularWeight > 0.0f)
+		if (usespecular && materialInfo.specularWeight > 0.0f && backfacing == false)
 		{
 			f_specular += specular.rgb * attenuation * NdotL * BRDF_specularGGX(materialInfo.f0, materialInfo.f90, materialInfo.alphaRoughness, materialInfo.specularWeight, VdotH, NdotL, NdotV, NdotH);
 		}
 	}
 }
 
-float RenderLighting(inout Material material, inout MaterialInfo materialInfo, in vec3 position, inout vec3 normal, in vec3 facenormal, in vec3 v, in float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 ibldiffuse, inout vec4 iblspecular, inout vec3 f_emissive)
+float RenderLighting(inout Material material, inout MaterialInfo materialInfo, in vec3 position, inout vec3 normal, inout vec3 facenormal, in vec3 v, in float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 ibldiffuse, inout vec4 iblspecular, inout vec3 f_emissive)
 {
 	uint n;
     uint lightIndex;
@@ -489,6 +501,12 @@ float RenderLighting(inout Material material, inout MaterialInfo materialInfo, i
 	vec3 cameraspaceposition;
 	mat4 cullmat = ExtractCameraCullingMatrix(CameraID);
 	cameraspaceposition = (cullmat * vec4(position, 1.0f) ).xyz;
+	
+	if (gl_FrontFacing == false && (material.flags & MATERIAL_BACKFACELIGHTING) == 0)
+	{
+		normal *= -1.0f;
+		facenormal *= -1.0f;
+	}
 
     // Cell lights (affects this cell only)
     int lightlistpos = int(GetCellLightsReadPosition(cameraspaceposition));

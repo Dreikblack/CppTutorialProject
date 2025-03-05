@@ -154,35 +154,19 @@ void main()
 
 #ifdef USER_HOOK
 
-    /*SurfaceInput surfinput;
-    surfinput.texcoords = texcoords;
-    surfinput.color = color;
-    surfinput.normal = normal;
-    surfinput.tangent = tangent;
-    surfinput.bitangent = bitangent;
-    surfinput.material = material;
-
-    SurfaceOutput surfinfo;
-    surfinfo.normal = n;
-    surfinfo.basecolor = vec4(1.0f);
-    surfinfo.metallic = 0.0f;
-    surfinfo.roughness = 1.0f;
-    surfinfo.reflectance = vec3(0.0f);
-    surfinfo.emission = vec3(0.0f);*/
-
     Surface surface;
     surface.thickness = material.thickness;
     surface.texcoords = texcoords;
     surface.basecolor = color;
     surface.normal = normal;
-    surface.tangent = tangent;
-    surface.bitangent = bitangent;
+    surface.tangent = tangent.xyz;
+    surface.bitangent = bitangent.xyz;
     surface.metallic = 0.0f;
     surface.roughness = 1.0f;
-    surface.reflectance = vec3(0.0f);
     surface.emission = vec3(0.0);
     surface.displacement = 0.0f;
-     
+    //surface.specularweight = 1.0f;
+
     vec2 surfaceocclusion_normalscale = unpackHalf2x16(material.occlusion);
     surface.occlusion = surfaceocclusion_normalscale.x;
     surface.normalscale = surfaceocclusion_normalscale.y;
@@ -194,18 +178,16 @@ void main()
 #endif
 
     materialInfo.baseColor = surface.basecolor.rgb;
+    n = surface.normal;
     materialInfo.metallic = clamp(surface.metallic, 0.0f, 1.0f);
 	materialInfo.f0 = surface.reflectance;
+    //materialInfo.specularWeight = surface.specularweight;
     materialInfo.perceptualRoughness = clamp(surface.roughness, 0.04f, 1.0f);
     materialInfo.c_diff = surface.basecolor.rgb;
     baseColor = surface.basecolor;
-
     materialInfo.c_diff = mix(materialInfo.baseColor.rgb,  vec3(0.0f), materialInfo.metallic);
     materialInfo.f0 = mix(materialInfo.f0, materialInfo.baseColor.rgb, materialInfo.metallic);
-
-    materialInfo.alphaRoughness = materialInfo.perceptualRoughness * materialInfo.perceptualRoughness;
-    //float reflectance = max(max(materialInfo.f0.r, materialInfo.f0.g), materialInfo.f0.b);
-    materialInfo.f90 = vec3(1.0f);
+    
 #endif
 
 //outColor[0].rgb = n * 0.5 + 0.5;
@@ -314,6 +296,8 @@ void main()
         AmbientLight *= ao;
     }
 
+    vec3 originalnormal = n;
+
 #ifdef LIGHTING
     if ((RenderFlags & RENDERFLAGS_NO_LIGHTING) == 0)
     {
@@ -334,7 +318,7 @@ void main()
         renderprobes = false;
         f_diffuse.rgb = materialInfo.c_diff * AmbientLight;
         f_specular = vec3(0.0f);// we don't want specular reflection in probe renders since it is view-dependent
-    }    
+    }
 #else
     f_diffuse.rgb = baseColor.rgb;
 #endif
@@ -370,13 +354,13 @@ void main()
         }
     }
 
-    if (!gl_FrontFacing)
+    /*if (!gl_FrontFacing)
     {
         if (((materialFlags & MATERIAL_BACKFACELIGHTING) == 0) || n.y < 0.0f)
         {
             n *= -1.0f;
         }
-    }
+    }*/
     //if (!gl_FrontFacing) n *= -1.0f;
 
     vec3 prev_f_specular = f_specular;
@@ -401,7 +385,9 @@ void main()
                 iblspecular *= ao;
                 if (iblspecular.r + iblspecular.g + iblspecular.b > 0.0f)
                 {
-                    f_specular += (getIBLRadianceGGX(Lut_GGX, iblspecular.rgb, n, v, materialInfo.perceptualRoughness, materialInfo.f0, materialInfo.specularWeight));
+                    vec3 sn = n;
+                    if (dot(sn, v) < 0.0f) sn *= -1.0f;
+                    f_specular += (getIBLRadianceGGX(Lut_GGX, iblspecular.rgb, sn, v, materialInfo.perceptualRoughness, materialInfo.f0, materialInfo.specularWeight));
                 }
                 //f_specular.r = 1.0f;// for testing...
             }

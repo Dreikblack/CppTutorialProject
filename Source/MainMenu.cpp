@@ -1,4 +1,4 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "MainMenu.h"
 #include "CustomEvents.h"
 
@@ -32,7 +32,14 @@ void MainMenu::init(shared_ptr<Framebuffer> framebuffer) {
 	auto font = LoadFont("Fonts/arial.ttf");
 	//Create user interface
 	auto frameSize = framebuffer->GetSize();
-	ui = CreateInterface(world, font, frameSize);
+	shared_ptr<Camera> camera;
+	for (auto const& cameraEntity : world->GetEntities()) {
+		camera = cameraEntity->As<Camera>();
+		if (camera) {
+			break;
+		}
+	}
+	ui = CreateInterface(camera, font, frameSize);
 	ui->SetRenderLayers(2);
 	//to make backgrount transparent
 	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);

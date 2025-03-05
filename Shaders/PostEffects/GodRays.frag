@@ -17,8 +17,8 @@ float rand(vec2 co){
 
 // Uniforms
 layout(location = 0, binding = 0) uniform sampler2D ColorBuffer;
-layout(location = 1) uniform float Exposure = 0.25f;
-layout(location = 2) uniform float MaxEffect = 0.25f;
+layout(location = 1) uniform float Exposure = 1.0f;
+layout(location = 2) uniform float MaxEffect = 1.0f;
 
 // Outputs
 layout(location = 0) out vec4 fragData0;
@@ -31,6 +31,7 @@ void main()
     float maxlight = 8.0f;
     //vec4 scene = itexture(ColorBuffer, texcoord);
 
+	uint decalfilter;
     mat4 lightmatrix;
     vec4 elightcolor = vec4(0.0f);
     int lightlistpos = int(GetGlobalLightsReadPosition());
@@ -42,7 +43,7 @@ void main()
             uint flags;
             ++lightlistpos;
             uint lightIndex = ReadLightGridValue(uint(lightlistpos));
-            ExtractEntityInfo(lightIndex, lightmatrix, elightcolor, flags);
+            ExtractEntityInfo(lightIndex, lightmatrix, elightcolor, flags, decalfilter);
             break;
         }
     }
@@ -55,7 +56,7 @@ void main()
     vec3 lightvector = lightmatrix[2].xyz;
     vec3 lightcolor = elightcolor.rgb;
     vec3 lightposition = CameraPosition - lightvector * 1000.0f;
-
+	
     //lightvector = (CameraMatrix * vec4(lightvector, 1.0f)).xyz;
     vec3 glightvector = lightvector;
     lightvector = CameraNormalMatrix * lightvector;

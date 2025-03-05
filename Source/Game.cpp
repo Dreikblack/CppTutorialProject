@@ -1,4 +1,4 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Game.h"
 #include "CustomEvents.h"
 
@@ -62,16 +62,23 @@ void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 			break;
 		}
 	}
+	shared_ptr<Camera> camera;
+	for (auto const& cameraEntity : world->GetTaggedEntities("Camera")) {
+		camera = cameraEntity->As<Camera>();
+		break;
+	}
 	auto font = LoadFont("Fonts/arial.ttf");
 	//Create user interface for game menu
 	auto frameSize = framebuffer->GetSize();
-	ui = CreateInterface(world, font, frameSize);
-	ui->SetRenderLayers(2);
-	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
 	uiCamera = CreateCamera(world, PROJECTION_ORTHOGRAPHIC);
 	uiCamera->SetPosition(float(frameSize.x) * 0.5f, float(frameSize.y) * 0.5f, 0);
 	uiCamera->SetRenderLayers(2);
 	uiCamera->SetClearMode(CLEAR_DEPTH);
+	uiCamera->SetOrder(2);
+	ui = CreateInterface(uiCamera, font, frameSize);
+	//ui->SetRenderLayers(2);
+	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
+	// 
 	//widgets are stays without extra shared pointers because parent widet, ui->root in this case, keep them
 	//to remove widget you should do widget->SetParent(nullptr)
 	menuPanel = CreatePanel(frameSize.width / 2 - 150, frameSize.height / 2 - 300 / 2, 300, 250, ui->root);

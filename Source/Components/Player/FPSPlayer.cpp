@@ -1,7 +1,7 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "FPSPlayer.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 FPSPlayer::FPSPlayer()
 {
@@ -233,9 +233,7 @@ void FPSPlayer::Update()
 		auto cx = Round((float)window->GetFramebuffer()->GetSize().x / 2);
 		auto cy = Round((float)window->GetFramebuffer()->GetSize().y / 2);
 		auto mpos = window->GetMousePosition();
-		if (doResetMousePosition) {
-			window->SetMousePosition(cx, cy);
-		}
+		window->SetMousePosition(cx, cy);
 		auto centerpos = window->GetMousePosition();
 
 		if (freelookstarted)

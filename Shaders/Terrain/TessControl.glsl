@@ -110,14 +110,22 @@ void main()
 		float edgelength1 = length(vertexWorldPosition[1].xyz - vertexWorldPosition[2].xyz);
 		float edgelength2 = length(vertexWorldPosition[2].xyz - vertexWorldPosition[0].xyz);
 		
-		float edgedistance0 = length((vertexWorldPosition[0].xyz + vertexWorldPosition[1].xyz) * 0.5f - CameraPosition.xyz);
-		float edgedistance1 = length((vertexWorldPosition[1].xyz + vertexWorldPosition[2].xyz) * 0.5f - CameraPosition.xyz);
-		float edgedistance2 = length((vertexWorldPosition[2].xyz + vertexWorldPosition[0].xyz) * 0.5f - CameraPosition.xyz);
+		if (CameraProjectionMode == 2)
+		{
+			float edgedistance0 = length((vertexWorldPosition[0].xyz + vertexWorldPosition[1].xyz) * 0.5f - CameraPosition.xyz);
+			float edgedistance1 = length((vertexWorldPosition[1].xyz + vertexWorldPosition[2].xyz) * 0.5f - CameraPosition.xyz);
+			float edgedistance2 = length((vertexWorldPosition[2].xyz + vertexWorldPosition[0].xyz) * 0.5f - CameraPosition.xyz);
 
-		TessLevelOuter[2] = max(1.0f, ((tessfactor * edgelength0) / edgedistance0 + 0.5f));
-		TessLevelOuter[0] = max(1.0f, ((tessfactor * edgelength1) / edgedistance1 + 0.5f));
-		TessLevelOuter[1] = max(1.0f, ((tessfactor * edgelength2) / edgedistance2 + 0.5f));
-
+			TessLevelOuter[2] = max(1.0f, ((tessfactor * edgelength0) / edgedistance0 + 0.5f));
+			TessLevelOuter[0] = max(1.0f, ((tessfactor * edgelength1) / edgedistance1 + 0.5f));
+			TessLevelOuter[1] = max(1.0f, ((tessfactor * edgelength2) / edgedistance2 + 0.5f));
+		}
+		else
+		{
+			TessLevelOuter[0] = max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength0) + 0.5f));
+			TessLevelOuter[1] = max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength1) + 0.5f));
+			TessLevelOuter[2] = max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength2) + 0.5f));
+		}
 		TessLevelInner[0] = (TessLevelOuter[0] + TessLevelOuter[1] + TessLevelOuter[2]) * 0.33333f;
 
 	#endif
@@ -129,15 +137,25 @@ void main()
 		float edgelength2 = length(vertexWorldPosition[2].xyz - vertexWorldPosition[3].xyz);
 		float edgelength3 = length(vertexWorldPosition[1].xyz - vertexWorldPosition[2].xyz);
 
-		float edgedistance0 = length((vertexWorldPosition[0].xyz + vertexWorldPosition[1].xyz) * 0.5f - CameraPosition.xyz);
-		float edgedistance1 = length((vertexWorldPosition[3].xyz + vertexWorldPosition[0].xyz) * 0.5f - CameraPosition.xyz);
-		float edgedistance2 = length((vertexWorldPosition[2].xyz + vertexWorldPosition[3].xyz) * 0.5f - CameraPosition.xyz);
-		float edgedistance3 = length((vertexWorldPosition[1].xyz + vertexWorldPosition[2].xyz) * 0.5f - CameraPosition.xyz);
+		if (CameraProjectionMode == 2)
+		{
+			float edgedistance0 = length((vertexWorldPosition[0].xyz + vertexWorldPosition[1].xyz) * 0.5f - CameraPosition.xyz);
+			float edgedistance1 = length((vertexWorldPosition[3].xyz + vertexWorldPosition[0].xyz) * 0.5f - CameraPosition.xyz);
+			float edgedistance2 = length((vertexWorldPosition[2].xyz + vertexWorldPosition[3].xyz) * 0.5f - CameraPosition.xyz);
+			float edgedistance3 = length((vertexWorldPosition[1].xyz + vertexWorldPosition[2].xyz) * 0.5f - CameraPosition.xyz);
 
-		TessLevelOuter[0] = max(1.0f, ((tessfactor * edgelength0) / edgedistance0 + 0.5f));
-		TessLevelOuter[1] = max(1.0f, ((tessfactor * edgelength1) / edgedistance1 + 0.5f));
-		TessLevelOuter[2] = max(1.0f, ((tessfactor * edgelength2) / edgedistance2 + 0.5f));
-		TessLevelOuter[3] = max(1.0f, ((tessfactor * edgelength3) / edgedistance3 + 0.5f));
+			TessLevelOuter[0] = max(1.0f, ((tessfactor * edgelength0) / edgedistance0 + 0.5f));
+			TessLevelOuter[1] = max(1.0f, ((tessfactor * edgelength1) / edgedistance1 + 0.5f));
+			TessLevelOuter[2] = max(1.0f, ((tessfactor * edgelength2) / edgedistance2 + 0.5f));
+			TessLevelOuter[3] = max(1.0f, ((tessfactor * edgelength3) / edgedistance3 + 0.5f));
+		}
+		else
+		{
+			TessLevelOuter[0] = 1.0f;//max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength0) + 0.5f));
+			TessLevelOuter[1] = 1.0f;//max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength1) + 0.5f));
+			TessLevelOuter[2] = 1.0f;//max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength2) + 0.5f));
+			TessLevelOuter[3] = 1.0f;//max(1.0f, (1.0f / CameraTessellation) * 2.1f * ((CameraZoom * edgelength3) + 0.5f));
+		}
 
 		TessLevelInner[0] = max(TessLevelOuter[3], TessLevelOuter[1]);
 		TessLevelInner[1] = max(TessLevelOuter[0], TessLevelOuter[2]);

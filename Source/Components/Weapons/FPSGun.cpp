@@ -1,13 +1,13 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../Player/Player.h"
 #include "../Player/FPSPlayer.h"
 #include "FPSGun.h"
 #include "Projectile.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
-void FPSGun::AnimationDone(const UltraEngine::WString name, shared_ptr<UltraEngine::Object> object)
+void FPSGun::AnimationDone(const Leadwerks::WString name, shared_ptr<Leadwerks::Object> object)
 {
 	auto wpn = object->As<FPSGun>();
 	if (wpn)

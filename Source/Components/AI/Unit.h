@@ -1,5 +1,5 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../BaseComponent.h"
 
 using namespace UltraEngine;

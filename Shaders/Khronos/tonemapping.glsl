@@ -29,12 +29,20 @@ vec3 linearTosRGB(vec3 color)
     return pow(color, vec3(INV_GAMMA));
 }
 
-vec3 linearTosRGB(vec3 color, in float ig)
+vec3 linearTosRGB(vec3 color, float invgamma)
+{
+    const float lower = 0.001f;
+    if (color.r > lower && color.r < 1.0f) color.r = pow(color.r, invgamma);
+    if (color.g > lower && color.g < 1.0f) color.g = pow(color.g, invgamma);
+    if (color.b > lower && color.b < 1.0f) color.b = pow(color.b, invgamma);
+    return color;
+}
+
+/*vec3 linearTosRGB(vec3 color, in float ig)
 {
     color = max(color, vec3(0.0f));
     return pow(color, vec3(ig));
-}
-
+}*/
 
 // sRGB to linear approximation
 // see http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
