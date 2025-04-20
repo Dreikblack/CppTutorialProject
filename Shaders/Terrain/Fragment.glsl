@@ -560,6 +560,8 @@ void main()
     //float d = PositionToDepth(vertexCameraPosition.z, CameraRange);
     //outColor[0].rgb += WorldGrid(vertexWorldPosition.xz, d);
 
+    if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) == 0) outColor[0].a = 1.0f;
+
     if ((RenderFlags & RENDERFLAGS_FINAL_PASS) != 0)
     {
         //Dither final pass

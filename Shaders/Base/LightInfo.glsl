@@ -31,7 +31,7 @@ vec3 ExtractLightShadowRenderPosition(in uint lightID)
     return entityMatrix[lightID + LIGHT_SHADOW_RENDER_MATRIX_OFFSET][3].xyz;
 }
 
-void ExtractLightInfo(in uint lightID, out uvec2 shadowmap, out vec2 range, out vec2 coneangles, out vec2 shadowrange, out uint lightflags, out int shadowkernel, out float cascadedistance, out uint materialid)
+void ExtractLightInfo(in uint lightID, out uvec2 shadowmap, out vec2 range, out vec2 coneangles, out vec2 shadowrange, out uint lightflags, out int shadowkernel, out vec4 cascadedistance, out uint materialid)
 {
 	const mat4 lightinfo = entityMatrix[lightID + LIGHT_INFO_OFFSET];
 	//shadowmaplayer = floatBitsToUint(lightinfo[2][0]);
@@ -42,7 +42,10 @@ void ExtractLightInfo(in uint lightID, out uvec2 shadowmap, out vec2 range, out 
 	shadowmap.y = floatBitsToUint(lightinfo[2].y);
 	range = lightinfo[0].xy;
     shadowrange = lightinfo[2].zw;
-	cascadedistance = lightinfo[1].z;
+	cascadedistance.x = lightinfo[1].z;
+	cascadedistance.y = coneangles.x;
+	cascadedistance.z = coneangles.y;
+	cascadedistance.w = lightinfo[3].y;
 	materialid = floatBitsToUint(lightinfo[3].x);
 }
 

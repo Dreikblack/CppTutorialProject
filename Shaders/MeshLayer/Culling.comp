@@ -1,0 +1,216 @@
+#version 460
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+
+#define UNIFORMSTARTINDEX 13
+
+#include "../Base/Materials.glsl"
+#include "../Base/UniformBlocks.glsl"
+#include "../Base/CameraInfo.glsl"
+#include "../Base/DrawElementsIndirectCommand.glsl"
+
+layout(binding = 9, std430) writeonly buffer DrawInstancesIDBlock
+{
+    uint instanceids[];
+};
+
+layout(binding = 11, std430) buffer MeshLayerNoiseBlock
+{
+    mat4 meshlayeroffsets[];
+};
+
+layout(binding = 10, std430) buffer DrawDataBlock
+{
+    uint drawdata[];
+};
+
+layout(binding = 8, std430) buffer IndirectDrawBlock
+{
+    DrawElementsIndirectCommand drawcommands[];
+};
+
+layout(location = 5) uniform ivec2 resolution;
+layout(location = 6) uniform vec2 spacing;
+layout(binding = 0) uniform sampler2D elevationmap;
+layout(location = 1) uniform vec4 meshbounds;
+layout(location = 12) uniform vec3 terrainscale;
+layout(location = 2) uniform ivec2 gridoffset;
+layout(binding = 1) uniform usampler2D visibilitymap;
+layout(location = 3) uniform vec3 lodposition;
+layout(location = 4) uniform float maxviewdistance;
+layout(location = 9) uniform int maxlod;
+layout(binding = 2) uniform usampler2D variationmap;
+layout(location = 10) uniform int maxvariations;
+layout(location = 11) uniform int cameraislight;
+
+uint powtable[16];
+
+vec4 GetInstancePosition(in uint id, in mat4 noise)
+{
+    int y = int(id) / resolution.x;
+    int x = int(id) - resolution.x * y;
+
+        vec2 center = vec2(x, y) * spacing;
+        center += noise[3].xz;
+        ivec2 ts = textureSize(elevationmap, 0);
+        vec2 fts = vec2(ts.x, ts.y);    
+      vec2  texcoord = (center + 0.5f) / fts;
+
+    //vec2 texcoord = (vec2(x, y) + 0.5f) / vec2(resolution.x, resolution.y);
+
+    //x -= resolution.x / 2;
+    //y -= resolution.y / 2;
+
+    vec4 p;
+    p.xz = vec2(x, y) * spacing;
+
+    p.xz -= textureSize(elevationmap, 0) * 0.5f;
+
+    p.w = 1.0f;
+
+    p.xyz += noise[3].xyz;
+
+    noise[3] = vec4(0,0,0,1);
+    p += noise * vec4(meshbounds.xyz, 1.0f);
+
+    p.y += texture(elevationmap, texcoord).r * terrainscale.y;
+
+    return p;
+}
+
+float PlaneDistanceToPoint(vec4 plane, vec3 p)
+{
+    return (((plane.x * p.x) + (plane.y * p.y)) + (plane.z * p.z)) + plane.w;
+}
+
+bool GetInstanceVisible(in vec3 p, in mat4 noise)
+{
+    //p = CameraInverseMatrix * p;
+    //if (p.z < 0.0f) return false;
+    //if (abs(p.x) > p.z) return false;
+
+    float radius = -meshbounds.w * length(noise[0].xyz);
+
+    if (PlaneDistanceToPoint(CameraFrustumPlane0, p) < radius) return false;
+    if (PlaneDistanceToPoint(CameraFrustumPlane1, p) < radius) return false;
+    if (PlaneDistanceToPoint(CameraFrustumPlane2, p) < radius) return false;
+    if (PlaneDistanceToPoint(CameraFrustumPlane3, p) < radius) return false;
+    if (PlaneDistanceToPoint(CameraFrustumPlane4, p) < radius) return false;
+    if (PlaneDistanceToPoint(CameraFrustumPlane5, p) < radius) return false;
+    
+    return true;
+}
+
+void main()
+{
+    powtable = uint[](1u, 2u, 4u, 8u, 16u, 32u, 64u, 128u, 256u, 512u, 1024u, 2048u, 4096u, 8192u, 16384u, 32768u);
+    ivec2 invocation = ivec2(int(gl_GlobalInvocationID.x + uint(gridoffset.x)), int(gl_GlobalInvocationID.y + uint(gridoffset.y)));
+    bool _688 = invocation.x >= resolution.x;
+    bool _697;
+    if (!_688)
+    {
+        _697 = invocation.y >= resolution.y;
+    }
+    else
+    {
+        _697 = _688;
+    }
+    if (_697)
+    {
+        return;
+    }
+    uint id = uint((invocation.y * resolution.x) + invocation.x);
+    int noiseid = ((invocation.y % 16) * 16) + (invocation.x % 16);
+    mat4 _noise = meshlayeroffsets[noiseid];
+    uint param_10 = id;
+    mat4 param_11 = _noise;
+    vec4 _734 = GetInstancePosition(param_10, param_11);
+    vec4 p = _734;
+    vec3 param_12 = p.xyz;
+    mat4 param_13 = _noise;
+    if (!GetInstanceVisible(param_12, param_13))
+    {
+        return;
+    }
+    uint flags = texelFetch(visibilitymap, ivec2(invocation.x / 8, invocation.y), 0).x;
+    uint bit = 1u << uint(invocation.x % 8);
+    if ((flags & bit) == 0u)
+    {
+        return;
+    }
+    int maxinstances = resolution.x * resolution.y;
+    vec3 param_14 = p.xyz - lodposition;
+    float _distance = lengthSquared(param_14);
+    uint drawindex = 0u;
+    uint lod = 0u;
+    if (_distance > maxviewdistance)
+    {
+        return;
+    }
+    lod = min(lod, uint(maxlod - 1));
+    int instances = 0;
+    ivec2 varmapsize = textureSize(variationmap, 0);
+    ivec2 variationcoord = ivec2(invocation.x % varmapsize.x, invocation.y % varmapsize.y);
+    uint variation = texelFetch(variationmap, variationcoord, 0).x;
+    variation = clamp(variation, 0u, uint(maxvariations - 1));
+    uint variationstart = 0u;
+    uint offset = 0u;
+    uint v = variation;
+    variationstart = drawdata[(v * 16u) + 0u];
+    uint countlods = drawdata[(v * 16u) + 1u];
+    vec4 loddistance;
+    loddistance.x = uintBitsToFloat(drawdata[(v * 16u) + 2u]);
+    loddistance.y = uintBitsToFloat(drawdata[(v * 16u) + 3u]);
+    loddistance.z = uintBitsToFloat(drawdata[(v * 16u) + 4u]);
+    loddistance.w = uintBitsToFloat(drawdata[(v * 16u) + 5u]);
+    uint alignment = drawdata[(v * 16u) + 6u];
+    if (cameraislight == 1)
+    {
+        if (drawdata[(v * 16u) + 7u] == 0u)
+        {
+            return;
+        }
+    }
+    lod = 0u;
+    bool _905 = loddistance.w != 0.0;
+    bool _912;
+    if (_905)
+    {
+        _912 = _distance > loddistance.w;
+    }
+    else
+    {
+        _912 = _905;
+    }
+    if (_912)
+    {
+        return;
+    }
+    if (_distance > loddistance.x)
+    {
+        lod = 1u;
+    }
+    if (_distance > loddistance.y)
+    {
+        lod = 2u;
+    }
+    if (_distance > loddistance.z)
+    {
+        lod = 3u;
+    }
+    lod = min(lod, (countlods - 1u));
+    uint l = lod;
+    uint lodstart = drawdata[((v * 16u) + 8u) + (l * 2u)];
+    uint meshcount = drawdata[(((v * 16u) + 8u) + 1u) + (l * 2u)];
+    for (int m = 0; uint(m) < meshcount; m++)
+    {
+        uint commandindex = drawdata[lodstart + uint(m)];
+        uint _983 = atomicAdd(drawcommands[commandindex].instanceCount, 1u);
+        drawindex = _983;
+        if (m == 0)
+        {
+            instanceids[drawcommands[commandindex].baseInstance + drawindex] = id;
+            instances++;
+        }
+    }
+}
+

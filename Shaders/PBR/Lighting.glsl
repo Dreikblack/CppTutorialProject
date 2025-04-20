@@ -12,6 +12,33 @@
 #include "../Math/AABB.glsl"
 #include "../Math/Plane.glsl"
 
+float get_cascade_split(int current_partition, int number_of_partitions, float near_z, float far_z, float lambda)
+{
+		// https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-10-parallel-split-shadow-maps-programmable-gpus
+		float exp = float(current_partition) / float(number_of_partitions);
+
+		// Logarithmic split scheme
+		float Ci_log = near_z * pow((far_z / near_z), exp);
+
+		// Uniform split scheme
+		float Ci_uni = near_z + (far_z - near_z) * exp;
+
+		// Lambda [0, 1]
+		float Ci = lambda * Ci_log + (1.f - lambda) * Ci_uni;
+		return Ci;
+}
+
+int get_cascade_partition(float zdistance, int number_of_partitions, float near_z, float far_z, float lambda)
+{
+	float splitdistance;
+	for (int i = 0; i < number_of_partitions - 1; ++i)
+	{
+		splitdistance = get_cascade_split(i + 1, 4, CameraRange.x, far_z, lambda);
+		if (zdistance < splitdistance) return i;
+	}
+	return 3;
+}
+
 int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo materialInfo, in vec3 position, in vec3 normal, in vec3 facenormal, in vec3 v, inout float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 probediffuse, inout vec4 probespecular, inout vec3 f_emissive)
 {	
 	const uint materialflags = material.flags;//GetMaterialFlags(material);
@@ -38,7 +65,7 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 	uint shadowMapLayer;
 	float attenuation = 1.0f;
 	int shadowkernel;
-	float cascadedistance;
+	vec4 cascadedistance;
 	dFloat d;
 	uint materialid;
 #ifdef DOUBLE_FLOAT
@@ -404,13 +431,13 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 		vec3 camspacepos = (CameraInverseMatrix * vec4(position, 1.0)).xyz;
 		mat4 shadowmat;
 		visibility = 1.0f;
-		if (camspacepos.z <= cascadedistance * 8.0f)
+		if (camspacepos.z <= cascadedistance[3])
 		{
 			int index = 0;
 			shadowmat = ExtractCameraProjectionMatrix(lightIndex, index);
-			if (camspacepos.z > cascadedistance) index = 1;
-			if (camspacepos.z > cascadedistance * 2.0f) index = 2;
-			if (camspacepos.z > cascadedistance * 4.0f) index = 3;
+			if (camspacepos.z > cascadedistance[0]) index = 1;
+			if (camspacepos.z > cascadedistance[1]) index = 2;
+			if (camspacepos.z > cascadedistance[2]) index = 3;
 			uint sublight = floatBitsToUint(shadowmat[0][index]);
 			mat4 shadowrendermatrix = ExtractLightShadowRenderMatrix(sublight);
 			shadowCoord.xyz = (shadowrendermatrix * vec4(position, 1.0f)).xyz;
@@ -427,8 +454,8 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 				//shadowCoord.z = float(shadowMapLayer.x - 1);
 				//float samp = shadowSample(sampler2DArrayShadow(WorldShadowMapHandle), shadowCoord).r;
 				float samp = shadowSample(sampler2DShadow(shadowmap), shadowCoord).r;
-				cascadedistance *= 8.0f;
-				if (camspacepos.z > cascadedistance * 0.9f) samp = 1.0f - (1.0f - samp) * (1.0 - (camspacepos.z - cascadedistance * 0.9f) / (cascadedistance * 0.1f));
+				//cascadedistance *= 8.0f;
+				if (camspacepos.z > cascadedistance[3] * 0.9f) samp = 1.0f - (1.0f - samp) * (1.0 - (camspacepos.z - cascadedistance[3] * 0.9f) / (cascadedistance[3] * 0.1f));
 				visibility = samp;
 				//probespecular.a = 1.0f - visibility;
 				attenuation *= samp;

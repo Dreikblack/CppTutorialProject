@@ -165,6 +165,7 @@ void main()
     surface.roughness = 1.0f;
     surface.emission = vec3(0.0);
     surface.displacement = 0.0f;
+    surface.perturbation = vec2(0.0f);
     //surface.specularweight = 1.0f;
 
     vec2 surfaceocclusion_normalscale = unpackHalf2x16(material.occlusion);
@@ -187,7 +188,8 @@ void main()
     baseColor = surface.basecolor;
     materialInfo.c_diff = mix(materialInfo.baseColor.rgb,  vec3(0.0f), materialInfo.metallic);
     materialInfo.f0 = mix(materialInfo.f0, materialInfo.baseColor.rgb, materialInfo.metallic);
-    
+    norm.xy = surface.perturbation;
+
 #endif
 
 //outColor[0].rgb = n * 0.5 + 0.5;
@@ -332,21 +334,8 @@ void main()
     //Screen-space reflection, only when roughness < 1
     if (materialInfo.specularWeight > 0.001f && (RenderFlags & RENDERFLAGS_SSR) != 0 && ReflectionMapHandles.xy != uvec2(0) && ReflectionMapHandles.zw != uvec2(0))
     {
-        //if (material.roughness < 0.999f || material.metalness > 0.001f)
+        if (materialInfo.perceptualRoughness < 0.5f)
         {
-            /*{
-                vec2 screencoord = gl_FragCoord.xy / BufferSize * 4.0f;
-                if (screencoord.x < 1.0f && screencoord.y < 1.0f)
-                {
-                    float d = textureLod(sampler2D(ReflectionMapHandles.zw), screencoord, 0).r;
-                    //d = DepthToPosition(d, CameraRange) / 2.0f;
-                    outColor[0].rgb = vec3(d);
-                    outColor[0].a = 1.0f;
-                    //outColor[0] = textureLod(sampler2D(ReflectionMapHandles.xy), screencoord, 0);
-                    return;
-                }
-            }*/
-            vec2 screencoord = gl_FragCoord.xy / BufferSize;
             float ssrblend;
             vec4 ssr = SSRTrace(vertexWorldPosition.xyz, n, materialInfo.perceptualRoughness, sampler2D(ReflectionMapHandles.xy), sampler2D(ReflectionMapHandles.zw), ssrblend);            
             ssr.rgb = sRGBToLinear(ssr.rgb);
@@ -481,6 +470,11 @@ void main()
         ++attachmentindex;
         outColor[attachmentindex].rgb = n;// * 0.5f + 0.5f;
         outColor[attachmentindex].a = baseColor.a;
+        if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
+        {
+            outColor[attachmentindex].rg = norm.xy;
+            outColor[attachmentindex].b = material.thickness;
+        }
     }
 
     //Deferred metal / roughness
@@ -494,7 +488,7 @@ void main()
 #ifdef PREMULTIPLY_AlPHA
         if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
         {
-            outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
+           // outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
         }
 #endif
     }
@@ -576,7 +570,7 @@ void main()
     //if ((entityflags & ENTITYFLAGS_SELECTED) != 0) outColor[0].rgb = outColor[0].rgb * 0.5f + vec3(0.5f, 0.0f, 0.0f);
 
     //Pre-multiply alpha
-    if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0) outColor[0].rgb *= outColor[0].a;
+    //if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0) outColor[0].rgb *= outColor[0].a;
     
     //outColor[0].a = outColor[0].a * 0.5f + 0.5f;
     //if ((entityflags & ENTITYFLAGS_SELECTED) != 0) outColor[0].a = 0.5f - outColor[0].a;

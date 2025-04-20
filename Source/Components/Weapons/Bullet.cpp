@@ -7,6 +7,9 @@ using namespace Leadwerks;
 Bullet::Bullet()
 {
 	name = "Bullet";
+
+	if (not decalmaterial) decalmaterial = LoadMaterial("Materials/Decals/Bullet Holes/Concrete/bullethole_concrete.mat");
+	if (not smokematerial) smokematerial = LoadMaterial("Materials/Particles/smoke.mat");
 }
 
 void Bullet::Start()
@@ -21,7 +24,7 @@ void Bullet::Start()
 	auto world = entity->GetWorld();
 
 	decal = CreateDecal(world);
-	decal->SetMaterial(LoadMaterial("Materials/Decals/Bullet Holes/Concrete/bullethole_concrete.mat"));
+	decal->SetMaterial(decalmaterial);
 	decal->SetScale(0.08f);
 
 	emitters[0] = CreateParticleEmitter(world, 10);
@@ -31,7 +34,7 @@ void Bullet::Start()
 	emitters[0]->SetParticleColor(Vec4(1, 1, 1, 1), Vec4(1, 1, 1, 0));
 	emitters[0]->SetParticleRandomVelocity(0.5, 0.5, 0.5);
 	emitters[0]->SetLooping(false);
-	emitters[0]->SetMaterial(LoadMaterial("Materials/Particles/smoke.mat"));
+	emitters[0]->SetMaterial(smokematerial);
 	emitters[0]->Pause();
 	emitters[0]->SetHidden(true);
 

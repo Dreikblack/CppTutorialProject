@@ -22,6 +22,8 @@ layout(location = (UNIFORMSTARTINDEX + 7)) uniform uvec4 ReflectionMapHandles = 
 layout(location = (UNIFORMSTARTINDEX + 8)) uniform float ShadowScale = 1.0f;
 layout(location = (UNIFORMSTARTINDEX + 9)) uniform vec4 PaintBrushPosition = vec4(0.0);
 layout(location = (UNIFORMSTARTINDEX + 10)) uniform int CameraProjectionMode = 2;
+layout(location = (UNIFORMSTARTINDEX + 11)) uniform int TerrainID = 0;
+layout(location = (UNIFORMSTARTINDEX + 12)) uniform int TerrainMaterialID = 0;
 
 /*
 layout(binding = 7, location = (UNIFORMSTARTINDEX + 8)) uniform sampler2DArray TerrainAtlas;

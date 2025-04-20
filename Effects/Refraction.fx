@@ -5,7 +5,7 @@
         "subpasses":
         [
             {
-                "samplers": ["PREVPASS", "DEPTH", "TRANSPARENCY_NORMAL", "TRANSPARENCY", "METALLICROUGHNESS", "ZPOSITION", "ALBEDO"],
+                "samplers": ["PREVPASS", "DEPTH", "TRANSPARENCY_NORMAL", "TRANSPARENCY", "METALLICROUGHNESS", "ZPOSITION"],
                 "shader":
                 {
                     "float32":

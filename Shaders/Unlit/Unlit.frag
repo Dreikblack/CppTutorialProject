@@ -23,7 +23,7 @@ void main()
     
     if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
     {
-        outColor[0].rgb *= outColor[0].a;
+        //outColor[0].rgb *= outColor[0].a;
     }
 
     int attachmentindex=0;
@@ -45,7 +45,7 @@ void main()
 #ifdef PREMULTIPLY_AlPHA
         if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
         {
-            outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
+         //   outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
         }
 #endif
     }

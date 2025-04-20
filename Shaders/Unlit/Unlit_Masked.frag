@@ -21,7 +21,7 @@ void main()
     
     if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
     {
-        outColor[0].rgb *= outColor[0].a;
+      //  outColor[0].rgb *= outColor[0].a;
     }
 
     //outColor[0] = vec4(outColor[0].a);

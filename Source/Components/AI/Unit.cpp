@@ -326,7 +326,7 @@ void Unit::Update() {
 			auto unitUiPosition = camera->Project(position, framebuffer);
 			//sprite Y coordinate start from bottom of screen and projected from top
 			unitUiPosition.y = framebuffer->size.height - unitUiPosition.y;
-			unitUiPosition.x -= healthBarBackground->size.width / 2;
+			unitUiPosition.x -= healthBarBackground->size.x / 2;
 			healthBar->SetPosition(unitUiPosition.x, unitUiPosition.y);
 			healthBarBackground->SetPosition(unitUiPosition.x, unitUiPosition.y);
 			bool doShow = isSelected || (health != maxHealth && !isPlayer);

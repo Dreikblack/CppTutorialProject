@@ -4,11 +4,8 @@
 		"root": "./PBR.fam",
 		"textures":
 		[
-			"Diffuse",
-			"Normal",
-			"AO/Metal/Rough",
-			"Displacement",
-			"Emission"
+			"Scroll",
+			"Animation"
 		],
 		"static":
 		{

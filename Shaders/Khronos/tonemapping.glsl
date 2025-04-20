@@ -29,13 +29,31 @@ vec3 linearTosRGB(vec3 color)
     return pow(color, vec3(INV_GAMMA));
 }
 
-vec3 linearTosRGB(vec3 color, float invgamma)
+/*vec3 linearTosRGB(vec3 color, float invgamma)
 {
     const float lower = 0.001f;
     if (color.r > lower && color.r < 1.0f) color.r = pow(color.r, invgamma);
     if (color.g > lower && color.g < 1.0f) color.g = pow(color.g, invgamma);
     if (color.b > lower && color.b < 1.0f) color.b = pow(color.b, invgamma);
     return color;
+}*/
+
+vec3 sRGBToLinear(vec3 rgb)
+{
+    if (GAMMA == 1.0f) return rgb;
+  // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+  return mix(pow((rgb + 0.055) * (1.0 / 1.055), vec3(2.4)),
+             rgb * (1.0/12.92),
+             lessThanEqual(rgb, vec3(0.04045)));
+}
+
+vec3 linearTosRGB(vec3 rgb, float invgamma)
+{
+    if (invgamma == 1.0f) return rgb;
+  // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+  return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
+             rgb * 12.92,
+             lessThanEqual(rgb, vec3(0.0031308)));
 }
 
 /*vec3 linearTosRGB(vec3 color, in float ig)
@@ -46,10 +64,10 @@ vec3 linearTosRGB(vec3 color, float invgamma)
 
 // sRGB to linear approximation
 // see http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
-vec3 sRGBToLinear(vec3 srgbIn)
+/*vec3 sRGBToLinear(vec3 srgbIn)
 {
     return vec3(pow(srgbIn.xyz, vec3(GAMMA)));
-}
+}*/
 
 float sRGBToLinear(float srgbIn)
 {

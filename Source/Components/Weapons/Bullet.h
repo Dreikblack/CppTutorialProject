@@ -20,6 +20,8 @@ public:
     std::weak_ptr<Entity> owner;
     int updatecount = 0;
 
+    static inline std::shared_ptr<Material> decalmaterial, smokematerial;
+
     Bullet();
     
     virtual void Start();
