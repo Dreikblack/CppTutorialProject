@@ -1,0 +1,44 @@
+{
+	"material": {
+		"alphacutoff": 0.5,
+		"alphamask": true,
+		"backfaceculling": false,
+		"backfacelighting": true,
+		"color": [
+			0.501960813999176,
+			0.501960813999176,
+			0.501960813999176,
+			1.0
+		],
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"extras": {
+			"alwaysuseshader": "0",
+			"blendmode": "0",
+			"castshadows": "1",
+			"cullbackfaces": "1",
+			"depthmask": "1",
+			"depthtest": "1",
+			"diffuse": "0.588000,0.588000,0.588000,1.000000",
+			"drawmode": "-1",
+			"shader": "\"Shaders/Model/diffuse.shader\"",
+			"texture0": "\"./oak-summer-a.fbm/oak_leaf_d.tex\"",
+			"zsort": "0"
+		},
+		"glossiness": 0.0,
+		"metallic": 0.0,
+		"pickmode": false,
+		"roughness": 1.0,
+		"shaderfamily": "Shaders/PBR.fam",
+		"shadow": true,
+		"specular": [
+			0.0,
+			0.0,
+			0.0
+		],
+		"texture0": "./oak_leaf_d.dds",
+		"texture1": "./oak_leaf_n.dds"
+	}
+}

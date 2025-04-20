@@ -1,0 +1,25 @@
+{
+	"material": {
+		"alphacutoff": 0.20000000298023224,
+		"alphamask": true,
+		"backfacelighting": false,
+		"displacement": [
+			0.05000000074505806,
+			-0.02500000037252903
+		],
+		"glossiness": 1.0,
+		"metallic": 0.0,
+		"pickmode": true,
+		"roughness": 1.0,
+		"shaderfamily": "Shaders/Imposter.fam",
+		"shadow": false,
+		"specular": [
+			1.0,
+			1.0,
+			1.0
+		],
+		"texture0": "./oak-d_imposter.dds",
+		"texture1": "./oak-d_imposter_norm.dds",
+		"texture2": "./oak-d_imposter_orm.dds"
+	}
+}
