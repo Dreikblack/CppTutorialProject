@@ -1,10 +1,10 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "ComponentSystem.h"
 #include "MainMenu.h"
 #include "CustomEvents.h"
 #include "Game.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 shared_ptr<Window> window;
 shared_ptr<Framebuffer> framebuffer;

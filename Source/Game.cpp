@@ -1,4 +1,4 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Game.h"
 #include "CustomEvents.h"
 
@@ -47,23 +47,25 @@ static bool ExitButtonCallback(const Event& ev, shared_ptr<Object> extra) {
 void Game::init(shared_ptr<Framebuffer> framebuffer, WString mapPath) {
 	world = CreateWorld();
 	scene = LoadMap(world, mapPath);
-	for (auto const& entity : scene->entities) {
+	shared_ptr<Camera> camera;
+	//FPSPlayer creates a camera so it will not be in scene's entities, but always in world's ones
+	for (auto const& entity : world->GetEntities()) {
 		auto foundPlayer = entity->GetComponent<FPSPlayer>();
 		if (foundPlayer) {
 			fpsPlayer = foundPlayer;
 			break;
 		}
+		auto foundCamera = entity->As<Camera>();
+		if (foundCamera) {
+			camera = foundCamera;
+		}
 	}
 	auto font = LoadFont("Fonts/arial.ttf");
 	//Create user interface for game menu
 	auto frameSize = framebuffer->GetSize();
-	ui = CreateInterface(world, font, frameSize);
+	ui = CreateInterface(camera, font, frameSize);
 	ui->SetRenderLayers(2);
 	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
-	uiCamera = CreateCamera(world, PROJECTION_ORTHOGRAPHIC);
-	uiCamera->SetPosition(float(frameSize.x) * 0.5f, float(frameSize.y) * 0.5f, 0);
-	uiCamera->SetRenderLayers(2);
-	uiCamera->SetClearMode(CLEAR_DEPTH);
 	//widgets are stays without extra shared pointers because parent widet, ui->root in this case, keep them
 	//to remove widget you should do widget->SetParent(nullptr)
 	menuPanel = CreatePanel(frameSize.width / 2 - 150, frameSize.height / 2 - 300 / 2, 300, 250, ui->root);

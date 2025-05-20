@@ -1,10 +1,10 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Steamworks.h"
 
 namespace Steamworks
 {
-	using namespace UltraEngine;
+	using namespace Leadwerks;
 
 	//-------------------------------------------------------------------------------
 	// Globals
