@@ -2,7 +2,7 @@
 #include "Leadwerks.h"
 #include "../BaseComponent.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class Projectile : public BaseComponent
 {

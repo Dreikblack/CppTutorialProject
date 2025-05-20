@@ -233,7 +233,9 @@ void FPSPlayer::Update()
 		auto cx = Round((float)window->GetFramebuffer()->GetSize().x / 2);
 		auto cy = Round((float)window->GetFramebuffer()->GetSize().y / 2);
 		auto mpos = window->GetMousePosition();
-		window->SetMousePosition(cx, cy);
+		if (doResetMousePosition) {
+			window->SetMousePosition(cx, cy);
+		}
 		auto centerpos = window->GetMousePosition();
 
 		if (freelookstarted)

@@ -1,7 +1,7 @@
 #pragma once
 #include "Leadwerks.h"
 
-namespace UltraEngine {
+namespace Leadwerks {
 	//load a game map
 	const EventId EVENT_GAME_START = EventId(1001);
 	//load a main menu

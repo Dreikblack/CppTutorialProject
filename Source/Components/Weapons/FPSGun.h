@@ -56,7 +56,7 @@ public:
     virtual void UpdateBullets();
     virtual bool GetReloading();
 
-    static void AnimationDone(const UltraEngine::WString name, shared_ptr<UltraEngine::Object> object);
+    static void AnimationDone(const Leadwerks::WString name, shared_ptr<Leadwerks::Object> object);
     static void ReloadHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
     static void HideHook(shared_ptr<Skeleton> skeleton, shared_ptr<Object> extra);
 

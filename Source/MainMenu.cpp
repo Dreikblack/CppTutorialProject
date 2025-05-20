@@ -33,6 +33,7 @@ void MainMenu::init(shared_ptr<Framebuffer> framebuffer) {
 	//Create user interface
 	auto frameSize = framebuffer->GetSize();
 	shared_ptr<Camera> camera;
+	//you can get entity by tag or iterate all of them to find it
 	for (auto const& cameraEntity : world->GetEntities()) {
 		camera = cameraEntity->As<Camera>();
 		if (camera) {
@@ -43,12 +44,6 @@ void MainMenu::init(shared_ptr<Framebuffer> framebuffer) {
 	ui->SetRenderLayers(2);
 	//to make backgrount transparent
 	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
-	//Create camera for GUI
-	uiCamera = CreateCamera(world, PROJECTION_ORTHOGRAPHIC);
-	uiCamera->SetPosition(float(frameSize.x) * 0.5f, float(frameSize.y) * 0.5f, 0);
-	uiCamera->SetRenderLayers(2);
-	//for correct rendering above 3D scene
-	uiCamera->SetClearMode(CLEAR_DEPTH);
 	//Menu buttons
 	auto newGameButton = CreateButton("New game", frameSize.width / 2 - 100, 125, 200, 50, ui->root);
 	ListenEvent(EVENT_WIDGETACTION, newGameButton, NewGameButtonCallback);

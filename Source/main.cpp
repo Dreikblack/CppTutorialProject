@@ -4,7 +4,7 @@
 #include "CustomEvents.h"
 #include "Game.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 shared_ptr<Window> window;
 shared_ptr<Framebuffer> framebuffer;

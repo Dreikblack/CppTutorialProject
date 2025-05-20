@@ -51,9 +51,7 @@ public:
 	float movespeed = 4.0f;
 	float jumpforce = 4.2f;
 	float jumplunge = 1.2f;
-	
 	bool doResetMousePosition = true;
-	
 	FPSPlayer();
 
 	virtual void Start();
