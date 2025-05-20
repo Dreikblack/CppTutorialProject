@@ -1,0 +1,39 @@
+{
+	"shaderfamily":
+	{
+		"textures":
+		[
+			"Base"
+		],
+		"static":
+		{
+			"float":
+			{
+				"mask":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/2D/2D.vert",
+							"fragment": "Shaders/2D/2D.frag",
+							"transparency": "Shaders/2D/2D_Masked.frag"
+						}
+					}				
+				},
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/2D/2D.vert",
+							"fragment": "Shaders/2D/2D.frag",
+							"transparency": "Shaders/2D/2D_Masked.frag"
+						}
+					}
+				}
+			}
+		}			
+	}
+}

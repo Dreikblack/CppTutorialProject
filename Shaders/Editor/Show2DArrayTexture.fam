@@ -1,0 +1,30 @@
+{
+	"shaderfamily":
+	{
+		"textures":
+		[
+			"Base"
+		],
+		"static":
+		{
+			"float":
+			{
+				"opaque":
+				{
+					"default":
+					{
+						"base":
+						{
+							"vertex": "Shaders/PBR/PBR.vert",
+							"fragment": "Shaders/Editor/Show2DArrayTexture.frag"
+						},
+						"depthPass":
+						{
+							"vertex": "Shaders/DepthPass/DepthPass.vert"
+						}
+					}
+				}
+			}
+		}
+	}
+}

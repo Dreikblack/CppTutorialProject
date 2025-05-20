@@ -126,7 +126,7 @@ vec3 RenderLight(in uint lightIndex, in vec3 position, in vec3 normal)
 	uint shadowMapLayer;
 	float attenuation = 1.0f;
 	int shadowkernel;
-	float cascadedistance;
+	vec4 cascadedistance;
 	dFloat d;
 #ifdef DOUBLE_FLOAT
 	dvec2 lightrange, coneangles, shadowrange;
@@ -153,8 +153,6 @@ vec3 RenderLight(in uint lightIndex, in vec3 position, in vec3 normal)
 	ExtractLightInfo(lightIndex, shadowmap, lightrange, coneangles, shadowrange, lightflags, shadowkernel, cascadedistance, materialid);
 	color = sRGBToLinear(color);
 	specular = color;
-
-	cascadedistance = 20;
 
 	const int falloffmode = ((lightflags & ENTITYFLAGS_LIGHT_LINEARFALLOFF) != 0) ? LIGHTFALLOFF_LINEAR : LIGHTFALLOFF_INVERSESQUARE;
 	if ((lightflags & ENTITYFLAGS_LIGHT_STRIP) != 0) lighttype = LIGHT_STRIP; // This needs to come first because the flag is a combination of others
@@ -309,13 +307,13 @@ vec3 RenderLight(in uint lightIndex, in vec3 position, in vec3 normal)
 		vec3 camspacepos = (CameraInverseMatrix * vec4(position, 1.0)).xyz;
 		mat4 shadowmat;
 		visibility = 1.0f;
-		if (camspacepos.z <= cascadedistance * 8.0f)
+		if (camspacepos.z <= cascadedistance[3])
 		{
 			int index = 0;
 			shadowmat = ExtractCameraProjectionMatrix(lightIndex, index);
-			if (camspacepos.z > cascadedistance) index = 1;
-			if (camspacepos.z > cascadedistance * 2.0f) index = 2;
-			if (camspacepos.z > cascadedistance * 4.0f) index = 3;
+			if (camspacepos.z > cascadedistance[0]) index = 1;
+			if (camspacepos.z > cascadedistance[1]) index = 2;
+			if (camspacepos.z > cascadedistance[2]) index = 3;
 			uint sublight = floatBitsToUint(shadowmat[0][index]);
 			mat4 shadowrendermatrix = ExtractLightShadowRenderMatrix(sublight);
 			shadowCoord.xyz = (shadowrendermatrix * vec4(position, 1.0f)).xyz;
@@ -332,8 +330,8 @@ vec3 RenderLight(in uint lightIndex, in vec3 position, in vec3 normal)
 				//shadowCoord.z = float(shadowMapLayer.x - 1);
 				//float samp = shadowSample(sampler2DArrayShadow(WorldShadowMapHandle), shadowCoord).r;
 				float samp = shadowSample(sampler2DShadow(shadowmap), shadowCoord).r;
-				cascadedistance *= 8.0f;
-				if (camspacepos.z > cascadedistance * 0.9f) samp = 1.0f - (1.0f - samp) * (1.0 - (camspacepos.z - cascadedistance * 0.9f) / (cascadedistance * 0.1f));
+				//cascadedistance *= 8.0f;
+				if (camspacepos.z > cascadedistance[3] * 0.9f) samp = 1.0f - (1.0f - samp) * (1.0 - (camspacepos.z - cascadedistance[3] * 0.9f) / (cascadedistance[3] * 0.1f));
 				visibility = samp;
 				//probespecular.a = 1.0f - visibility;
 				attenuation *= samp;

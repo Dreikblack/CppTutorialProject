@@ -16,4 +16,5 @@ struct Surface
     float normalscale;
     float thickness;
     float displacement;
+    vec2 perturbation;
 };

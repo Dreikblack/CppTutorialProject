@@ -1,8 +1,8 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Projectile.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class Bullet : public Projectile
 {
@@ -19,6 +19,8 @@ public:
     int impacttimeout = 3000;
     std::weak_ptr<Entity> owner;
     int updatecount = 0;
+
+    static inline std::shared_ptr<Material> decalmaterial, smokematerial;
 
     Bullet();
     

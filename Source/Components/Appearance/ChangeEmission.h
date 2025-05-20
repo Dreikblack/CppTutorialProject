@@ -1,8 +1,8 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../BaseComponent.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class ChangeEmission : public BaseComponent
 {
