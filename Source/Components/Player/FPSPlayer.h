@@ -1,10 +1,10 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../BaseComponent.h"
 #include "../Weapons/FPSWeapon.h"
 #include "Player.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class FPSWeapon;
 class PlayerInteraction;
@@ -51,9 +51,8 @@ public:
 	float movespeed = 4.0f;
 	float jumpforce = 4.2f;
 	float jumplunge = 1.2f;
-
-	bool doResetMousePosition = true;
 	
+	bool doResetMousePosition = true;
 	FPSPlayer();
 
 	virtual void Start();
