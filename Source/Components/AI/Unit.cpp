@@ -1,9 +1,9 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Unit.h"
 #include "../Logic/WayPoint.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 Unit::Unit() {
 	name = "Unit";
@@ -58,22 +58,6 @@ void Unit::Start() {
 			model->skeleton->AddHook(seq, count - 1, EndPainHook, Self());
 		}
 	}
-	if (!isFullPlayerControl) {
-		int healthBarHeight = 5;
-		healthBar = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
-		if (team == 1) {
-			healthBar->SetColor(0, 1, 0);
-		} else {
-			healthBar->SetColor(1, 0, 0);
-		}
-		healthBar->SetPosition(0, 0, 0.00001f);
-		healthBar->SetRenderLayers(2);
-		healthBarBackground = CreateSprite(entity->GetWorld(), maxHealth, healthBarHeight);
-		healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
-		//to put it behind health bar
-		healthBarBackground->SetPosition(0, 0, 0.00002f);
-		healthBarBackground->SetRenderLayers(2);
-	}
 	auto world = entity->GetWorld();
 	shared_ptr<Camera> camera;
 	for (auto const& cameraEntity : world->GetTaggedEntities("Camera")) {
@@ -89,6 +73,20 @@ void Unit::Start() {
 		}
 	}
 	cameraWeak = camera;
+	if (!isFullPlayerControl) {
+		int healthBarHeight = 5;
+		healthBar = CreateTile(camera, maxHealth, healthBarHeight);
+		if (team == 1) {
+			healthBar->SetColor(0, 1, 0);
+		} else {
+			healthBar->SetColor(1, 0, 0);
+		}
+		//to put it before health bar
+		healthBar->SetOrder(1);
+		healthBarBackground = CreateTile(camera, maxHealth, healthBarHeight);
+		healthBarBackground->SetColor(0.1f, 0.1f, 0.1f);
+		healthBarBackground->SetOrder(0);
+	}
 	BaseComponent::Start();
 }
 
@@ -187,8 +185,8 @@ void Unit::Damage(const int amount, shared_ptr<Entity> attacker) {
 		}
 	}
 	if (healthBar) {
-		//reducing health bar sprite width
-		healthBar->SetScale((float)health / (float)maxHealth, 1, 1);
+		//reducing health bar tile width
+		healthBar->SetScale((float)health / (float)maxHealth, 1);
 	}
 	//attack an atacker
 	if (!isForcedMovement && !isForcedTarget) {
@@ -308,9 +306,7 @@ void Unit::Update() {
 		if (camera) {
 			//transorming 3D position into 2D
 			auto unitUiPosition = camera->Project(position, framebuffer);
-			//sprite Y coordinate start from bottom of screen and projected from top
-			unitUiPosition.y = framebuffer->size.height - unitUiPosition.y;
-			unitUiPosition.x -= healthBarBackground->size.width / 2;
+			unitUiPosition.x -= healthBarBackground->size.x / 2;
 			healthBar->SetPosition(unitUiPosition.x, unitUiPosition.y);
 			healthBarBackground->SetPosition(unitUiPosition.x, unitUiPosition.y);
 			bool doShow = isSelected || (health != maxHealth && !isPlayer);
