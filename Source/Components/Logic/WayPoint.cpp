@@ -2,7 +2,7 @@
 #include "Leadwerks.h"
 #include "WayPoint.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 WayPoint::WayPoint() {
 	//name should always match class name for correct component work
