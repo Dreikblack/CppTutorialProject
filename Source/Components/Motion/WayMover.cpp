@@ -1,9 +1,9 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "WayMover.h"
 #include "../Logic/WayPoint.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 WayMover::WayMover() {
 	name = "WayMover";
