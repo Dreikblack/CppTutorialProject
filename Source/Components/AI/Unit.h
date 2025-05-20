@@ -1,8 +1,8 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../BaseComponent.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 //abstract class which will be a parent for other units classes such as Beast and Hunter
 //partly based of Enemy/Monster/Player default classes
@@ -57,8 +57,8 @@ protected:
 	WString runName;
 	shared_ptr<Sound> painSound;
 	//health bar above unit
-	shared_ptr<Sprite> healthBar;
-	shared_ptr<Sprite> healthBarBackground;
+	shared_ptr<Tile> healthBar;
+	shared_ptr<Tile> healthBarBackground;
 	bool isSelected = false;
 	//to keep camera pointer for unit health bars
 	std::weak_ptr<Camera> cameraWeak;

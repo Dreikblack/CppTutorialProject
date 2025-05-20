@@ -88,6 +88,7 @@ int main(int argc, const char* argv[]) {
 	loadingBackground = CreateSprite(loadingWorld, framebuffer->size.width, framebuffer->size.height);
 	loadingBackground->SetColor(0.2f, 0.2f, 0.2f);
 	loadingBackground->SetRenderLayers(2);
+	loadingBackground->SetPosition(centerX, centerY);
 	auto font = LoadFont("Fonts/arial.ttf");
 	loadingText = CreateSprite(loadingWorld, font, "LOADING", labelHeight, TEXT_CENTER | TEXT_MIDDLE);
 	loadingText->SetPosition(centerX, centerY + labelHeight * 0.5f);

@@ -1,8 +1,7 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 
-using namespace UltraEngine;
-
+using namespace Leadwerks;
 
 class StrategyController : public Component {
 protected:
@@ -11,7 +10,7 @@ protected:
 	bool isControlDown = false;
 	int playerTeam = 1;
 	std::weak_ptr<Camera> cameraWeak;
-	shared_ptr<Sprite> unitSelectionBox;
+	shared_ptr<Tile> unitSelectionBox;
 	//first mouse position when Mouse Left was pressed
 	iVec2 unitSelectionBoxPoint1;
 	//height of selection box
