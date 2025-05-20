@@ -34,11 +34,9 @@ void StrategyController::Start() {
 		}
 	}
 	// 1/1 size for pixel accuarcy scaling
-	unitSelectionBox = CreateSprite(entity->GetWorld(), 1, 1);
+	unitSelectionBox = CreateTile(cameraWeak.lock(), 1, 1);
 	//transparent green color
 	unitSelectionBox->SetColor(0, 0.4f, 0.2, 0.5f);
-	unitSelectionBox->SetPosition(0, 0, 0.00001f);
-	unitSelectionBox->SetRenderLayers(2);
 	unitSelectionBox->SetHidden(true);
 	//to make sprite transparent
 	auto material = CreateMaterial();
@@ -200,11 +198,11 @@ void StrategyController::updateUnitSelectionBox() {
 				unitSelectionBox->SetHidden(true);
 				return;
 			}
-			unitSelectionBox->SetPosition(upLeft.x, window->GetFramebuffer()->GetSize().height - downRight.y);
+			unitSelectionBox->SetPosition(upLeft.x, upLeft.y);
 			auto width = downRight.x - upLeft.x;
 			auto height = downRight.y - upLeft.y;
 			//changing sprite size via scale, just size is readonly
-			unitSelectionBox->SetScale(width, height, 1);
+			unitSelectionBox->SetScale(width, height);
 			unitSelectionBox->SetHidden(false);
 		}
 		
