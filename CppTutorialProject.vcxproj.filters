@@ -75,7 +75,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\UltraEngine.cpp">
+    <ClCompile Include="Source\Leadwerks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">

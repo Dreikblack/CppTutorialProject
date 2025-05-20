@@ -1,6 +1,6 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 
-namespace UltraEngine
+namespace Leadwerks
 {
-    extern void GetPassword(String& password);
+    extern inline void GetPassword(String& password);
 }

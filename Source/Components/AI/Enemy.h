@@ -1,9 +1,9 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../BaseComponent.h"
 #include "../Player/Player.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class Enemy : public Player
 {

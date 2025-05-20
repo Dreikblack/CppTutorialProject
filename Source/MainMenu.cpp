@@ -1,4 +1,4 @@
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "MainMenu.h"
 #include "CustomEvents.h"
 
@@ -32,16 +32,19 @@ void MainMenu::init(shared_ptr<Framebuffer> framebuffer) {
 	auto font = LoadFont("Fonts/arial.ttf");
 	//Create user interface
 	auto frameSize = framebuffer->GetSize();
-	ui = CreateInterface(world, font, frameSize);
+
+	shared_ptr<Camera> camera;
+	//you can get entity by tag or iterate all of them to find it
+	for (auto const& entity : scene->entities) {
+		auto foundCamera = entity->As<Camera>();
+		if (foundCamera) {
+			camera = foundCamera;
+		}
+	}
+	ui = CreateInterface(camera, font, frameSize);
 	ui->SetRenderLayers(2);
 	//to make backgrount transparent
 	ui->root->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
-	//Create camera for GUI
-	uiCamera = CreateCamera(world, PROJECTION_ORTHOGRAPHIC);
-	uiCamera->SetPosition(float(frameSize.x) * 0.5f, float(frameSize.y) * 0.5f, 0);
-	uiCamera->SetRenderLayers(2);
-	//for correct rendering above 3D scene
-	uiCamera->SetClearMode(CLEAR_DEPTH);
 	//Menu buttons
 	auto newGameButton = CreateButton("New game", frameSize.width / 2 - 100, 125, 200, 50, ui->root);
 	ListenEvent(EVENT_WIDGETACTION, newGameButton, NewGameButtonCallback);

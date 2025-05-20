@@ -1,13 +1,13 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "../Player/Player.h"
 #include "../Player/FPSPlayer.h"
 #include "FPSGun.h"
 #include "Projectile.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
-void FPSGun::AnimationDone(const UltraEngine::WString name, shared_ptr<UltraEngine::Object> object)
+void FPSGun::AnimationDone(const Leadwerks::WString name, shared_ptr<Leadwerks::Object> object)
 {
 	auto wpn = object->As<FPSGun>();
 	if (wpn)
@@ -189,6 +189,14 @@ void FPSGun::Start()
 	//Listen for events we will use
 	Listen(EVENT_MOUSEDOWN, NULL);
 	Listen(EVENT_KEYDOWN, NULL);
+
+	muzzlesprite = CreateSprite(world, muzzlespriteradius, muzzlespriteradius);
+	//muzzlesprite->SetHandle(-muzzlespriteradius * 0.5f, -muzzlespriteradius * 0.5f);
+	muzzlesprite->SetViewMode(SPRITEVIEW_DEFAULT);
+	muzzlesprite->SetMaterial(LoadMaterial("Materials/Effects/muzzleflash.mat"));
+	muzzlesprite->SetParent(muzzle);
+	muzzlesprite->SetPosition(0, 0, 0);
+	muzzlesprite->SetHidden(true);
 
 	FPSWeapon::Start();
 }
@@ -392,15 +400,6 @@ void FPSGun::Fire()
 	//Sprite
 	if (muzzle)
 	{
-		if (not muzzlesprite)
-		{
-			muzzlesprite = CreateSprite(world, muzzlespriteradius, muzzlespriteradius);
-			muzzlesprite->SetHandle(-muzzlespriteradius * 0.5f, -muzzlespriteradius * 0.5f);
-			muzzlesprite->SetViewMode(SPRITEVIEW_DEFAULT);
-			muzzlesprite->SetMaterial(LoadMaterial("Materials/Effects/muzzleflash.mat"));
-			muzzlesprite->SetParent(muzzle);
-			muzzlesprite->SetPosition(0, 0, 0);
-		}
 		muzzlesprite->SetRotation(0, 0, 0);
 		muzzlesprite->Turn(0, 0, Random(360.0f));
 		muzzlesprite->SetHidden(false);

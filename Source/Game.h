@@ -1,12 +1,11 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "Components/Player/FPSPlayer.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class Game : public Object {
 protected:
-	shared_ptr<Camera> uiCamera;
 	shared_ptr<Scene> scene;
 	shared_ptr<FPSPlayer> player;
 	shared_ptr<Widget> menuPanel;

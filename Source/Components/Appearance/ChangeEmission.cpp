@@ -1,8 +1,8 @@
 #pragma once
-#include "UltraEngine.h"
+#include "Leadwerks.h"
 #include "ChangeEmission.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 ChangeEmission::ChangeEmission()
 { 
