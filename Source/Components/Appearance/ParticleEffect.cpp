@@ -2,7 +2,7 @@
 #include "Leadwerks.h"
 #include "ParticleEffect.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 ParticleEffect::ParticleEffect() {
 	name = "ParticleEffect";
@@ -75,5 +75,3 @@ void ParticleEffect::Update() {
 		}
 	}
 }
-
-

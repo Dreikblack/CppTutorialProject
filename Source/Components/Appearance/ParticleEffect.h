@@ -1,7 +1,7 @@
 #pragma once
 #include "Leadwerks.h"
 
-using namespace UltraEngine;
+using namespace Leadwerks;
 
 class ParticleEffect : public Component {
 protected:
