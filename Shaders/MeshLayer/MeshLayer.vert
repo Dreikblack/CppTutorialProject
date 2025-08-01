@@ -4,4 +4,4 @@
 
 #define WRITE_COLOR
 
-#include "vertex.glsl"
+#include "Vertex.glsl"

@@ -5,6 +5,9 @@
 #include "DrawElementsIndirectCommand.glsl"
 #include "../Math/Math.glsl"
 
+#define MESHFLAGS_SUBDIVISION 1
+#define MESHFLAGS_WIND 2
+
 uint meshflags = 0;
 
 #define DRAWIDSIZE 2

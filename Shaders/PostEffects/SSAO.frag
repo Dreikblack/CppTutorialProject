@@ -22,12 +22,13 @@ layout(location = 0) in vec2 texCoords;
 //Outputs
 layout(location = 0) out vec4 outColor;
 
-layout(location = 0) uniform int Samples = 28;
-#define INTENSITY 75.0f
-#define MAXEFFECT 1.0f
-#define SCALE 1.25f * 2.0 * 4.0
+layout(location = 0) uniform int Samples = 16;
+
+#define INTENSITY 35.0f
+#define MAXEFFECT 0.667f
+#define SCALE 1.25f * 16.0f
 #define BIAS 0.05 * 4.0
-#define SAMPLE_RAD 0.25 * 0.5f
+#define SAMPLE_RAD 0.25f
 #define MAX_DISTANCE 10.0
 
 #define MOD3 vec3(.1031,.11369,.13787)

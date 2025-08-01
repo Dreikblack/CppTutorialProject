@@ -54,7 +54,10 @@ void UserFunction(in uint entityID, inout vec4 position, inout vec3 normal, inou
 				layerscale *= textureSize(sampler2D(subtex), 0).x / 1024.0f;
 				layerscale *= float(imagesize).x / 512.0f;
 				float uvscale = layerscale;
-				terraindisplacement += uvscale * (((offset + maxDisplacement) * TerrainSample(sampler2D(subtex), layercoords, normal, layerinfo.mappingmode).r) * textureAlpha[channel]);
+				terraindisplacement += uvscale * offset * textureAlpha[channel];
+				terraindisplacement += maxDisplacement * uvscale * TerrainSample(sampler2D(subtex), layercoords, normal, layerinfo.mappingmode).r * textureAlpha[channel];
+
+//				terraindisplacement += uvscale * (((offset + maxDisplacement) * TerrainSample(sampler2D(subtex), layercoords, normal, layerinfo.mappingmode).r) * textureAlpha[channel]);
 			}
 		}
 		position.xyz += normal * terraindisplacement;		

@@ -178,7 +178,7 @@ void Unit::Damage(const int amount, shared_ptr<Entity> attacker) {
 	auto now = world->GetTime();
 	if (health <= 0) {
 		Kill(attacker);
-	} else if (!isInPain && now - painCooldownTime > painCooldown) {
+	} else if (!isInPain && (now - painCooldownTime) > painCooldown) {
 		isInPain = true;
 		isAttacking = false;
 		auto model = GetEntity()->As<Model>();

@@ -176,6 +176,23 @@ void main()
     #endif
 
 #endif
+	
+	// Wind effect
+	if ((drawcommands[gl_DrawID + offset].meshflags & MESHFLAGS_WIND) != 0)
+	{
+#ifdef DEPTHRENDER
+		vec3 normal, tangent, bitangent;
+		ExtractVertexNormalTangentBitangent(normal, tangent, bitangent);
+        mat3 nmat = mat3(noise);        
+        normal = normalize(nmat * normal);
+#endif
+		float seed = mod(CurrentTime * 0.0015f, 360.0f);
+		seed += float(x) * 33.0f + float(y) * 67.8f;
+		seed += VertexPosition.x + VertexPosition.y + VertexPosition.z;
+		vec3 movement = normal * color.a * 0.02f * (sin(seed)+0.25f * cos(seed * 5.2f + 3.2f ));
+		p.xyz += movement;		
+	}
+
 
     mat4 cameraProjectionMatrix = ExtractCameraProjectionMatrix(CameraID, 0);
     gl_Position = cameraProjectionMatrix * p;

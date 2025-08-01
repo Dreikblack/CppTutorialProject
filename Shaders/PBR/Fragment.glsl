@@ -100,7 +100,7 @@ void main()
     // The default index of refraction of 1.5 yields a dielectric normal incidence reflectance of 0.04.
     materialInfo.ior = 1.5f;//ExtractMaterialRefractionIndex(material);
     materialInfo.f0 = vec3(0.04f);//0.04 is default
-    materialInfo.specularWeight = 1.0f;
+    materialInfo.specularWeight = material.speculargloss.a;
     materialInfo.attenuationDistance = 0.0f;
     materialInfo.attenuationColor = vec3(1.0f);
     materialInfo.transmissionFactor = 1.0f;//GetMaterialTransmission(material);
@@ -165,7 +165,6 @@ void main()
     surface.roughness = 1.0f;
     surface.emission = vec3(0.0);
     surface.displacement = 0.0f;
-    surface.perturbation = vec2(0.0f);
     //surface.specularweight = 1.0f;
 
     vec2 surfaceocclusion_normalscale = unpackHalf2x16(material.occlusion);
@@ -188,8 +187,7 @@ void main()
     baseColor = surface.basecolor;
     materialInfo.c_diff = mix(materialInfo.baseColor.rgb,  vec3(0.0f), materialInfo.metallic);
     materialInfo.f0 = mix(materialInfo.f0, materialInfo.baseColor.rgb, materialInfo.metallic);
-    norm.xy = surface.perturbation;
-
+    
 #endif
 
 //outColor[0].rgb = n * 0.5 + 0.5;
@@ -211,13 +209,14 @@ void main()
     
     materialInfo.metallic = 0;
 	materialInfo.f0 = material.speculargloss.rgb;
-    materialInfo.perceptualRoughness = 1.0f - material.speculargloss.a;
-    if (material.textureHandle[TEXTURE_METALLICROUGHNESS] != uvec2(0))
+    float gloss = 1.0f - material.roughness;
+	if (material.textureHandle[TEXTURE_METALLICROUGHNESS] != uvec2(0))
     {
         vec4 sgSample = (texture(sampler2D(material.textureHandle[TEXTURE_METALLICROUGHNESS]), texcoords.xy));        
-        materialInfo.perceptualRoughness *= 1.0f - sgSample.a; // glossiness to roughness
+        gloss *= sgSample.a;
         materialInfo.f0 *= sgSample.rgb; // specular
     }
+	materialInfo.perceptualRoughness = 1.0f - gloss;// glossiness to roughness
 
     //Detail map
     /*if (material.textureHandle[TEXTURE_AMBIENTOCCLUSION + 1] != uvec2(0))
@@ -334,8 +333,21 @@ void main()
     //Screen-space reflection, only when roughness < 1
     if (materialInfo.specularWeight > 0.001f && (RenderFlags & RENDERFLAGS_SSR) != 0 && ReflectionMapHandles.xy != uvec2(0) && ReflectionMapHandles.zw != uvec2(0))
     {
-        if (materialInfo.perceptualRoughness < 0.5f)
+        //if (material.roughness < 0.999f || material.metalness > 0.001f)
         {
+            /*{
+                vec2 screencoord = gl_FragCoord.xy / BufferSize * 4.0f;
+                if (screencoord.x < 1.0f && screencoord.y < 1.0f)
+                {
+                    float d = textureLod(sampler2D(ReflectionMapHandles.zw), screencoord, 0).r;
+                    //d = DepthToPosition(d, CameraRange) / 2.0f;
+                    outColor[0].rgb = vec3(d);
+                    outColor[0].a = 1.0f;
+                    //outColor[0] = textureLod(sampler2D(ReflectionMapHandles.xy), screencoord, 0);
+                    return;
+                }
+            }*/
+            vec2 screencoord = gl_FragCoord.xy / BufferSize;
             float ssrblend;
             vec4 ssr = SSRTrace(vertexWorldPosition.xyz, n, materialInfo.perceptualRoughness, sampler2D(ReflectionMapHandles.xy), sampler2D(ReflectionMapHandles.zw), ssrblend);            
             ssr.rgb = sRGBToLinear(ssr.rgb);
@@ -470,25 +482,21 @@ void main()
         ++attachmentindex;
         outColor[attachmentindex].rgb = n;// * 0.5f + 0.5f;
         outColor[attachmentindex].a = baseColor.a;
-        if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
-        {
-            outColor[attachmentindex].rg = norm.xy;
-            outColor[attachmentindex].b = material.thickness;
-        }
     }
 
     //Deferred metal / roughness
     if ((RenderFlags & RENDERFLAGS_OUTPUT_METALLICROUGHNESS) != 0)
     {
         ++attachmentindex;
-        outColor[attachmentindex].r = material.thickness;//float(SPECULARMODEL);
+        outColor[attachmentindex].r = 0.0f;//material.thickness;//float(SPECULARMODEL);
+		if (material.thickness < 0.0f or (materialFlags & MATERIAL_SIMPLEREFRACTION) != 0) outColor[attachmentindex].r = 1.0f;
         outColor[attachmentindex].g = materialInfo.perceptualRoughness;
         outColor[attachmentindex].b = materialInfo.metallic;
         outColor[attachmentindex].a = baseColor.a;
 #ifdef PREMULTIPLY_AlPHA
         if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
         {
-           // outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
+            outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
         }
 #endif
     }
@@ -570,7 +578,7 @@ void main()
     //if ((entityflags & ENTITYFLAGS_SELECTED) != 0) outColor[0].rgb = outColor[0].rgb * 0.5f + vec3(0.5f, 0.0f, 0.0f);
 
     //Pre-multiply alpha
-    //if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0) outColor[0].rgb *= outColor[0].a;
+    if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0) outColor[0].rgb *= outColor[0].a;
     
     //outColor[0].a = outColor[0].a * 0.5f + 0.5f;
     //if ((entityflags & ENTITYFLAGS_SELECTED) != 0) outColor[0].a = 0.5f - outColor[0].a;

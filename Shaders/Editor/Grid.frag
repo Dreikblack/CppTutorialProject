@@ -160,10 +160,11 @@ void main()
     //Camera distance fog
     //ApplyDistanceFog(outColor[0].rgb, vertexWorldPosition.xyz, CameraPosition);
 
-    if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
-    {
-        outColor[0].rgb *= outColor[0].a;
-    }  
+	//TODO: this is a hack to handle refraction...needs to be changed
+	if ((RenderFlags & RENDERFLAGS_OUTPUT_ZPOSITION) != 0)
+	{
+		outColor[0].a = 1.0f;
+	}
 
     int attachmentindex = 0;
 
@@ -185,7 +186,7 @@ void main()
 #ifdef PREMULTIPLY_AlPHA
         if ((RenderFlags & RENDERFLAGS_TRANSPARENCY) != 0)
         {
-            outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
+        //    outColor[attachmentindex].rgb *= outColor[attachmentindex].a;
         }
 #endif
     }
@@ -211,4 +212,6 @@ void main()
         outColor[attachmentindex] = vec4(d, d, d, 1.0f);
         //outColor[attachmentindex] = vec4(1.0f);
     }  
+
+
 }

@@ -39,7 +39,7 @@ int get_cascade_partition(float zdistance, int number_of_partitions, float near_
 	return 3;
 }
 
-int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo materialInfo, in vec3 position, in vec3 normal, in vec3 facenormal, in vec3 v, inout float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 probediffuse, inout vec4 probespecular, inout vec3 f_emissive)
+int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo materialInfo, in vec3 position, inout vec3 normal, in vec3 facenormal, in vec3 v, inout float NdotV, inout vec3 f_diffuse, inout vec3 f_specular, in bool renderprobes, inout vec4 probediffuse, inout vec4 probespecular, inout vec3 f_emissive)
 {	
 	const uint materialflags = material.flags;//GetMaterialFlags(material);
 	bool backfacing = false;
@@ -111,6 +111,7 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					vec2 occlusion_normalscale = unpackHalf2x16(mtl.occlusion);
 					if (color.a < 0.001f) return LIGHT_DECAL;
 					mat3 decalnormalmatrix = mat3(lightmatrix);
+					decalnormalmatrix[1] *= -1.0f;
 					vec3 decalnormal = inverse(decalnormalmatrix) * facenormal;
 					int axis = getMajorAxis(decalnormal);
 					vec2 decalcoords;
@@ -118,17 +119,37 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					{
 					case 0:
 						decalcoords = (rel.zy - 0.5) * 1.0f;
+						decalcoords.x *= -1.0f;
 						decalnormalmatrix = mat3(-decalnormalmatrix[2], decalnormalmatrix[1], decalnormalmatrix[0]);
+						if (dot(decalnormalmatrix[2], facenormal) < 0.0f)
+						{
+							decalcoords.x *= -1.0f;
+							decalnormalmatrix[0] *= -1.0f;
+							decalnormalmatrix[2] *= -1.0f;
+						}
 						break;
 					case 1:
 						decalcoords = (rel.xz - 0.5) * 1.0f;
 						decalnormalmatrix = mat3(decalnormalmatrix[0], -decalnormalmatrix[2], decalnormalmatrix[1]);
+						if (dot(decalnormalmatrix[2], facenormal) < 0.0f)
+						{
+							decalcoords.y *= -1.0f;
+							decalnormalmatrix[1] *= -1.0f;
+							decalnormalmatrix[2] *= -1.0f;
+						}
 						break;
 					case 2:
 						decalcoords = (rel.xy - 0.5) * 1.0f;
+						if (dot(decalnormalmatrix[2], facenormal) < 0.0f)
+						{
+							decalcoords.x *= -1.0f;
+							decalnormalmatrix[0] *= -1.0f;
+							decalnormalmatrix[2] *= -1.0f;
+						}
 						break;
 					}
-					decalcoords.y = 1.0f - decalcoords.y;
+					decalcoords.y = 1.0f - decalcoords.y;					
+					decalcoords += GetMaterialTextureOffset(mtl, CurrentTime).xy;// texture scrolling					
 					if ((flags & ENTITYFLAGS_EXTENDEDDATA) != 0)
     				{
 						EntityExtras extra = ExtractEntityExtras(lightIndex);
@@ -140,7 +161,7 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					decalnormalmatrix[2] = normalize(decalnormalmatrix[2]);
 					if (mtl.textureHandle[TEXTURE_OPACITY] != uvec2(0))
 					{
-						color.a = texture(sampler2D(mtl.textureHandle[TEXTURE_OPACITY]), decalcoords).r;
+						color.a *= texture(sampler2D(mtl.textureHandle[TEXTURE_OPACITY]), decalcoords).r;
 					}
 					if (mtl.textureHandle[TEXTURE_DIFFUSE] != uvec2(0))
 					{
@@ -156,7 +177,6 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 						n.xy *= occlusion_normalscale.y;						
 						if ((decalmaterialflags & MATERIAL_EXTRACTNORMALMAPZ) != 0) n.z = sqrt(max(0.0f, 1.0f - (n.x * n.x + n.y * n.y)));// extract Z axis
 						n = normalize(n);
-						if (dot(decalnormalmatrix[2], facenormal) < 0.0f) decalnormalmatrix = -decalnormalmatrix;// flip if facing wrong way
 						n = decalnormalmatrix * n;
 						normal = normal * (1.0f - color.a) + n * color.a;
 						NdotV = dot(normal, v);
@@ -173,8 +193,15 @@ int RenderLight(in uint lightIndex, inout Material material, inout MaterialInfo 
 					}
 					if (mtl.textureHandle[TEXTURE_EMISSION] != uvec2(0))
 					{
+						vec3 emissioncolor = vec3(1.0);
+						if ((flags & ENTITYFLAGS_EXTENDEDDATA) != 0)
+						{
+							EntityExtras info = ExtractEntityExtras(lightIndex);
+							emissioncolor = info.emissioncolor;
+						}
 						vec3 decalemission = mtl.emissiveColor.rgb;
 						decalemission *= texture(sampler2D(mtl.textureHandle[TEXTURE_EMISSION]), decalcoords.xy).rgb;
+						decalemission *= emissioncolor;
 						f_emissive = f_emissive * (1.0f - color.a) + decalemission * color.a;
 					}
 					materialInfo.specularWeight = max(materialInfo.specularWeight, color.a);

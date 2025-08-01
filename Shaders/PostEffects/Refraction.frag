@@ -86,7 +86,13 @@ void main()
 #endif
     float ior = 1.5f;
     vec3 ray = normalize(v_Position - CameraPosition);
-    float glance = 1.0f + dot(ray,n);
+    vec3 camdir = CameraNormalMatrix[2].xyz;
+    float glance = clamp(dot(-n, camdir) * 0.5f, 0.0f, 1.0f);
+	//ior = mix(1.0f, ior, glance);
+
+	//outColor = vec4(glance, glance, glance, 1.0f);
+	//return;
+
     //glance = clamp(glance, 0.0f, 1.0f);
     //vec3 camdir = CameraMatrix[2].xyz;
     //glance = 1.0f - dot(ray, camdir);
@@ -95,10 +101,16 @@ void main()
     //ior = mix(ior, 0.0f, glance);
 
     vec4 mrsample = texelFetch(MetallicRoughnessTextureID, coord, gl_SampleID);
-    //float thickness = mrsample.r;
+    float thickness = mrsample.r;
     float perceptualRoughness = mrsample.g / mrsample.a;
   
-    float thickness = nsample.b;
+    int refractionmodel = 0;
+    if (thickness > 0.5f)
+    {
+        //thickness *= -1.0f;
+        refractionmodel = 1;
+    }
+	thickness = 1.0f;
 
     //thickness = mix(thickness, 0.0, glance);
 
@@ -109,34 +121,45 @@ void main()
 
     if (diff < thickness)
     {
-        float og = nsample.a;
-       nsample.a *= max(0.1, diff / thickness);
-       nsample.a = max(og * 0.1f, nsample.a);
+        float og = csample.a;
+       csample.a *= max(0.1, diff / thickness);
+       csample.a = max(og * 0.1f, csample.a);
     }
-    thickness = max(thickness, 0.02);
-
+    //thickness = max(thickness, 0.02);
     thickness = min(thickness, diff);
     //thickness = mix(thickness, 0.0, glance);
 
-    vec3 transmissionRay = getVolumeTransmissionRay(n, v, thickness, ior, u_ModelMatrix);
-    vec3 refractedRayExit = v_Position + transmissionRay;
+    vec2 refractionCoords_;
+    if (refractionmodel == 1)
+    {
+        // Simple refraction - better for large flat surfaces
+        refractionCoords_ = texCoords.xy + n.xz * 0.1f * thickness;
+    }
+    else
+    {
+        // Realistic refraction - causes artifacts on large flat surfaces
+        vec3 transmissionRay = getVolumeTransmissionRay(n, v, thickness, ior, u_ModelMatrix);
+        vec3 refractedRayExit = v_Position + transmissionRay;
 
-    // Project refracted vector on the framebuffer, while mapping to normalized device coordinates.
-    vec4 ndcPos = u_ProjectionMatrix * vec4(refractedRayExit, 1.0);
-    vec2 refractionCoords_ = ndcPos.xy / ndcPos.w;
+        // Project refracted vector on the framebuffer, while mapping to normalized device coordinates.
+        vec4 ndcPos = u_ProjectionMatrix * vec4(refractedRayExit, 1.0);
+        refractionCoords_ = ndcPos.xy / ndcPos.w;
 
-    refractionCoords_ += 1.0f;
-    refractionCoords_ *= 0.5f;
+        refractionCoords_ += 1.0f;
+        refractionCoords_ *= 0.5f;
+    }
+
+	//refractionCoords_ = texCoords.xy;
 
     //refractionCoords_.x = clamp(refractionCoords_.x, 0.0f, 1.0f);
     //refractionCoords_.y = clamp(refractionCoords_.y, 0.0f, 1.0f);
 
     //n = inverse(CameraNormalMatrix) * n;
     vec3 sn = n;//mat3(inverse(CameraNormalMatrix)) * n;
-    refractionCoords_ = (texCoords.xy - 0.5f) + n.xy * 0.5f * thickness + 0.5f;
-    ior = 0;//
+    //refractionCoords_ = (texCoords.xy - 0.5f) + n.xy * 0.5f * thickness + 0.5f;
+    //ior = 0;//
 
-    if (refractionCoords_.y < 0.5f)
+    /*if (refractionCoords_.y < 0.5f)
     {
         float m = refractionCoords_.y / 0.5f;
         refractionCoords_.y = mix(texCoords.y, refractionCoords_.y, m);
@@ -155,7 +178,7 @@ void main()
     {
         float m = (refractionCoords_.x - 0.9f) / 0.1f;
         refractionCoords_.x = mix(refractionCoords_.x, texCoords.x, m);
-    }
+    }*/
 
     ivec2 refractionCoords;
 
@@ -191,13 +214,13 @@ void main()
         nsample.a = mix(nsample.a, 1.0f, min((diff - deeparea) / deeprange, 1.0f));
     }*/
 
-    outColor.rgb = mix(background, csample.rgb, nsample.a);
+    outColor.rgb = mix(background, csample.rgb, csample.a);
 
     //outColor = texelFetch(DiffuseTextureID, coord, 0);
     //return;
 
     // For water edges, not very apparent on other surfaces
-    const float softarea = 0.025;    
+	const float softarea = 0.025;    
     if (diff < softarea)
     {
         float f = 1.0f - diff / softarea;
@@ -206,6 +229,6 @@ void main()
         outColor.rgb = mix(outColor.rgb, bg, f);
         outColor.a = f;
     }
-   
+
     outColor.a = 1.0f;
 }
