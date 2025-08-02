@@ -27,7 +27,7 @@
 		],
 		"debugcommandline": "-devmode +map \"$MAPFILE\"",
 		"debugexecutable": "CppTutorialProject_d.exe",
-		"engineversion": "0.9.9",
+		"engineversion": "1.0.0",
 		"filetypeblacklist": "bin, meta, collider",
 		"gridbasesize": 0.16,
 		"language": "C++",
